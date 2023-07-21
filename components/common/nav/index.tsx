@@ -5,6 +5,23 @@ import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Link from "next/link";
 
+const renderAuthButtons = (isAuthenticated: boolean) => {
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Link href="/register" className="button-950-outline">
+          Daftar
+        </Link>
+        <Link href="/login" className="button-950-filled">
+          Masuk
+        </Link>
+      </>
+    );
+  } else {
+    return <button className="button-950-outline">Keluar</button>;
+  }
+};
+
 const MobileNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
@@ -25,12 +42,7 @@ const MobileNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
             Tentang Kami
           </Link>
           <div className="h-[1px] bg-purple-950" />
-          <Link href="/register" className="button-950-outline">
-            Daftar
-          </Link>
-          <Link href="/login" className="button-950-filled">
-            Masuk
-          </Link>
+          {renderAuthButtons(isAuthenticated)}
         </div>
       </Drawer>
     );
@@ -69,12 +81,7 @@ const DesktopNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
           </Link>
         </div>
         <div className="flex gap-[1rem]">
-          <Link className="button-950-outline" href="/register">
-            Daftar
-          </Link>
-          <Link className="button-950-filled" href="/login">
-            Masuk
-          </Link>
+          {renderAuthButtons(isAuthenticated)}
         </div>
       </div>
     </div>
@@ -82,7 +89,7 @@ const DesktopNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
 };
 
 export default function Navbar() {
-  const isAuthenticated = true;
+  const isAuthenticated = false;
 
   return (
     <nav className="fixed top-0 left-0 w-full z-[100] border-2 border-purple-50 bg-white">
