@@ -37,7 +37,7 @@ const MobileNavbar = () => {
     );
   };
   return (
-    <div className="lg:hidden">
+    <div className="p-[1.25rem] lg:hidden">
       <div className="flex justify-between items-center">
         <Link
           href="/"
@@ -57,7 +57,7 @@ const MobileNavbar = () => {
 const DesktopNavbar = () => {
   return (
     <div className="hidden lg:block">
-      <div className="max-w-[1160px] mx-auto flex justify-between items-center">
+      <div className="max-w-[1160px] mx-auto flex justify-between items-center p-[1.25rem]">
         <div className="flex gap-[1rem]">
           <Link
             href="/"
@@ -84,7 +84,7 @@ const DesktopNavbar = () => {
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 w-full p-[1.25rem] z-[100] border-2 border-purple-50 bg-white">
+    <nav className="fixed top-0 left-0 w-full z-[100] border-2 border-purple-50 bg-white">
       <MobileNavbar />
       <DesktopNavbar />
     </nav>
