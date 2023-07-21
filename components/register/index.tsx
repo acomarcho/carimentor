@@ -11,7 +11,7 @@ import Link from "next/link";
 import { dummyTags, dummyProvinces, dummyCities } from "@/lib/dummies";
 import { RegisterRequest } from "@/lib/constants/requests";
 import { useState } from "react";
-import { verify } from "crypto";
+import { validateEmail } from "@/lib/utils";
 
 export default function Register() {
   const [request, setRequest] = useState<RegisterRequest>({
@@ -30,6 +30,10 @@ export default function Register() {
   const provinces = dummyProvinces;
   const cities = dummyCities;
 
+  const emailValidity = validateEmail(request.email)
+    ? ""
+    : "Format email tidak benar!";
+
   if (currentPage === 0) {
     return (
       <div className="default-wrapper flex flex-col justify-center items-center">
@@ -46,6 +50,7 @@ export default function Register() {
             onChange={(e) => {
               setRequest({ ...request, email: e.currentTarget.value });
             }}
+            error={request.email && emailValidity}
           />
           <PasswordInput
             className="max-w-form"
