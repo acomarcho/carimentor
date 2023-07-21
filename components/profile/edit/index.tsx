@@ -3,7 +3,6 @@ import { IconUserCircle, IconUpload } from "@tabler/icons-react";
 import Image from "next/image";
 import { dummyUser, dummyTags } from "@/lib/dummies";
 import { Textarea, TextInput, FileInput, MultiSelect } from "@mantine/core";
-import Link from "next/link";
 
 export default function EditProfile() {
   const isAuthenticated = false;
