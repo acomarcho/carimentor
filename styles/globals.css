@@ -31,6 +31,10 @@
     font-family: var(--font-plus-jakarta-sans);
   }
   .max-w-form {
-    @apply w-full max-w-[50rem] mx-auto
+    @apply w-full max-w-[50rem] mx-auto;
+  }
+  .drawer-link {
+    @apply text-right text-purple-950;
+    font-family: var(--font-plus-jakarta-sans);
   }
 }

@@ -1,11 +1,29 @@
 import { useState } from "react";
 import { appName } from "@/lib/constants";
-import { IconMenu2, IconX } from "@tabler/icons-react";
+import { IconMenu2, IconX, IconUserCircle } from "@tabler/icons-react";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Link from "next/link";
+import { Menu } from "@mantine/core";
 
-const MobileNavbar = () => {
+const renderAuthButtons = (isAuthenticated: boolean) => {
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Link href="/register" className="button-950-outline">
+          Daftar
+        </Link>
+        <Link href="/login" className="button-950-filled">
+          Masuk
+        </Link>
+      </>
+    );
+  } else {
+    return <button className="button-950-outline">Keluar</button>;
+  }
+};
+
+const MobileNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   const renderDrawer = () => {
@@ -21,16 +39,19 @@ const MobileNavbar = () => {
           <button className="self-end" onClick={() => setIsDrawerOpen(false)}>
             <IconX />
           </button>
-          <Link className="text-right font-jakarta text-purple-950" href="/">
+          {isAuthenticated && (
+            <>
+              <Link className="drawer-link" href="/profile">
+                Profilku
+              </Link>
+              <div className="h-[1px] bg-purple-950" />
+            </>
+          )}
+          <Link className="drawer-link" href="/">
             Tentang Kami
           </Link>
           <div className="h-[1px] bg-purple-950" />
-          <Link href="/register" className="button-950-outline">
-            Daftar
-          </Link>
-          <Link href="/login" className="button-950-filled">
-            Masuk
-          </Link>
+          {renderAuthButtons(isAuthenticated)}
         </div>
       </Drawer>
     );
@@ -53,7 +74,7 @@ const MobileNavbar = () => {
   );
 };
 
-const DesktopNavbar = () => {
+const DesktopNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   return (
     <div className="hidden lg:block">
       <div className="max-w-[1160px] mx-auto flex justify-between items-center p-[1.25rem]">
@@ -69,12 +90,25 @@ const DesktopNavbar = () => {
           </Link>
         </div>
         <div className="flex gap-[1rem]">
-          <Link className="button-950-outline" href="/register">
-            Daftar
-          </Link>
-          <Link className="button-950-filled" href="/login">
-            Masuk
-          </Link>
+          {renderAuthButtons(isAuthenticated)}
+          {isAuthenticated && (
+            <Menu shadow="md" width={200}>
+              <Menu.Target>
+                <button className="flex gap-[0.5rem] justify-end items-center">
+                  <IconUserCircle />
+                  <p className="paragraph">Profilku</p>
+                </button>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                <Menu.Item>
+                  <Link href="/profile" className="paragraph">
+                    Profilku
+                  </Link>
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          )}
         </div>
       </div>
     </div>
@@ -82,10 +116,12 @@ const DesktopNavbar = () => {
 };
 
 export default function Navbar() {
+  const isAuthenticated = true;
+
   return (
     <nav className="fixed top-0 left-0 w-full z-[100] border-2 border-purple-50 bg-white">
-      <MobileNavbar />
-      <DesktopNavbar />
+      <MobileNavbar isAuthenticated={isAuthenticated} />
+      <DesktopNavbar isAuthenticated={isAuthenticated} />
     </nav>
   );
 }
