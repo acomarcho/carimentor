@@ -8,3 +8,8 @@ export interface RegisterRequest {
   cityId: string | null;
   description: string;
 }
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}

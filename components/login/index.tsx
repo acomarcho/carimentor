@@ -1,8 +1,20 @@
 import DecorationVector from "../common/decoration-vector";
 import { TextInput, PasswordInput } from "@mantine/core";
 import Link from "next/link";
+import { useState } from "react";
+import { LoginRequest } from "@/lib/constants/requests";
+import { validateEmail } from "@/lib/utils";
 
 export default function Login() {
+  const [request, setRequest] = useState<LoginRequest>({
+    email: "",
+    password: "",
+  });
+
+  const emailValidity = validateEmail(request.email)
+    ? ""
+    : "Format email tidak benar!";
+
   return (
     <div className="default-wrapper flex flex-col justify-center items-center">
       <DecorationVector />
@@ -14,10 +26,11 @@ export default function Login() {
           withAsterisk
           placeholder="Masukkan email"
           radius="xl"
-          // value={request.email}
-          // onChange={(e) => {
-          //   setRequest({ ...request, email: e.currentTarget.value });
-          // }}
+          value={request.email}
+          onChange={(e) => {
+            setRequest({ ...request, email: e.currentTarget.value });
+          }}
+          error={request.email && emailValidity}
         />
         <PasswordInput
           className="max-w-form"
@@ -25,20 +38,17 @@ export default function Login() {
           withAsterisk
           placeholder="Masukkan password"
           radius="xl"
-          // value={request.password}
-          // onChange={(e) => {
-          //   setRequest({ ...request, password: e.currentTarget.value });
-          // }}
+          value={request.password}
+          onChange={(e) => {
+            setRequest({ ...request, password: e.currentTarget.value });
+          }}
         />
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-[1rem] mt-[6rem]">
         <button
           className="button-600-filled max-w-form"
-          // onClick={() => setCurrentPage(1)}
-          // disabled={
-          //   !request.email ||
-          //   !request.password ||
-          // }
+          onClick={() => {}}
+          disabled={!request.email || emailValidity !== "" || !request.password}
         >
           Lanjutkan
         </button>
