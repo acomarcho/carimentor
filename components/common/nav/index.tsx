@@ -4,7 +4,6 @@ import { IconMenu2, IconX } from "@tabler/icons-react";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Link from "next/link";
-import { button950Filled, button950Outline } from "@/lib/styles";
 
 const MobileNavbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
@@ -26,10 +25,10 @@ const MobileNavbar = () => {
             Tentang Kami
           </Link>
           <div className="h-[1px] bg-purple-950" />
-          <Link href="/register" className={`${button950Outline}`}>
+          <Link href="/register" className="button-950-outline">
             Daftar
           </Link>
-          <Link href="/login" className={`${button950Filled}`}>
+          <Link href="/login" className="button-950-filled">
             Masuk
           </Link>
         </div>
@@ -70,10 +69,10 @@ const DesktopNavbar = () => {
           </Link>
         </div>
         <div className="flex gap-[1rem]">
-          <Link className={`${button950Outline}`} href="/register">
+          <Link className="button-950-outline" href="/register">
             Daftar
           </Link>
-          <Link className={`${button950Filled}`} href="/login">
+          <Link className="button-950-filled" href="/login">
             Masuk
           </Link>
         </div>
