@@ -11,6 +11,14 @@
     @apply border-2 rounded-full border-purple-950 px-[1rem] py-[0.5rem] text-purple-950 text-center disabled:opacity-50;
     font-family: var(--font-plus-jakarta-sans);
   }
+  .button-600-filled {
+    @apply rounded-full bg-purple-600 px-[1rem] py-[0.5rem] text-purple-50 text-center disabled:opacity-50;
+    font-family: var(--font-plus-jakarta-sans);
+  }
+  .button-600-outline {
+    @apply border-2 rounded-full border-purple-600 px-[1rem] py-[0.5rem] text-purple-600 text-center disabled:opacity-50;
+    font-family: var(--font-plus-jakarta-sans);
+  }
   .default-wrapper {
     @apply p-[1.25rem] min-h-[calc(100vh-70px)] mt-[70px] lg:min-h-[calc(100vh-90px)] lg:mt-[90px];
   }
@@ -21,5 +29,8 @@
   .paragraph {
     @apply font-jakarta text-purple-950;
     font-family: var(--font-plus-jakarta-sans);
+  }
+  .max-w-form {
+    @apply w-full max-w-[50rem] mx-auto
   }
 }
