@@ -25,7 +25,7 @@ const MobileNavbar = () => {
           <Link className="text-right font-jakarta text-purple-950" href="/">
             Tentang Kami
           </Link>
-          <div className="h-[2px] bg-purple-950" />
+          <div className="h-[1px] bg-purple-950" />
           <Link href="/register" className={`${button950Outline}`}>
             Daftar
           </Link>
@@ -57,14 +57,34 @@ const MobileNavbar = () => {
 const DesktopNavbar = () => {
   return (
     <div className="hidden lg:block">
-      <h1>Desktop navbar</h1>
+      <div className="max-w-[1160px] mx-auto flex justify-between items-center">
+        <div className="flex gap-[1rem]">
+          <Link
+            href="/"
+            className="font-outfit font-bold text-[1rem] text-purple-950"
+          >
+            {appName}
+          </Link>
+          <Link className="text-right font-jakarta text-purple-950" href="/">
+            Tentang Kami
+          </Link>
+        </div>
+        <div className="flex gap-[1rem]">
+          <Link className={`${button950Outline}`} href="/register">
+            Daftar
+          </Link>
+          <Link className={`${button950Filled}`} href="/login">
+            Masuk
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 w-full p-[1.25rem] z-[100] drop-shadow-xl">
+    <nav className="fixed top-0 left-0 w-full p-[1.25rem] z-[100] border-2 border-purple-50">
       <MobileNavbar />
       <DesktopNavbar />
     </nav>
