@@ -42,3 +42,12 @@ export const dummyCities = [
     name: "KOTA CIMAHI",
   },
 ];
+
+export const dummyUser = {
+  name: "Marchotridyo",
+  email: "marcho@gmail.com",
+  city: "KOTA BANDUNG",
+  role: "MENTOR",
+  tags: ["UI/UX", "Artificial Intelligence", "Software Engineering"],
+  description: "Saya adalah seorang mahasiswa tingkat akhir di ITB.",
+};
