@@ -26,6 +26,10 @@
     @apply text-[2rem] font-bold text-purple-950;
     font-family: var(--font-outfit);
   }
+  .header-1rem {
+    @apply text-[1rem] font-bold text-purple-950;
+    font-family: var(--font-outfit);
+  }
   .header-600 {
     @apply font-bold text-purple-950 text-[0.9rem];
     font-family: var(--font-outfit);
