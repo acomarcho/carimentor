@@ -20,10 +20,14 @@
     font-family: var(--font-plus-jakarta-sans);
   }
   .default-wrapper {
-    @apply p-[1.25rem] min-h-[calc(100vh-70px)] mt-[70px] lg:min-h-[calc(100vh-90px)] lg:mt-[90px];
+    @apply p-[1.25rem] min-h-[calc(100vh-70px)] mt-[70px] lg:min-h-[calc(100vh-90px)] lg:mt-[90px] max-w-[1160px] mx-auto;
   }
   .header-2rem {
     @apply text-[2rem] font-bold text-purple-950;
+    font-family: var(--font-outfit);
+  }
+  .header-600 {
+    @apply font-bold text-purple-950 text-[0.9rem];
     font-family: var(--font-outfit);
   }
   .paragraph {
