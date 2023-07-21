@@ -38,7 +38,15 @@ const MobileNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
           <button className="self-end" onClick={() => setIsDrawerOpen(false)}>
             <IconX />
           </button>
-          <Link className="text-right font-jakarta text-purple-950" href="/">
+          {isAuthenticated && (
+            <>
+              <Link className="drawer-link" href="/profile">
+                Profilku
+              </Link>
+              <div className="h-[1px] bg-purple-950" />
+            </>
+          )}
+          <Link className="drawer-link" href="/">
             Tentang Kami
           </Link>
           <div className="h-[1px] bg-purple-950" />
@@ -89,7 +97,7 @@ const DesktopNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
 };
 
 export default function Navbar() {
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   return (
     <nav className="fixed top-0 left-0 w-full z-[100] border-2 border-purple-50 bg-white">
