@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { appName } from "@/lib/constants";
-import { IconMenu2, IconX } from "@tabler/icons-react";
+import { IconMenu2, IconX, IconUserCircle } from "@tabler/icons-react";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Link from "next/link";
+import { Menu } from "@mantine/core";
 
 const renderAuthButtons = (isAuthenticated: boolean) => {
   if (!isAuthenticated) {
@@ -90,6 +91,24 @@ const DesktopNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
         </div>
         <div className="flex gap-[1rem]">
           {renderAuthButtons(isAuthenticated)}
+          {isAuthenticated && (
+            <Menu shadow="md" width={200}>
+              <Menu.Target>
+                <button className="flex gap-[0.5rem] justify-end items-center">
+                  <IconUserCircle />
+                  <p className="paragraph">Profilku</p>
+                </button>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                <Menu.Item>
+                  <Link href="/profile" className="paragraph">
+                    Profilku
+                  </Link>
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          )}
         </div>
       </div>
     </div>
