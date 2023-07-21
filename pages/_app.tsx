@@ -14,11 +14,8 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <main>
-      <Component
-        className={`${outfit.variable} ${plusJakartaSans.variable}`}
-        {...pageProps}
-      />
+    <main className={`${outfit.variable} ${plusJakartaSans.variable}`}>
+      <Component {...pageProps} />
     </main>
   );
 }
