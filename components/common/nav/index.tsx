@@ -84,7 +84,7 @@ const DesktopNavbar = () => {
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 w-full p-[1.25rem] z-[100] border-2 border-purple-50">
+    <nav className="fixed top-0 left-0 w-full p-[1.25rem] z-[100] border-2 border-purple-50 bg-white">
       <MobileNavbar />
       <DesktopNavbar />
     </nav>
