@@ -5,7 +5,7 @@ import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Link from "next/link";
 
-const MobileNavbar = () => {
+const MobileNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   const renderDrawer = () => {
@@ -53,7 +53,7 @@ const MobileNavbar = () => {
   );
 };
 
-const DesktopNavbar = () => {
+const DesktopNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   return (
     <div className="hidden lg:block">
       <div className="max-w-[1160px] mx-auto flex justify-between items-center p-[1.25rem]">
@@ -82,10 +82,12 @@ const DesktopNavbar = () => {
 };
 
 export default function Navbar() {
+  const isAuthenticated = true;
+
   return (
     <nav className="fixed top-0 left-0 w-full z-[100] border-2 border-purple-50 bg-white">
-      <MobileNavbar />
-      <DesktopNavbar />
+      <MobileNavbar isAuthenticated={isAuthenticated} />
+      <DesktopNavbar isAuthenticated={isAuthenticated} />
     </nav>
   );
 }
