@@ -98,6 +98,7 @@ export default function Register() {
             onClick={() => setCurrentPage(1)}
             disabled={
               !request.email ||
+              emailValidity !== "" ||
               !request.password ||
               !request.role ||
               request.tagIds.length === 0
