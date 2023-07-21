@@ -9,9 +9,20 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import { dummyTags, dummyProvinces, dummyCities } from "@/lib/dummies";
+import { RegisterRequest } from "@/lib/constants/requests";
 import { useState } from "react";
 
 export default function Register() {
+  const [request, setRequest] = useState<RegisterRequest>({
+    email: "",
+    password: "",
+    role: "",
+    tagIds: [],
+    name: "",
+    provinceId: "",
+    cityId: "",
+    description: "",
+  });
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const tags = dummyTags;
@@ -30,6 +41,10 @@ export default function Register() {
             withAsterisk
             placeholder="Masukkan email"
             radius="xl"
+            value={request.email}
+            onChange={(e) => {
+              setRequest({ ...request, email: e.currentTarget.value });
+            }}
           />
           <PasswordInput
             className="max-w-form"
@@ -37,8 +52,18 @@ export default function Register() {
             withAsterisk
             placeholder="Masukkan password"
             radius="xl"
+            value={request.password}
+            onChange={(e) => {
+              setRequest({ ...request, password: e.currentTarget.value });
+            }}
           />
-          <Radio.Group className="max-w-form" label="Role" withAsterisk>
+          <Radio.Group
+            className="max-w-form"
+            label="Role"
+            withAsterisk
+            value={request.role}
+            onChange={(v) => setRequest({ ...request, role: v })}
+          >
             <div className="flex gap-[1rem]">
               <Radio value="MENTOR" label="Mentor" />
               <Radio value="MENTEE" label="Mentee" />
@@ -57,12 +82,20 @@ export default function Register() {
                 label: tag.name,
               };
             })}
+            value={request.tagIds}
+            onChange={(v) => setRequest({ ...request, tagIds: v })}
           />
         </div>
         <div className="w-full flex flex-col justify-center items-center gap-[1rem] mt-[6rem]">
           <button
             className="button-600-filled max-w-form"
             onClick={() => setCurrentPage(1)}
+            disabled={
+              !request.email ||
+              !request.password ||
+              !request.role ||
+              request.tagIds.length === 0
+            }
           >
             Lanjutkan
           </button>
