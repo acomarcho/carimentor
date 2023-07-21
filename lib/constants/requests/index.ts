@@ -4,7 +4,7 @@ export interface RegisterRequest {
   role: string;
   tagIds: string[];
   name: string;
-  provinceId: string;
-  cityId: string;
+  provinceId: string | null;
+  cityId: string | null;
   description: string;
 }

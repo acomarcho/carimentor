@@ -11,6 +11,7 @@ import Link from "next/link";
 import { dummyTags, dummyProvinces, dummyCities } from "@/lib/dummies";
 import { RegisterRequest } from "@/lib/constants/requests";
 import { useState } from "react";
+import { verify } from "crypto";
 
 export default function Register() {
   const [request, setRequest] = useState<RegisterRequest>({
@@ -120,6 +121,10 @@ export default function Register() {
             withAsterisk
             placeholder="Masukkan nama"
             radius="xl"
+            value={request.name}
+            onChange={(e) => {
+              setRequest({ ...request, name: e.currentTarget.value });
+            }}
           />
           <Select
             className="max-w-form"
@@ -133,6 +138,10 @@ export default function Register() {
                 label: province.name,
               };
             })}
+            value={request.provinceId}
+            onChange={(v) => {
+              setRequest({ ...request, provinceId: v });
+            }}
           />
           <Select
             className="max-w-form"
@@ -146,6 +155,11 @@ export default function Register() {
                 label: city.name,
               };
             })}
+            value={request.cityId}
+            onChange={(v) => {
+              setRequest({ ...request, cityId: v });
+            }}
+            disabled={!request.provinceId}
           />
           <Textarea
             className="max-w-form"
@@ -155,10 +169,24 @@ export default function Register() {
             placeholder="Deskripsi singkat tentang Anda"
             autosize
             maxRows={4}
+            value={request.description}
+            onChange={(e) => {
+              setRequest({ ...request, description: e.currentTarget.value });
+            }}
           />
         </div>
         <div className="w-full flex flex-col justify-center items-center gap-[1rem] mt-[6rem]">
-          <button className="button-600-filled max-w-form">Daftar</button>
+          <button
+            className="button-600-filled max-w-form"
+            disabled={
+              !request.name ||
+              !request.provinceId ||
+              !request.cityId ||
+              !request.description
+            }
+          >
+            Daftar
+          </button>
           <button
             className="button-600-outline max-w-form"
             onClick={() => setCurrentPage(0)}
