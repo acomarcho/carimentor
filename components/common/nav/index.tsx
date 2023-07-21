@@ -102,7 +102,7 @@ const DesktopNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
 
               <Menu.Dropdown>
                 <Menu.Item>
-                  <Link href="/profile" className="paragraph">
+                  <Link href="/profile" className="paragraph block">
                     Profilku
                   </Link>
                 </Menu.Item>
