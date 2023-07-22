@@ -10,11 +10,20 @@ import { DateTimePicker } from "@mantine/dates";
 import "dayjs/locale/id";
 import { Textarea, TextInput, NumberInput } from "@mantine/core";
 import { labelStyle } from "@/lib/constants/styles";
+import { CreateNewGroupSessionRequest } from "@/lib/constants/requests";
+import { requestToBodyStream } from "next/dist/server/body-streams";
 
 export default function MentorGroupSessions() {
   const sessions = dummyGroupSessions;
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [request, setRequest] = useState<CreateNewGroupSessionRequest>({
+    name: "",
+    date: null,
+    meetingUrl: "",
+    description: "",
+    maxParticipant: "",
+  });
 
   return (
     <div className="default-wrapper">
@@ -81,6 +90,10 @@ export default function MentorGroupSessions() {
             placeholder="Belajar HTML dan CSS untuk pemula"
             withAsterisk
             styles={{ ...labelStyle }}
+            value={request.name}
+            onChange={(e) =>
+              setRequest({ ...request, name: e.currentTarget.value })
+            }
           />
           <DateTimePicker
             label="Tanggal dan jam mulai"
@@ -89,18 +102,28 @@ export default function MentorGroupSessions() {
             minDate={new Date()}
             locale="id"
             styles={{ ...labelStyle }}
+            value={request.date}
+            onChange={(v) => setRequest({ ...request, date: v })}
           />
           <TextInput
             label="Tautan meeting"
             placeholder="https://www.google.com"
             withAsterisk
             styles={{ ...labelStyle }}
+            value={request.meetingUrl}
+            onChange={(e) =>
+              setRequest({ ...request, meetingUrl: e.currentTarget.value })
+            }
           />
           <Textarea
             label="Deskripsi"
             placeholder="Dalam sesi ini, kita akan mempelajari HTML dan CSS dari awal sampai akhir."
             styles={{ ...labelStyle }}
             withAsterisk
+            value={request.description}
+            onChange={(e) =>
+              setRequest({ ...request, description: e.currentTarget.value })
+            }
           />
           <NumberInput
             label="Maksimal partisipan"
@@ -108,10 +131,19 @@ export default function MentorGroupSessions() {
             styles={{ ...labelStyle }}
             min={1}
             withAsterisk
+            value={request.maxParticipant}
+            onChange={(v) => setRequest({ ...request, maxParticipant: v })}
           />
           <button
             className="button-600-filled"
             onClick={() => setIsModalOpen(false)}
+            disabled={
+              !request.name ||
+              !request.date ||
+              !request.meetingUrl ||
+              !request.description ||
+              !request.maxParticipant
+            }
           >
             Buat sesi
           </button>
