@@ -12,6 +12,7 @@ import { dummyTags, dummyProvinces, dummyCities } from "@/lib/dummies";
 import { RegisterRequest } from "@/lib/constants/requests";
 import { useState } from "react";
 import { validateEmail } from "@/lib/utils";
+import { labelStyle } from "@/lib/constants/styles";
 
 export default function Register() {
   const [request, setRequest] = useState<RegisterRequest>({
@@ -51,6 +52,7 @@ export default function Register() {
               setRequest({ ...request, email: e.currentTarget.value });
             }}
             error={request.email && emailValidity}
+            styles={{ ...labelStyle }}
           />
           <PasswordInput
             className="max-w-form"
@@ -62,6 +64,7 @@ export default function Register() {
             onChange={(e) => {
               setRequest({ ...request, password: e.currentTarget.value });
             }}
+            styles={{ ...labelStyle }}
           />
           <Radio.Group
             className="max-w-form"
@@ -69,10 +72,11 @@ export default function Register() {
             withAsterisk
             value={request.role}
             onChange={(v) => setRequest({ ...request, role: v })}
+            styles={{ ...labelStyle }}
           >
             <div className="flex gap-[1rem]">
-              <Radio value="MENTOR" label="Mentor" />
-              <Radio value="MENTEE" label="Mentee" />
+              <Radio value="MENTOR" label="Mentor" styles={{ ...labelStyle }} />
+              <Radio value="MENTEE" label="Mentee" styles={{ ...labelStyle }} />
             </div>
           </Radio.Group>
           <MultiSelect
@@ -90,6 +94,7 @@ export default function Register() {
             })}
             value={request.tagIds}
             onChange={(v) => setRequest({ ...request, tagIds: v })}
+            styles={{ ...labelStyle }}
           />
         </div>
         <div className="w-full flex flex-col justify-center items-center gap-[1rem] mt-[6rem]">
@@ -131,6 +136,7 @@ export default function Register() {
             onChange={(e) => {
               setRequest({ ...request, name: e.currentTarget.value });
             }}
+            styles={{ ...labelStyle }}
           />
           <Select
             className="max-w-form"
@@ -148,6 +154,7 @@ export default function Register() {
             onChange={(v) => {
               setRequest({ ...request, provinceId: v });
             }}
+            styles={{ ...labelStyle }}
           />
           <Select
             className="max-w-form"
@@ -166,6 +173,7 @@ export default function Register() {
               setRequest({ ...request, cityId: v });
             }}
             disabled={!request.provinceId}
+            styles={{ ...labelStyle }}
           />
           <Textarea
             className="max-w-form"
@@ -179,6 +187,7 @@ export default function Register() {
             onChange={(e) => {
               setRequest({ ...request, description: e.currentTarget.value });
             }}
+            styles={{ ...labelStyle }}
           />
         </div>
         <div className="w-full flex flex-col justify-center items-center gap-[1rem] mt-[6rem]">

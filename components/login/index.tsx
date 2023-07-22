@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { LoginRequest } from "@/lib/constants/requests";
 import { validateEmail } from "@/lib/utils";
+import { labelStyle } from "@/lib/constants/styles";
 
 export default function Login() {
   const [request, setRequest] = useState<LoginRequest>({
@@ -31,6 +32,7 @@ export default function Login() {
             setRequest({ ...request, email: e.currentTarget.value });
           }}
           error={request.email && emailValidity}
+          styles={{ ...labelStyle }}
         />
         <PasswordInput
           className="max-w-form"
@@ -42,6 +44,7 @@ export default function Login() {
           onChange={(e) => {
             setRequest({ ...request, password: e.currentTarget.value });
           }}
+          styles={{ ...labelStyle }}
         />
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-[1rem] mt-[6rem]">
