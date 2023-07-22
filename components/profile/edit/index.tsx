@@ -1,13 +1,25 @@
-import DecorationVector from "../../common/decoration-vector";
-import { IconUserCircle, IconUpload } from "@tabler/icons-react";
+import { putProfile } from "@/lib/api/update-profile";
+import { UpdateUserRequest } from "@/lib/constants/requests";
+import { useUser } from "@/lib/hooks/use-user";
+import { FileInput, MultiSelect, TextInput, Textarea } from "@mantine/core";
+import { IconUpload, IconUserCircle } from "@tabler/icons-react";
 import Image from "next/image";
-import { dummyUser, dummyTags } from "@/lib/dummies";
-import { Textarea, TextInput, FileInput, MultiSelect } from "@mantine/core";
+import { useState } from "react";
+import DecorationVector from "../../common/decoration-vector";
 
 export default function EditProfile() {
   const isAuthenticated = false;
-  const user = dummyUser;
-  const tags = dummyTags;
+  const { user, userTags, isLoading } = useUser();
+  const tags = userTags ?? [];
+
+  const [request, setRequest] = useState<UpdateUserRequest>({
+    name: user?.name || "",
+    description: user?.description || "",
+    subscriptionStatus: user?.subscriptionStatus || "FREE",
+    imageUrl: user?.imageUrl || "",
+    cityId: user?.cityId || "",
+    tagIds: tags.join(","),
+  });
 
   const renderProfilePicture = () => {
     if (isAuthenticated) {
@@ -33,7 +45,10 @@ export default function EditProfile() {
           <TextInput
             radius="lg"
             placeholder="Masukkan nama"
-            value={user.name}
+            value={request.name}
+            onChange={(event) => {
+              setRequest({ ...request, name: event.currentTarget.value });
+            }}
           />
         </div>
         <div className="flex flex-col gap-[0.25rem]">
@@ -62,16 +77,23 @@ export default function EditProfile() {
                 label: tag.name,
               };
             })}
+            value={tags.map((tag) => tag.id)}
+            onChange={(value) => {
+              console.log(value);
+              setRequest({ ...request, tagIds: value.join(",") });
+            }}
             radius="lg"
           />
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Deskripsi</h2>
-          <Textarea value={user.description} radius="lg" />
+          <Textarea value={user?.description} radius="lg" />
         </div>
       </div>
       <button
-        onClick={() => {}}
+        onClick={() => {
+          putProfile(request, localStorage.getItem("token") || "");
+        }}
         className="button-600-filled block w-full mt-[1rem]"
       >
         Ubah profil
