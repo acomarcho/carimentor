@@ -76,7 +76,7 @@ export function useOneOnOne(isMentor = false) {
     };
 
     getData();
-  }, []);
+  }, [isMentor]);
 
   return { histories, setHistories, isLoading, isError };
 }
