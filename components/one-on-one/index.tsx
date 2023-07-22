@@ -1,12 +1,14 @@
 import DecorationVector from "../common/decoration-vector";
 import { dummyMyBookings } from "@/lib/dummies";
-import { Badge } from "@mantine/core";
+import { Badge, Textarea } from "@mantine/core";
 import { IconUserCircle, IconCalendar, IconBrowser } from "@tabler/icons-react";
 import { getBadgeColor, formatDateToIndonesianLocale } from "@/lib/utils";
 import Link from "next/link";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import { useState } from "react";
+import { labelStyle } from "@/lib/constants/styles";
+import ReactStars from "react-stars";
 
 export default function MyBookings() {
   const bookings = dummyMyBookings;
@@ -81,6 +83,20 @@ export default function MyBookings() {
           <p className="paragraph">
             Isi formulir di bawah ini untuk memberikan penilaian!
           </p>
+          <Textarea
+            label="Review untuk mentor"
+            placeholder="Materinya sangat bermanfaat!"
+            withAsterisk
+            styles={{ ...labelStyle }}
+            radius="lg"
+          />
+          <div className="flex flex-col">
+            <p className="paragraph font-semibold text-[0.8rem]">
+              Penilaian <span className="text-red-500">*</span>
+            </p>
+            <ReactStars count={5} size={32} />
+          </div>
+          <button className="button-600-filled">Proses penilaian</button>
         </div>
       </Modal>
     </div>
