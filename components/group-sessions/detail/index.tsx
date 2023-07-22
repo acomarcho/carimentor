@@ -1,5 +1,4 @@
 import DecorationVector from "@/components/common/decoration-vector";
-import { dummyGroupSession, dummyGroupDiscussions } from "@/lib/dummies";
 import { IconUserCircle, IconCalendar, IconUsers } from "@tabler/icons-react";
 import { Textarea } from "@mantine/core";
 import { formatDateToIndonesianLocale } from "@/lib/utils";

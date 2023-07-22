@@ -1,13 +1,15 @@
 import DecorationVector from "../../common/decoration-vector";
 import { IconUserCircle, IconUpload } from "@tabler/icons-react";
 import Image from "next/image";
-import { dummyUser, dummyTags } from "@/lib/dummies";
+import { dummyUser } from "@/lib/dummies";
 import { Textarea, TextInput, FileInput, MultiSelect } from "@mantine/core";
+import { useTags } from "@/lib/hooks/use-tags";
 
 export default function EditProfile() {
   const isAuthenticated = false;
   const user = dummyUser;
-  const tags = dummyTags;
+  const { tags: responseTags, isLoading, isError } = useTags();
+  const tags = responseTags.data || [];
 
   const renderProfilePicture = () => {
     if (isAuthenticated) {

@@ -2,7 +2,6 @@ import DecorationVector from "../common/decoration-vector";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import { useState } from "react";
-import { dummyTags } from "@/lib/dummies";
 import { Radio, Checkbox, MultiSelect, LoadingOverlay } from "@mantine/core";
 import { labelStyle } from "@/lib/constants/styles";
 import { MentorFilterRequest } from "@/lib/constants/requests";
@@ -18,6 +17,7 @@ import {
 } from "@/lib/hooks/use-user";
 import { useAllCities } from "@/lib/hooks/use-city";
 import { MentorSearchResult, GetCityResponse } from "@/lib/constants/responses";
+import { useTags } from "@/lib/hooks/use-tags";
 
 const SingleMentor = ({
   mentor,
@@ -86,7 +86,9 @@ export default function Home() {
 
   const { cities, isLoading: isCityLoading } = useAllCities();
 
-  const tags = dummyTags;
+  const { tags: responseTags, isLoading: isTagsLoading, isError: isTagsError } = useTags();
+
+  const tags = responseTags?.data || [];
   const {
     mentors: searchMentors,
     isLoading,
@@ -104,7 +106,7 @@ export default function Home() {
   } = useClosestMentors();
 
   const isShowLoadingOverlay =
-    isCityLoading || isLoading || isLoading2 || isLoading3;
+    isCityLoading || isLoading || isLoading2 || isLoading3 || isTagsLoading;
 
   return (
     <div className="default-wrapper flex flex-col gap-[1rem] items-center justify-center">
