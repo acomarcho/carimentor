@@ -102,9 +102,7 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
                     />
                     <p className="paragraph">{data.review}</p>
                   </div>
-                  <p className="paragraph text-[0.75rem]">
-                    {data.updatedAt}
-                  </p>
+                  <p className="paragraph text-[0.75rem]">{data.updatedAt}</p>
                 </div>
               </div>
             );
