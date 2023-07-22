@@ -1,7 +1,7 @@
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 
 export const validateEmail = (email: string) => {
   return String(email)
@@ -12,6 +12,7 @@ export const validateEmail = (email: string) => {
 };
 
 export const formatDateToIndonesianLocale = (isoDateString: string) => {
+  if (!isoDateString) return "";
   return format(new Date(isoDateString), "dd MMMM yyyy HH:mm", { locale: id });
 };
 

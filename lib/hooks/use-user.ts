@@ -1,19 +1,19 @@
 import axios from "axios";
+import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
+import { userAtom, userTagsAtom } from "../atoms/user";
 import { apiURL } from "../constants";
+import { MentorFilterRequest } from "../constants/requests";
 import {
   GetOneOnOneResponse,
   GetUserResponse,
-  OneOnOne,
-  Tag,
-  User,
   GetUserTagResponse,
   GetUsersResponse,
   MentorSearchResult,
+  OneOnOne,
+  Tag,
+  User,
 } from "../constants/responses";
-import { useState, useEffect } from "react";
-import { useAtom } from "jotai";
-import { userAtom, userTagsAtom } from "../atoms/user";
-import { MentorFilterRequest } from "../constants/requests";
 
 const fetchUser = () => {
   const token = localStorage.getItem("token");
@@ -55,7 +55,6 @@ const fetchMentor = async (
 
   const _mentors: MentorSearchResult[] = [];
   for (const mentor of userResponse.data.data!) {
-    console.log("Mencari tag dari mentor", mentor);
     const tagResponse = await fetchTag(mentor.id);
     const tags = tagResponse.data.data!.map((data) => {
       return data;

@@ -1,17 +1,17 @@
 import DecorationVector from "@/components/common/decoration-vector";
-import { IconUserCircle, IconCalendar, IconUsers } from "@tabler/icons-react";
-import { Textarea } from "@mantine/core";
-import { formatDateToIndonesianLocale } from "@/lib/utils";
-import { useState, useEffect, useRef } from "react";
-import { useViewportSize } from "@mantine/hooks";
-import Link from "next/link";
-import "react-responsive-modal/styles.css";
-import { Modal } from "react-responsive-modal";
-import Image from "next/image";
-import { useGroupSession } from "@/lib/hooks/use-group-session";
-import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
-import axios from "axios";
 import { apiURL } from "@/lib/constants";
+import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
+import { useGroupSession } from "@/lib/hooks/use-group-session";
+import { formatDateToIndonesianLocale } from "@/lib/utils";
+import { Textarea } from "@mantine/core";
+import { useViewportSize } from "@mantine/hooks";
+import { IconCalendar, IconUserCircle, IconUsers } from "@tabler/icons-react";
+import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { Modal } from "react-responsive-modal";
+import "react-responsive-modal/styles.css";
 
 const fetchUser = (id: string) => {
   return axios.get<GetUserResponse>(`${apiURL}/user/${id}`);
@@ -31,11 +31,12 @@ export default function GroupSessionDetail({
   const [discussionWithSender, setDiscussionWithSender] = useState<
     (Discussion & {
       sender: User;
-    })[]>([]);
+    })[]
+  >([]);
 
   const [mentor, setMentor] = useState<User | null>(null);
   useEffect(() => {
-    if (groupSession) {
+    if (groupSession && groupSession.data) {
       fetchUser(groupSession.data.mentorId).then((res) => {
         setMentor(res.data.data);
       });
@@ -49,13 +50,13 @@ export default function GroupSessionDetail({
         return {
           ...d,
           sender: sender.data.data,
-        }
+        };
       });
       Promise.all(fetchSender).then((res) => {
         setDiscussionWithSender(res);
       });
     }
-  }, [discussions])
+  }, [discussions]);
 
   const footerRef = useRef<HTMLDivElement>(null);
   const [footerHeight, setFooterHeight] = useState<number>(0);
