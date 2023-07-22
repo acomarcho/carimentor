@@ -6,6 +6,11 @@ import { dummyTags } from "@/lib/dummies";
 import { Radio, Checkbox, MultiSelect } from "@mantine/core";
 import { labelStyle } from "@/lib/constants/styles";
 import { MentorFilterRequest } from "@/lib/constants/requests";
+import { dummyMentors } from "@/lib/dummies";
+import { Carousel } from "@mantine/carousel";
+import Link from "next/link";
+import Image from "next/image";
+import { IconUserCircle } from "@tabler/icons-react";
 
 export default function Home() {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
@@ -16,6 +21,13 @@ export default function Home() {
   });
 
   const tags = dummyTags;
+  const searchMentors = [...dummyMentors];
+  const premiumMentors = dummyMentors.filter(
+    (mentor) => mentor.subscriptionStatus === "PREMIUM"
+  );
+  const closestMentors = dummyMentors.filter(
+    (mentor) => mentor.city === "KOTA JAKARTA BARAT"
+  );
 
   return (
     <div className="default-wrapper flex flex-col gap-[1rem] items-center justify-center">
@@ -38,7 +50,7 @@ export default function Home() {
         <div className="max-w-[1160px] mx-auto p-[1.25rem]">
           <h1 className="header-2rem">Filter pencarian</h1>
           <div className="flex flex-col gap-[0.5rem] mt-[1rem]">
-            <h2 className="filter-subheader">Lokasi</h2>
+            <h2 className="subheader">Lokasi</h2>
             <Radio.Group
               className="flex flex-col items-start gap-[0.5rem]"
               value={filters.location}
@@ -62,7 +74,7 @@ export default function Home() {
             </Radio.Group>
           </div>
           <div className="flex flex-col gap-[0.5rem] mt-[1rem]">
-            <h2 className="filter-subheader">Status mentor</h2>
+            <h2 className="subheader">Status mentor</h2>
             <Checkbox
               label="Premium saja"
               styles={{ ...labelStyle }}
@@ -76,7 +88,7 @@ export default function Home() {
             />
           </div>
           <div className="flex flex-col gap-[0.5rem] mt-[1rem]">
-            <h2 className="filter-subheader">Ketertarikan</h2>
+            <h2 className="subheader">Ketertarikan</h2>
             <MultiSelect
               radius="xl"
               data={tags.map((tag) => {
@@ -95,6 +107,62 @@ export default function Home() {
           </div>
         </div>
       </Drawer>
+      <div className="max-w-[1160px] mx-auto p-[1.25rem] w-[100%] mt-[2rem]">
+        <h2 className="subheader">Mentor hasil pencarianmu</h2>
+        <div className="mt-[1rem] w-[100%]">
+          <Carousel
+            slideGap="md"
+            dragFree
+            slideSize={300}
+            align="start"
+            withControls={false}
+          >
+            {searchMentors.map((mentor) => {
+              return (
+                <Carousel.Slide key={mentor.id}>
+                  <Link
+                    href={`/mentor/${mentor.id}}`}
+                    className="bg-white p-[1rem] flex flex-col justify-between items-start gap-[0.25rem] drop-shadow-lg rounded-[2rem] h-[18rem] my-[0.5rem]"
+                  >
+                    <div className="flex flex-col gap-[0.25rem] items-start">
+                      <div className="flex flex-row gap-[1rem] items-center">
+                        {mentor.imageUrl ? (
+                          <div className="w-[4rem] h-[4rem] relative rounded-full overflow-hidden flex-shrink-0">
+                            <Image
+                              alt={mentor.name}
+                              src={mentor.imageUrl}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <IconUserCircle className="w-[4rem] h-[4rem]" />
+                        )}
+                        <div className="flex flex-col gap-[0.25rem]">
+                          <h1 className="subheader">{mentor.name}</h1>
+                          <p className="paragraph">{mentor.city}</p>
+                        </div>
+                      </div>
+                      <p className="paragraph text-[0.8rem] mt-[1rem]">
+                        {mentor.tags.slice(0, 2).join(", ")}
+                        {mentor.tags.length > 3 &&
+                          ` dan ${mentor.tags.length - 3} ketertarikan lainnya`}
+                      </p>
+                    </div>
+                    <div>
+                      {mentor.subscriptionStatus === "FREE" ? (
+                        <p className="paragraph">Mentor reguler</p>
+                      ) : (
+                        <p className="paragraph font-bold">Mentor premium</p>
+                      )}
+                    </div>
+                  </Link>
+                </Carousel.Slide>
+              );
+            })}
+          </Carousel>
+        </div>
+      </div>
     </div>
   );
 }

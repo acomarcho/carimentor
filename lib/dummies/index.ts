@@ -71,7 +71,7 @@ export const dummyMentors = [
     name: "Maria Khelli",
     city: "KOTA BANDUNG",
     tags: ["Artificial Intelligence", "Software Engineering"],
-    imageUrl: "/public/next.svg",
+    imageUrl: "/next.svg",
     subscriptionStatus: "PREMIUM",
   },
   {
@@ -85,7 +85,7 @@ export const dummyMentors = [
       "Sales dan Marketing",
       "UI/UX",
     ],
-    imageUrl: "/public/vercel.svg",
+    imageUrl: "/vercel.svg",
     subscriptionStatus: "PREMIUM",
   },
   {
