@@ -192,3 +192,27 @@ export const dummyMyBookings = [
     meetingUrl: "https://www.google.com",
   },
 ];
+
+export const dummyMenteeBookings = [
+  {
+    id: "1",
+    approvalStatus: "PENDING",
+    menteeName: "Marchotridyo",
+    date: new Date("2023-01-02").toISOString(),
+    meetingUrl: "",
+  },
+  {
+    id: "2",
+    approvalStatus: "APPROVED",
+    menteeName: "Marchotridyo",
+    date: new Date("2023-01-02").toISOString(),
+    meetingUrl: "https://www.google.com",
+  },
+  {
+    id: "3",
+    approvalStatus: "REJECTED",
+    menteeName: "Marchotridyo",
+    date: new Date("2023-01-02").toISOString(),
+    meetingUrl: "",
+  },
+];

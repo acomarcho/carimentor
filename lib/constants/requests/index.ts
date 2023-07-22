@@ -24,3 +24,13 @@ export interface ReviewOneOnOneRequest {
   message: string;
   rating: number;
 }
+
+export interface BookMentorRequest {
+  date: Date | null;
+  message: string;
+}
+
+export interface ProcessOneOnOneRequest {
+  approvalStatus: string | undefined;
+  meetingUrl: string;
+}
