@@ -3,7 +3,7 @@ import Wrapper from "@/components/common/wrapper";
 import MenteeBookings from "@/components/mentor/one-on-one";
 import Head from "next/head";
 
-export default function MyBookingsPage() {
+export default function MenteeBookingsPage() {
   return (
     <Wrapper>
       <Head>
