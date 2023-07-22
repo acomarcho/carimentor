@@ -11,7 +11,6 @@ import "dayjs/locale/id";
 import { Textarea, TextInput, NumberInput } from "@mantine/core";
 import { labelStyle } from "@/lib/constants/styles";
 import { CreateNewGroupSessionRequest } from "@/lib/constants/requests";
-import { requestToBodyStream } from "next/dist/server/body-streams";
 
 export default function MentorGroupSessions() {
   const sessions = dummyGroupSessions;
