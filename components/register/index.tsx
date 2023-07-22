@@ -13,6 +13,9 @@ import { RegisterRequest } from "@/lib/constants/requests";
 import { useState } from "react";
 import { validateEmail } from "@/lib/utils";
 import { labelStyle } from "@/lib/constants/styles";
+import { useProvince } from "@/lib/hooks/use-province";
+import { useCity } from "@/lib/hooks/use-city";
+import { useTags } from "@/lib/hooks/use-tags";
 
 export default function Register() {
   const [request, setRequest] = useState<RegisterRequest>({
@@ -27,9 +30,13 @@ export default function Register() {
   });
   const [currentPage, setCurrentPage] = useState<number>(0);
 
-  const tags = dummyTags;
-  const provinces = dummyProvinces;
-  const cities = dummyCities;
+  const { provinces, isLoading, isError } = useProvince();
+  const {
+    cities,
+    isLoading: isLoading2,
+    isError: isError2,
+  } = useCity(request.provinceId || "11");
+  const { tags, isLoading: isLoading3, isError: isError3 } = useTags();
 
   const emailValidity = validateEmail(request.email)
     ? ""
@@ -86,12 +93,16 @@ export default function Register() {
             placeholder="Pilih semua yang Anda sukai!"
             withAsterisk
             clearable
-            data={tags.map((tag) => {
-              return {
-                value: tag.id,
-                label: tag.name,
-              };
-            })}
+            data={
+              tags
+                ? tags.data.map((tag) => {
+                    return {
+                      value: tag.id,
+                      label: tag.name,
+                    };
+                  })
+                : []
+            }
             value={request.tagIds}
             onChange={(v) => setRequest({ ...request, tagIds: v })}
             styles={{ ...labelStyle }}
