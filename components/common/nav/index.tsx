@@ -23,7 +23,13 @@ const renderAuthButtons = (isAuthenticated: boolean) => {
   }
 };
 
-const MobileNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
+const MobileNavbar = ({
+  isAuthenticated,
+  isMentee,
+}: {
+  isAuthenticated: boolean;
+  isMentee: boolean;
+}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   const renderDrawer = () => {
@@ -44,9 +50,15 @@ const MobileNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
               <Link className="drawer-link" href="/profile">
                 Profilku
               </Link>
-              <Link className="drawer-link" href="/one-on-one">
-                Riwayat One-on-One
-              </Link>
+              {isMentee ? (
+                <Link className="drawer-link" href="/one-on-one">
+                  Riwayat One-on-One
+                </Link>
+              ) : (
+                <Link className="drawer-link" href="/mentor/one-on-one">
+                  Permintaan One-on-One
+                </Link>
+              )}
               <div className="h-[1px] bg-purple-950" />
             </>
           )}
@@ -77,7 +89,13 @@ const MobileNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   );
 };
 
-const DesktopNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
+const DesktopNavbar = ({
+  isAuthenticated,
+  isMentee,
+}: {
+  isAuthenticated: boolean;
+  isMentee: boolean;
+}) => {
   return (
     <div className="hidden lg:block">
       <div className="max-w-[1160px] mx-auto flex justify-between items-center p-[1.25rem]">
@@ -109,11 +127,19 @@ const DesktopNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
                     Profilku
                   </Link>
                 </Menu.Item>
-                <Menu.Item>
-                  <Link href="/one-on-one" className="paragraph block">
-                    Riwayat One-on-One
-                  </Link>
-                </Menu.Item>
+                {isMentee ? (
+                  <Menu.Item>
+                    <Link href="/one-on-one" className="paragraph block">
+                      Riwayat One-on-One
+                    </Link>
+                  </Menu.Item>
+                ) : (
+                  <Menu.Item>
+                    <Link href="/mentor/one-on-one" className="paragraph block">
+                      Permintaan One-on-One
+                    </Link>
+                  </Menu.Item>
+                )}
               </Menu.Dropdown>
             </Menu>
           )}
@@ -125,11 +151,12 @@ const DesktopNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
 
 export default function Navbar() {
   const isAuthenticated = true;
+  const isMentee = false;
 
   return (
     <nav className="fixed top-0 left-0 w-full z-[100] border-2 border-purple-50 bg-white">
-      <MobileNavbar isAuthenticated={isAuthenticated} />
-      <DesktopNavbar isAuthenticated={isAuthenticated} />
+      <MobileNavbar isAuthenticated={isAuthenticated} isMentee={isMentee} />
+      <DesktopNavbar isAuthenticated={isAuthenticated} isMentee={isMentee} />
     </nav>
   );
 }
