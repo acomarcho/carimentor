@@ -29,3 +29,9 @@ export type User = {
 
 export type GetUserData = User;
 export type GetUserResponse = BaseResponse<GetUserData>;
+export type GetUsersResponse = BaseResponse<GetUserData[]>;
+
+import { Tag } from "./tag";
+export type MentorSearchResult = User & {
+  tags: Tag[];
+};

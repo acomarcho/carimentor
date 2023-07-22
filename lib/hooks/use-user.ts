@@ -1,6 +1,11 @@
 import axios from "axios";
 import { apiURL } from "../constants";
-import { GetUserTagResponse, GetUserResponse } from "../constants/responses";
+import {
+  GetUserTagResponse,
+  GetUserResponse,
+  GetUsersResponse,
+  MentorSearchResult,
+} from "../constants/responses";
 import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { userAtom, userTagsAtom } from "../atoms/user";
@@ -16,6 +21,46 @@ const fetchUser = () => {
 
 const fetchTag = (userId: string) => {
   return axios.get<GetUserTagResponse>(`${apiURL}/tag?userId=${userId}`);
+};
+
+const fetchMentor = async (
+  onMyCity: boolean,
+  onMyProvince: boolean,
+  premiumOnly: boolean,
+  tags: string[]
+) => {
+  const token = localStorage.getItem("token");
+
+  let query = "?role=MENTOR";
+  query += `&onMyProvince=${onMyProvince}`;
+  query += `&onMyCity=${onMyCity}`;
+  query += `&premiumOnly=${premiumOnly}`;
+  if (tags.length > 0) {
+    query += `&tags=${tags.join(",")}`;
+  }
+
+  const userResponse = await axios.get<GetUsersResponse>(
+    `${apiURL}/user${query}`,
+    {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    }
+  );
+
+  const _mentors: MentorSearchResult[] = [];
+  for (const mentor of userResponse.data.data!) {
+    const tagResponse = await fetchTag(mentor.id);
+    const tags = tagResponse.data.data!.map((data) => {
+      return data;
+    });
+    _mentors.push({
+      ...mentor,
+      tags,
+    });
+  }
+
+  return _mentors;
 };
 
 export function useUser() {
