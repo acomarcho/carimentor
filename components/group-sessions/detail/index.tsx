@@ -2,6 +2,7 @@ import DecorationVector from "@/components/common/decoration-vector";
 import { apiURL } from "@/lib/constants";
 import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
 import { useGroupSession } from "@/lib/hooks/use-group-session";
+import { useUser } from "@/lib/hooks/use-user";
 import { formatDateToIndonesianLocale } from "@/lib/utils";
 import { Textarea } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
@@ -22,6 +23,7 @@ export default function GroupSessionDetail({
 }: {
   sessionId: string;
 }) {
+  const { user, isLoading } = useUser();
   const { groupSession, discussions, bookGroupSessions } =
     useGroupSession(sessionId);
   const session = groupSession?.data;
@@ -63,7 +65,7 @@ export default function GroupSessionDetail({
   const { height, width } = useViewportSize();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const isAuthenticated = true;
+  const isAuthenticated = !!user;
 
   useEffect(() => {
     setFooterHeight(footerRef.current?.getBoundingClientRect().height || 0);
@@ -77,27 +79,31 @@ export default function GroupSessionDetail({
       >
         <div className="max-w-[1160px] mx-auto p-[1.25rem]">
           {isAuthenticated ? (
-            <div className="flex flex-col gap-[0.5rem]">
-              <p className="paragraph text-center">
-                Segera bergabung!{" "}
-                {session &&
-                  session.maxParticipant -
-                    bookGroupSessionsData.length +
-                    " slot tersedia"}
-              </p>
-              <button
-                className="button-600-filled block"
-                onClick={() => {
-                  setIsModalOpen(true);
-                }}
-              >
-                Gabung sesi
-              </button>
+            <div>
+              {user?.role === "MENTEE" ? (
+              <div className="flex flex-col gap-[0.5rem]">
+                <p className="paragraph text-center">
+                  Segera bergabung!{" "}
+                  {session &&
+                    session.maxParticipant -
+                      bookGroupSessionsData.length +
+                      " slot tersedia"}
+                </p>
+                <button
+                  className="button-600-filled block"
+                  onClick={() => {
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Gabung sesi
+                </button>
+              </div>
+              ) : null}
             </div>
           ) : (
             <div className="flex flex-col gap-[0.5rem]">
               <p className="paragraph text-center">
-                Masuk ke dalam akunmu untuk mengikuti sesi gurp!
+                Masuk ke dalam akunmu untuk mengikuti sesi grup!
               </p>
               <Link href="/login" className="button-600-filled block">
                 Masuk
