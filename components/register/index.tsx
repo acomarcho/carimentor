@@ -8,7 +8,6 @@ import {
   Textarea,
 } from "@mantine/core";
 import Link from "next/link";
-import { dummyTags, dummyProvinces, dummyCities } from "@/lib/dummies";
 import { RegisterRequest } from "@/lib/constants/requests";
 import { useState } from "react";
 import { validateEmail } from "@/lib/utils";
@@ -93,6 +92,7 @@ export default function Register() {
             placeholder="Pilih semua yang Anda sukai!"
             withAsterisk
             clearable
+            searchable
             data={
               tags
                 ? tags.data.map((tag) => {
@@ -155,15 +155,20 @@ export default function Register() {
             withAsterisk
             placeholder="Pilih provinsi"
             radius="xl"
-            data={provinces.map((province) => {
-              return {
-                value: province.id,
-                label: province.name,
-              };
-            })}
+            searchable
+            data={
+              provinces
+                ? provinces.data.map((province) => {
+                    return {
+                      value: province.id,
+                      label: province.name,
+                    };
+                  })
+                : []
+            }
             value={request.provinceId}
             onChange={(v) => {
-              setRequest({ ...request, provinceId: v });
+              setRequest({ ...request, provinceId: v, cityId: null });
             }}
             styles={{ ...labelStyle }}
           />
@@ -173,12 +178,17 @@ export default function Register() {
             withAsterisk
             placeholder="Pilih kota"
             radius="xl"
-            data={cities.map((city) => {
-              return {
-                value: city.id,
-                label: city.name,
-              };
-            })}
+            searchable
+            data={
+              cities
+                ? cities.data.map((city) => {
+                    return {
+                      value: city.id,
+                      label: city.name,
+                    };
+                  })
+                : []
+            }
             value={request.cityId}
             onChange={(v) => {
               setRequest({ ...request, cityId: v });
