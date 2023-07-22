@@ -21,7 +21,7 @@ export const createBookGroupSession = async (
   const tokenStr = token ? token : localStorage.getItem("token");
 
   const res = await axios.post<CreateBookGroupSessionResponse>(
-    `${apiURL}/group-session`,
+    `${apiURL}/book-group-session`,
     data,
     {
       headers: {
@@ -35,14 +35,14 @@ export const createBookGroupSession = async (
 export const getBookGroupSessions = async (query: GetBookGroupSessionQuery) => {
   const urlQuery = new URLSearchParams(query).toString();
   const res = await axios.get<GetGroupSessionResponse>(
-    `${apiURL}/group-session?${urlQuery}`
+    `${apiURL}/book-group-session?${urlQuery}`
   );
   return res.data;
 };
 
 export const getBookGroupSessionDetail = async (id: string) => {
   const res = await axios.get<GetDetailGroupSessionResponse>(
-    `${apiURL}/group-session/${id}`
+    `${apiURL}/book-group-session/${id}`
   );
   return res.data;
 };
