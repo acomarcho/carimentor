@@ -18,6 +18,7 @@ import { useCity } from "@/lib/hooks/use-city";
 import { useTags } from "@/lib/hooks/use-tags";
 import { postRegister } from "@/lib/api/register";
 import { showSuccess, showError } from "@/lib/utils";
+import { useRouter } from "next/router";
 
 export default function Register() {
   const [request, setRequest] = useState<RegisterRequest>({
@@ -41,8 +42,16 @@ export default function Register() {
   } = useCity(request.provinceId || "11");
   const { tags, isLoading: isLoading3, isError: isError3 } = useTags();
 
+  const router = useRouter();
+
   const isShowLoadingOverlay =
-    isLoading || isLoading2 || isError || isError2 || isLoading3 || isError3;
+    isLoading ||
+    isLoading2 ||
+    isError ||
+    isError2 ||
+    isLoading3 ||
+    isError3 ||
+    isRegisterLoading;
 
   const emailValidity = validateEmail(request.email)
     ? ""
@@ -237,6 +246,7 @@ export default function Register() {
                   showSuccess(
                     "Akun berhasil dibuat! Silakan masuk ke akun Anda."
                   );
+                  router.push("/login");
                 } catch (error) {
                   showError("Akun gagal dibuat! Email Anda sudah digunakan.");
                 } finally {
