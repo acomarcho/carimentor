@@ -67,7 +67,7 @@ export default function EditProfile() {
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Deskripsi</h2>
-          <Textarea value={user.description} radius="lg" />
+          <Textarea value={user.description} radius="lg" autosize />
         </div>
       </div>
       <button

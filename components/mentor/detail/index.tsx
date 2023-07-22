@@ -106,7 +106,11 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
             <div className="flex items-center gap-[1rem]">
               <IconVocabulary />
               <p className="paragraph max-w-[100px] md:max-w-[400px]">
-                {mentorTags && mentorTags.slice(0, 2).join(", ")}
+                {mentorTags &&
+                  mentorTags
+                    .map((tag) => tag.name)
+                    .slice(0, 2)
+                    .join(", ")}
                 {mentorTags &&
                   mentorTags.length > 2 &&
                   ` dan ${mentorTags.length - 2} ketertarikan lainnya`}
@@ -149,7 +153,7 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
       </div>
       <div className="rounded-xl p-[1rem] bg-white drop-shadow-lg mt-[2rem]">
         <h2 className="subheader">Tentang mentor</h2>
-        <Textarea disabled value={mentor?.description} />
+        <Textarea disabled value={mentor?.description} autosize />
         <h2 className="subheader mt-[1rem]">Ulasan</h2>
         {reviews.length > 0 ? (
           reviews.map((data) => {
