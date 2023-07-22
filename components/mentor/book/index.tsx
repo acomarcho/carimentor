@@ -112,6 +112,7 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
           onChange={(e) =>
             setRequest({ ...request, message: e.currentTarget.value })
           }
+          autosize
         />
         <button
           className="mt-[1rem] button-600-filled w-full"
