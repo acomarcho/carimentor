@@ -27,7 +27,9 @@ export function useAllGroupSessions() {
     try {
       setIsLoading(true);
       const { data } = await axios.get<GetGroupSessionResponse>(
-        `${apiURL}/group-session`
+        `${apiURL}/group-session?limitStartDateTime=${new Date().toISOString()}&limitEndDateTime=${new Date(
+          Date.now() + 1000 * 60 * 60 * 24 * 365 * 1000
+        ).toISOString()}`
       );
 
       const _discussions = Promise.all(
