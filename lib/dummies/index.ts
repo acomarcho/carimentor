@@ -217,7 +217,7 @@ export const dummyMenteeBookings = [
   },
 ];
 
-const dummyGroupSessions = [
+export const dummyGroupSessions = [
   {
     id: "1",
     name: "Belajar HTML dan CSS untuk pemula",
