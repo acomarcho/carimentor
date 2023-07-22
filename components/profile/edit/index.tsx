@@ -1,16 +1,26 @@
 import { putProfile } from "@/lib/api/update-profile";
 import { UpdateUserRequest } from "@/lib/constants/requests";
 import { useUser } from "@/lib/hooks/use-user";
-import { FileInput, MultiSelect, TextInput, Textarea } from "@mantine/core";
+import {
+  FileInput,
+  MultiSelect,
+  TextInput,
+  Textarea,
+  LoadingOverlay,
+} from "@mantine/core";
 import { IconUpload, IconUserCircle } from "@tabler/icons-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import DecorationVector from "../../common/decoration-vector";
+import { showSuccess, showError } from "@/lib/utils";
+import { useTags } from "@/lib/hooks/use-tags";
+import { useRouter } from "next/router";
 
 export default function EditProfile() {
-  const isAuthenticated = false;
-  const { user, userTags, isLoading } = useUser();
-  const tags = userTags ?? [];
+  const { user, userTags, isLoading, isError } = useUser();
+  const { tags: allTags, isLoading: isTagLoading } = useTags();
+
+  const tags = useMemo(() => userTags ?? [], [userTags]);
 
   const [request, setRequest] = useState<UpdateUserRequest>({
     name: user?.name || "",
@@ -18,24 +28,43 @@ export default function EditProfile() {
     subscriptionStatus: user?.subscriptionStatus || "FREE",
     imageUrl: user?.imageUrl || "",
     cityId: user?.cityId || "",
-    tagIds: tags.join(","),
+    tags: tags.map((tag) => tag.id),
   });
 
+  const router = useRouter();
+
+  useEffect(() => {
+    setRequest({
+      name: user?.name || "",
+      description: user?.description || "",
+      subscriptionStatus: user?.subscriptionStatus || "FREE",
+      imageUrl: user?.imageUrl || "",
+      cityId: user?.cityId || "",
+      tags: tags.map((tag) => tag.id),
+    });
+  }, [user, tags]);
+
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
+
+  const isShowLoadingOverlay =
+    isLoading || isUpdating || isTagLoading || isError;
+
   const renderProfilePicture = () => {
-    if (isAuthenticated) {
+    if (!user || !user.imageUrl) {
+      return <IconUserCircle size={128} />;
+    } else {
       return (
         <div className="w-[8rem] h-[8rem] relative rounded-full overflow-hidden">
           <Image alt="" src="/next.svg" fill className="object-cover" />
         </div>
       );
-    } else {
-      return <IconUserCircle size={128} />;
     }
   };
 
   return (
     <div className="default-wrapper">
       <DecorationVector />
+      <LoadingOverlay visible={isShowLoadingOverlay} overlayBlur={2} />
       <h1 className="header-2rem underline mb-[1rem]">Ubah Profilmu</h1>
       <div className="border-2 border-purple-600 bg-white rounded-xl p-[1rem] flex flex-col gap-[1rem]">
         <div className="flex flex-col gap-[0.25rem]">
@@ -62,7 +91,7 @@ export default function EditProfile() {
             accept="image/png,image/jpeg"
             icon={<IconUpload size={16} />}
           />
-          <TextInput disabled value="https://www.google.com" radius="lg" />
+          <TextInput disabled value={request.imageUrl} radius="lg" />
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">
@@ -71,29 +100,55 @@ export default function EditProfile() {
           <MultiSelect
             clearable
             placeholder="Pilih yang Anda sukai!"
-            data={tags.map((tag) => {
-              return {
-                value: tag.id,
-                label: tag.name,
-              };
-            })}
-            value={tags.map((tag) => tag.id)}
+            data={
+              allTags?.data?.map((tag) => {
+                return {
+                  value: tag.id,
+                  label: tag.name,
+                };
+              }) || []
+            }
+            value={request.tags}
             onChange={(value) => {
-              console.log(value);
-              setRequest({ ...request, tagIds: value.join(",") });
+              setRequest({ ...request, tags: value });
             }}
             radius="lg"
           />
         </div>
         <div className="flex flex-col gap-[0.25rem]">
-          <h2 className="header-600">Deskripsi</h2>
-          <Textarea value={user?.description} radius="lg" />
+          <h2 className="header-600">
+            Deskripsi <span className="text-red-500">*</span>
+          </h2>
+          <Textarea
+            value={request.description}
+            onChange={(e) =>
+              setRequest({ ...request, description: e.currentTarget.value })
+            }
+            radius="lg"
+            autosize
+          />
         </div>
       </div>
       <button
         onClick={() => {
-          putProfile(request, localStorage.getItem("token") || "");
+          const update = async () => {
+            try {
+              setIsUpdating(true);
+              await putProfile(request, localStorage.getItem("token") || "");
+              showSuccess("Berhasil mengubah profil!");
+              router.push("/profile");
+            } catch (error) {
+              showError("Gagal mengubah profil!");
+            } finally {
+              setIsUpdating(false);
+            }
+          };
+
+          update();
         }}
+        disabled={
+          !request.name || request.tags.length === 0 || !request.description
+        }
         className="button-600-filled block w-full mt-[1rem]"
       >
         Ubah profil
