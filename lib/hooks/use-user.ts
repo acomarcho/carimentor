@@ -1,10 +1,16 @@
 import axios from "axios";
-import { apiURL } from "../constants";
-import { GetOneOnOneDataResponse, GetUserResponse, OneOnOne, Tag, User } from "../constants/responses";
-import { GetUserTagResponse } from "../constants/responses";
-import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
 import { userAtom, userTagsAtom } from "../atoms/user";
+import { apiURL } from "../constants";
+import {
+  GetOneOnOneResponse,
+  GetUserResponse,
+  GetUserTagResponse,
+  OneOnOne,
+  Tag,
+  User,
+} from "../constants/responses";
 
 const fetchUser = () => {
   const token = localStorage.getItem("token");
@@ -94,7 +100,7 @@ export function useMentor(id: string) {
           })
         );
 
-        const oneOnOnesResponse = await axios.get<GetOneOnOneDataResponse>(
+        const oneOnOnesResponse = await axios.get<GetOneOnOneResponse>(
           `${apiURL}/one-on-one?mentorId=${id}`,
           {
             headers: {

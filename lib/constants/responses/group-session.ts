@@ -13,12 +13,11 @@ export interface GroupSession {
 }
 
 export type GetGroupSessionData = GroupSession[];
-export type GetGroupSessionDataResponse = BaseResponse<GetGroupSessionData>;
+export type GetGroupSessionResponse = BaseResponse<GetGroupSessionData>;
 
 export type CreateGroupSessionData = GroupSession;
-export type CreateGroupSessionDataResponse =
-  BaseResponse<CreateGroupSessionData>;
+export type CreateGroupSessionResponse = BaseResponse<CreateGroupSessionData>;
 
 export type GetDetailGroupSessionData = GroupSession;
-export type GetDetailGroupSessionDataResponse =
+export type GetDetailGroupSessionResponse =
   BaseResponse<GetDetailGroupSessionData>;

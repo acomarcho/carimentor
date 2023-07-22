@@ -6,4 +6,4 @@ export interface Province {
 }
 
 export type GetProvinceData = Province[];
-export type GetProvinceDataResponse = BaseResponse<GetProvinceData>;
+export type GetProvinceResponse = BaseResponse<GetProvinceData>;
