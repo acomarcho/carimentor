@@ -5,9 +5,15 @@ import { useState } from "react";
 import { dummyTags } from "@/lib/dummies";
 import { Radio, Checkbox, MultiSelect } from "@mantine/core";
 import { labelStyle } from "@/lib/constants/styles";
+import { MentorFilterRequest } from "@/lib/constants/requests";
 
 export default function Home() {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+  const [filters, setFilters] = useState<MentorFilterRequest>({
+    location: "NONE",
+    premiumOnly: false,
+    tags: [],
+  });
 
   const tags = dummyTags;
 
@@ -33,7 +39,11 @@ export default function Home() {
           <h1 className="header-2rem">Filter pencarian</h1>
           <div className="flex flex-col gap-[0.5rem] mt-[1rem]">
             <h2 className="filter-subheader">Lokasi</h2>
-            <Radio.Group className="flex flex-col items-start gap-[0.5rem]">
+            <Radio.Group
+              className="flex flex-col items-start gap-[0.5rem]"
+              value={filters.location}
+              onChange={(v) => setFilters({ ...filters, location: v })}
+            >
               <Radio
                 value="NONE"
                 label="Semua tempat"
@@ -53,7 +63,17 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-[0.5rem] mt-[1rem]">
             <h2 className="filter-subheader">Status mentor</h2>
-            <Checkbox label="Premium saja" styles={{ ...labelStyle }} />
+            <Checkbox
+              label="Premium saja"
+              styles={{ ...labelStyle }}
+              checked={filters.premiumOnly}
+              onChange={(e) => {
+                setFilters({
+                  ...filters,
+                  premiumOnly: e.currentTarget.checked,
+                });
+              }}
+            />
           </div>
           <div className="flex flex-col gap-[0.5rem] mt-[1rem]">
             <h2 className="filter-subheader">Ketertarikan</h2>
@@ -67,6 +87,10 @@ export default function Home() {
               })}
               placeholder="Pilih semua yang Anda sukai!"
               clearable
+              value={filters.tags}
+              onChange={(v) => {
+                setFilters({ ...filters, tags: v });
+              }}
             />
           </div>
         </div>
