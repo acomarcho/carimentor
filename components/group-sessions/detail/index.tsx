@@ -130,7 +130,7 @@ export default function GroupSessionDetail({
         <div className="flex gap-[0.5rem] items-center mt-[1rem]">
           <IconCalendar />
           <p className="paragraph text-sm">
-            {formatDateToIndonesianLocale(session?.date || "")}
+            {formatDateToIndonesianLocale(session?.date || new Date().toISOString())}
           </p>
         </div>
         <div className="flex gap-[0.5rem] items-center mt-[1rem]">
