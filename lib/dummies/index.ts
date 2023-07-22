@@ -216,3 +216,36 @@ export const dummyMenteeBookings = [
     meetingUrl: "",
   },
 ];
+
+const dummyGroupSessions = [
+  {
+    id: "1",
+    name: "Belajar HTML dan CSS untuk pemula",
+    date: new Date("2023-01-02").toISOString(),
+    meetingUrl: "",
+    mentorId: "1",
+    mentorName: "Marchotridyo",
+    maxParticipant: 10,
+    bookedCount: 3,
+  },
+  {
+    id: "2",
+    name: "Belajar JavaScript untuk pemula",
+    date: new Date("2023-01-02").toISOString(),
+    meetingUrl: "",
+    mentorId: "2",
+    mentorName: "Malik Akbar",
+    maxParticipant: 10,
+    bookedCount: 2,
+  },
+  {
+    id: "3",
+    name: "Belajar React.JS untuk pemula",
+    date: new Date("2023-01-02").toISOString(),
+    meetingUrl: "",
+    mentorId: "3",
+    mentorName: "Maria Khelli",
+    maxParticipant: 10,
+    bookedCount: 9,
+  },
+];
