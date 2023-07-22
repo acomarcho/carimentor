@@ -5,7 +5,12 @@ import { CreateNewGroupSessionRequest } from "@/lib/constants/requests";
 import { labelStyle } from "@/lib/constants/styles";
 import { useAllGroupSessions } from "@/lib/hooks/use-group-session";
 import { formatDateToIndonesianLocale } from "@/lib/utils";
-import { NumberInput, TextInput, Textarea } from "@mantine/core";
+import {
+  NumberInput,
+  TextInput,
+  Textarea,
+  LoadingOverlay,
+} from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { IconBrowser, IconCalendar, IconUsers } from "@tabler/icons-react";
 import "dayjs/locale/id";
@@ -13,9 +18,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
+import { useUser } from "@/lib/hooks/use-user";
 
 export default function MentorGroupSessions() {
-  const { groupSessions: sessions, isLoading, isError } = useAllGroupSessions();
+  const { user, isLoading: isUserLoading } = useUser();
+  const { groupSessions, isLoading, isError } = useAllGroupSessions();
+
+  const loadingFlag = isUserLoading || isLoading || isError;
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [request, setRequest] = useState<CreateNewGroupSessionRequest>({
@@ -26,9 +35,13 @@ export default function MentorGroupSessions() {
     maxParticipant: "",
   });
 
+  const sessions =
+    groupSessions?.filter((session) => session.mentorId === user?.id) || [];
+
   return (
     <div className="default-wrapper">
       <DecorationVector />
+      <LoadingOverlay visible={loadingFlag} overlayBlur={2} />
       <h1 className="header-2rem underline">Sesi Grup Anda</h1>
       <button
         className="button-600-filled mt-[1rem]"
@@ -37,7 +50,9 @@ export default function MentorGroupSessions() {
         Buat sesi baru
       </button>
       {sessions.length === 0 && (
-        <p className="paragraph">Anda belum pernah membuat sesi grup.</p>
+        <p className="paragraph mt-[1rem]">
+          Anda belum pernah membuat sesi grup.
+        </p>
       )}
       {sessions.length > 0 &&
         sessions.map((session) => {

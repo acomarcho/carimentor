@@ -5,7 +5,7 @@ import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
 import { useGroupSession } from "@/lib/hooks/use-group-session";
 import { useUser } from "@/lib/hooks/use-user";
 import { formatDateToIndonesianLocale, showError } from "@/lib/utils";
-import { LoadingOverlay, Textarea } from "@mantine/core";
+import { LoadingOverlay } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { IconCalendar, IconUserCircle, IconUsers } from "@tabler/icons-react";
 import axios from "axios";
