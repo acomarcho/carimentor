@@ -18,7 +18,12 @@ import "react-responsive-modal/styles.css";
 import DecorationVector from "../../common/decoration-vector";
 
 export default function MenteeBookings() {
-  const { histories: bookings, isLoading, isError } = useOneOnOne();
+  const {
+    histories: bookings,
+    setHistories: setBookings,
+    isLoading,
+    isError,
+  } = useOneOnOne();
 
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [selectedOneOnOne, setSelectedOneOnOne] = useState<OneOnOne>();
@@ -129,7 +134,6 @@ export default function MenteeBookings() {
             }
             onClick={() => {
               const handleProcess = async () => {
-                let success = false;
                 try {
                   setIsProcessing(true);
                   if (request.approvalStatus === "APPROVE") {
@@ -138,10 +142,35 @@ export default function MenteeBookings() {
                       request.meetingUrl,
                       localStorage.getItem("token") || ""
                     );
+                    setBookings(
+                      bookings.map((booking) => {
+                        if (booking.id != selectedOneOnOne!.id) {
+                          return booking;
+                        } else {
+                          return {
+                            ...booking,
+                            meetingUrl: request.meetingUrl,
+                            approvalStatus: "APPROVED",
+                          };
+                        }
+                      })
+                    );
                   } else {
                     await rejectOneOnOne(
                       selectedOneOnOne!,
                       localStorage.getItem("token") || ""
+                    );
+                    setBookings(
+                      bookings.map((booking) => {
+                        if (booking.id != selectedOneOnOne!.id) {
+                          return booking;
+                        } else {
+                          return {
+                            ...booking,
+                            approvalStatus: "REJECTED",
+                          };
+                        }
+                      })
                     );
                   }
                   showSuccess("Berhasil memproses permintaan!");

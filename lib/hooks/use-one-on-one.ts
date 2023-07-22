@@ -68,7 +68,7 @@ export function useOneOnOne() {
     getData();
   }, []);
 
-  return { histories, isLoading, isError };
+  return { histories, setHistories, isLoading, isError };
 }
 
 export function useOneOnOneBookings() {
