@@ -1,3 +1,4 @@
+
 export const Role = {
   MENTOR: "MENTOR",
   MENTEE: "MENTEE",
@@ -56,3 +57,14 @@ export type GetUserResponse = BaseResponse<GetUserData>;
 
 export type GetTagData = UserTagDetail[];
 export type GetTagResponse = BaseResponse<GetTagData>;
+
+export interface Login {
+    token: string;
+    user: User;
+}
+
+export interface LoginResponse {
+    data: Login;
+}
+
+
