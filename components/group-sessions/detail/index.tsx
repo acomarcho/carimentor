@@ -41,6 +41,27 @@ export default function GroupSessionDetail({
           disabled
           className="mt-[1rem]"
         />
+        <h2 className="paragraph font-bold mt-[2rem]">Diskusi</h2>
+        {discussions.length === 0 && (
+          <p className="paragraph">
+            Sesi grup ini belum memiliki diskusi. Jadilah orang pertama yang
+            memulainya!
+          </p>
+        )}
+        {discussions.length > 0 &&
+          discussions.map((d) => {
+            return (
+              <div key={d.id} className="mt-[1rem]">
+                <div className="flex justify-between">
+                  <p className="paragraph font-bold text-sm">{d.userName}</p>
+                  <p className="paragraph text-sm">
+                    {formatDateToIndonesianLocale(d.createdAt)}
+                  </p>
+                </div>
+                <Textarea value={d.content} className="mt-[0.5rem]" disabled />
+              </div>
+            );
+          })}
       </div>
     </div>
   );

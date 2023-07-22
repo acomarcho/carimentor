@@ -270,6 +270,7 @@ export const dummyGroupDiscussions = [
     userName: "Marchotridyo",
     content:
       "Di sini, saya mempelajari bahwa HTML dan CSS adalah fondasi yang penting untuk dimiliki untuk seorang web engineer.",
+    createdAt: new Date("2023-01-02").toISOString(),
   },
   {
     id: "2",
@@ -277,5 +278,6 @@ export const dummyGroupDiscussions = [
     userName: "Malik Akbar",
     content:
       "HTML dan CSS sangat menarik untuk dipelajari, namun kita harus pelan-pelan dalam mempelajarinya agar tidak overwhelmed.",
+    createdAt: new Date("2023-01-02").toISOString(),
   },
 ];
