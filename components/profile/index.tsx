@@ -1,11 +1,11 @@
 import DecorationVector from "../common/decoration-vector";
 import { IconUserCircle } from "@tabler/icons-react";
 import Image from "next/image";
-import { Textarea } from "@mantine/core";
+import { Textarea, LoadingOverlay } from "@mantine/core";
 import Link from "next/link";
 import { useUser } from "@/lib/hooks/use-user";
 import { useEffect, useState } from "react";
-import { City, GetCityDetailResponse, GetCityResponse, GetUserResponse } from "@/lib/constants/responses";
+import { City, GetCityDetailResponse } from "@/lib/constants/responses";
 import axios from "axios";
 import { apiURL } from "@/lib/constants";
 
@@ -15,32 +15,34 @@ const fetchCity = (cityId: string) => {
 
 export default function MyProfile() {
   const { user, userTags, isLoading, isError } = useUser();
-  const isAuthenticated = !!user;
 
   const [city, setCity] = useState<City | null>(null);
   useEffect(() => {
     if (user) {
-      fetchCity(user.cityId).then(d => {
-        setCity(d.data.data)
-      })
+      fetchCity(user.cityId).then((d) => {
+        setCity(d.data.data);
+      });
     }
-  }, [user])
+  }, [user]);
 
   const renderProfilePicture = () => {
-    if (isAuthenticated) {
+    if (!user || !user.imageUrl) {
+      return <IconUserCircle size={128} />;
+    } else {
       return (
         <div className="w-[8rem] h-[8rem] relative rounded-full overflow-hidden">
           <Image alt="" src="/next.svg" fill className="object-cover" />
         </div>
       );
-    } else {
-      return <IconUserCircle size={128} />;
     }
   };
+
+  const isShowLoadingOverlay = isLoading || isError;
 
   return (
     <div className="default-wrapper">
       <DecorationVector />
+      <LoadingOverlay visible={isShowLoadingOverlay} overlayBlur={2} />
       <h1 className="header-2rem underline mb-[1rem]">Profilmu</h1>
       <div className="flex justify-center mb-[1rem]">
         {renderProfilePicture()}
@@ -64,7 +66,7 @@ export default function MyProfile() {
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Ketertarikan</h2>
-          <p className="paragraph">{userTags.map(e => e.name).join(", ")}</p>
+          <p className="paragraph">{userTags.map((e) => e.name).join(", ")}</p>
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Deskripsi</h2>

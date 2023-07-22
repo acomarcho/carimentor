@@ -17,7 +17,7 @@ import { useTags } from "@/lib/hooks/use-tags";
 import { useRouter } from "next/router";
 
 export default function EditProfile() {
-  const { user, userTags, isLoading } = useUser();
+  const { user, userTags, isLoading, isError } = useUser();
   const { tags: allTags, isLoading: isTagLoading } = useTags();
 
   const tags = useMemo(() => userTags ?? [], [userTags]);
@@ -46,7 +46,8 @@ export default function EditProfile() {
 
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
-  const isShowLoadingOverlay = isLoading || isUpdating || isTagLoading;
+  const isShowLoadingOverlay =
+    isLoading || isUpdating || isTagLoading || isError;
 
   const renderProfilePicture = () => {
     if (!user || !user.imageUrl) {
@@ -99,12 +100,14 @@ export default function EditProfile() {
           <MultiSelect
             clearable
             placeholder="Pilih yang Anda sukai!"
-            data={allTags.data.map((tag) => {
-              return {
-                value: tag.id,
-                label: tag.name,
-              };
-            })}
+            data={
+              allTags?.data?.map((tag) => {
+                return {
+                  value: tag.id,
+                  label: tag.name,
+                };
+              }) || []
+            }
             value={request.tags}
             onChange={(value) => {
               setRequest({ ...request, tags: value });
