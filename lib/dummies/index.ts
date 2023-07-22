@@ -137,7 +137,7 @@ export const dummyReviews = [
     menteeName: "Maria Khelli",
     updatedAt: new Date().toISOString(),
     review: "Sesi mentoringnya menyenangkan!",
-    rating: 4.5,
+    rating: 2,
   },
   {
     id: "2",
@@ -151,6 +151,6 @@ export const dummyReviews = [
     menteeName: "Oppenheimer",
     updatedAt: new Date().toISOString(),
     review: "Sesi mentoringnya menyenangkan!",
-    rating: 2,
+    rating: 3,
   },
 ];

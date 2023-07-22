@@ -41,8 +41,8 @@ const SingleMentor = ({ mentor }: { mentor: (typeof dummyMentors)[0] }) => {
           </div>
           <p className="paragraph text-[0.8rem] mt-[1rem]">
             {mentor.tags.slice(0, 2).join(", ")}
-            {mentor.tags.length > 3 &&
-              ` dan ${mentor.tags.length - 3} ketertarikan lainnya`}
+            {mentor.tags.length > 2 &&
+              ` dan ${mentor.tags.length - 2} ketertarikan lainnya`}
           </p>
         </div>
         <div>
