@@ -1,10 +1,17 @@
 import DecorationVector from "@/components/common/decoration-vector";
-import { createBookGroupSession } from "@/lib/api";
+import { createBookGroupSession, createDiscussion } from "@/lib/api";
 import { apiURL } from "@/lib/constants";
 import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
-import { useGroupSession } from "@/lib/hooks/use-group-session";
+import {
+  useGroupSession,
+  useGroupSessionSelf,
+} from "@/lib/hooks/use-group-session";
 import { useUser } from "@/lib/hooks/use-user";
-import { formatDateToIndonesianLocale, showError } from "@/lib/utils";
+import {
+  formatDateToIndonesianLocale,
+  showError,
+  showSuccess,
+} from "@/lib/utils";
 import { LoadingOverlay } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { IconCalendar, IconUserCircle, IconUsers } from "@tabler/icons-react";
@@ -14,6 +21,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
+import { Textarea } from "@mantine/core";
 
 const fetchUser = (id: string) => {
   return axios.get<GetUserResponse>(`${apiURL}/user/${id}`);
@@ -24,16 +32,19 @@ export default function GroupSessionDetail({
 }: {
   sessionId: string;
 }) {
-  const { user, isLoading, isError } = useUser();
+  const { user, isLoading } = useUser();
   const { groupSession, discussions, bookGroupSessions } =
     useGroupSession(sessionId);
   const session = groupSession?.data;
   const discussionsData = discussions?.data || [];
   const bookGroupSessionsData = bookGroupSessions?.data || [];
 
+  const { selfData, isLoading: isSelfDataLoading } =
+    useGroupSessionSelf(sessionId);
+
   const [createBookLoading, setCreateBookLoading] = useState(false);
 
-  const loadingFlag = isLoading || isError || createBookLoading;
+  const loadingFlag = isLoading || createBookLoading || isSelfDataLoading;
 
   const [discussionWithSender, setDiscussionWithSender] = useState<
     (Discussion & {
@@ -70,6 +81,9 @@ export default function GroupSessionDetail({
   const { height, width } = useViewportSize();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const [discussion, setDiscussion] = useState<string>("");
+  const [isDiscussionOpen, setIsDiscussionOpen] = useState<boolean>(false);
+
   const isAuthenticated = !!user;
 
   useEffect(() => {
@@ -85,7 +99,7 @@ export default function GroupSessionDetail({
         <div className="max-w-[1160px] mx-auto p-[1.25rem]">
           {isAuthenticated ? (
             <div>
-              {user?.role === "MENTEE" ? (
+              {user?.role === "MENTEE" && selfData?.meta.canJoin && (
                 <div className="flex flex-col gap-[0.5rem]">
                   <p className="paragraph text-center">
                     Segera bergabung!{" "}
@@ -114,7 +128,26 @@ export default function GroupSessionDetail({
                     Gabung sesi
                   </button>
                 </div>
-              ) : null}
+              )}
+              {user?.role === "MENTEE" &&
+                selfData?.meta.isJoined &&
+                !selfData?.meta.canJoin && (
+                  <div className="flex flex-col gap-[0.5rem]">
+                    <p className="paragraph text-center">
+                      Diskusikan apa yang Anda sudah pelajari pada forum
+                      diskusi!
+                    </p>
+                    <button
+                      className="button-600-filled block"
+                      onClick={() => {
+                        setIsDiscussionOpen(true);
+                        setDiscussion("");
+                      }}
+                    >
+                      Buat diskusi
+                    </button>
+                  </div>
+                )}
             </div>
           ) : (
             <div className="flex flex-col gap-[0.5rem]">
@@ -211,6 +244,56 @@ export default function GroupSessionDetail({
           <Link href="/group-session/self" className="button-600-filled w-full">
             Lihat laman sesi grup
           </Link>
+        </div>
+      </Modal>
+      <Modal
+        open={isDiscussionOpen}
+        onClose={() => {
+          setIsDiscussionOpen(false);
+        }}
+        center
+        showCloseIcon={false}
+        classNames={{
+          modal: "rounded-xl",
+        }}
+      >
+        <div className="flex flex-col items-center justify-center gap-[1rem] p-[1rem] max-w-[300px]">
+          <h1 className="subheader text-center">Diskusi</h1>
+          <Textarea
+            label="Konten diskusi"
+            placeholder="Saya banyak belajar dari sesi grup ini. Terima kasih!"
+            withAsterisk
+            minRows={5}
+            value={discussion}
+            onChange={(e) => setDiscussion(e.currentTarget.value)}
+          />
+          <button
+            className="button-600-filled w-full"
+            disabled={!discussion}
+            onClick={() => {
+              const handleClick = async () => {
+                try {
+                  setCreateBookLoading(true);
+                  await createDiscussion(
+                    { sessionId, content: discussion },
+                    localStorage.getItem("token") || ""
+                  );
+                  setIsDiscussionOpen(false);
+                  showSuccess(
+                    "Diskusi telah berhasil ditambahkan! Mohon refresh laman ini untuk melihat perubahan."
+                  );
+                } catch (error) {
+                  showError("Gagal menambahkan diskusi!");
+                } finally {
+                  setCreateBookLoading(false);
+                }
+              };
+
+              handleClick();
+            }}
+          >
+            Kirim diskusi
+          </button>
         </div>
       </Modal>
     </div>

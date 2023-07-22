@@ -15,7 +15,7 @@ export const createDiscussion = async (
   token: string
 ) => {
   const res = await axios.post<CreateDiscussionResponse>(
-    `${apiURL}/group-session`,
+    `${apiURL}/discussion`,
     data,
     {
       headers: {
@@ -29,14 +29,14 @@ export const createDiscussion = async (
 export const getDiscussions = async (query: GetDiscussionQuery) => {
   const urlQuery = new URLSearchParams(query).toString();
   const res = await axios.get<GetGroupSessionResponse>(
-    `${apiURL}/group-session?${urlQuery}`
+    `${apiURL}/discussion?${urlQuery}`
   );
   return res.data;
 };
 
 export const getDiscussionDetail = async (id: string) => {
   const res = await axios.get<GetDetailGroupSessionResponse>(
-    `${apiURL}/group-session/${id}`
+    `${apiURL}/discussion/${id}`
   );
   return res.data;
 };

@@ -10,6 +10,8 @@ import {
   GetDiscussionResponse,
   GetGroupSessionResponse,
   GroupSession,
+  GetGroupSessionSelfResponse,
+  GetGroupSessionSelfData,
 } from "../constants/responses";
 
 export function useAllGroupSessions() {
@@ -156,5 +158,43 @@ export function useGroupSession(sessionId: string) {
     bookGroupSessions,
     bookGroupSessionsError,
     bookGroupSessionsIsLoading,
+  };
+}
+
+export function useGroupSessionSelf(sessionId: string) {
+  const [selfData, setSelfData] = useState<GetGroupSessionSelfData>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get<GetGroupSessionSelfResponse>(
+          `${apiURL}/group-session/${sessionId}/self`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+            },
+          }
+        );
+        setSelfData(response.data.data);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetch();
+  }, [sessionId]);
+
+  return {
+    selfData,
+    setSelfData,
+    isLoading,
+    setIsLoading,
+    isError,
+    setIsError,
   };
 }
