@@ -18,7 +18,7 @@ export default function EditProfile() {
     subscriptionStatus: user?.subscriptionStatus || "FREE",
     imageUrl: user?.imageUrl || "",
     cityId: user?.cityId || "",
-    tagIds: tags.join(","),
+    tags: tags.map((tag) => tag.id),
   });
 
   const renderProfilePicture = () => {
@@ -62,7 +62,7 @@ export default function EditProfile() {
             accept="image/png,image/jpeg"
             icon={<IconUpload size={16} />}
           />
-          <TextInput disabled value="https://www.google.com" radius="lg" />
+          <TextInput disabled value={request.imageUrl} radius="lg" />
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">
@@ -77,10 +77,9 @@ export default function EditProfile() {
                 label: tag.name,
               };
             })}
-            value={tags.map((tag) => tag.id)}
+            value={request.tags}
             onChange={(value) => {
-              console.log(value);
-              setRequest({ ...request, tagIds: value.join(",") });
+              setRequest({ ...request, tags: value });
             }}
             radius="lg"
           />

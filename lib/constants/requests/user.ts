@@ -14,5 +14,5 @@ export interface UpdateUserRequest {
   subscriptionStatus: string;
   imageUrl: string;
   cityId: string;
-  tagIds: string;
+  tags: string[];
 }
