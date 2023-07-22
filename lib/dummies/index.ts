@@ -43,14 +43,14 @@
 //   },
 // ];
 
-export const dummyUser = {
-  name: "Marchotridyo",
-  email: "marcho@gmail.com",
-  city: "KOTA BANDUNG",
-  role: "MENTOR",
-  tags: ["UI/UX", "Artificial Intelligence", "Software Engineering"],
-  description: "Saya adalah seorang mahasiswa tingkat akhir di ITB.",
-};
+// export const dummyUser = {
+//   name: "Marchotridyo",
+//   email: "marcho@gmail.com",
+//   city: "KOTA BANDUNG",
+//   role: "MENTOR",
+//   tags: ["UI/UX", "Artificial Intelligence", "Software Engineering"],
+//   description: "Saya adalah seorang mahasiswa tingkat akhir di ITB.",
+// };
 
 // export const dummyMentors = [
 //   {
@@ -217,38 +217,38 @@ export const dummyUser = {
 //   },
 // ];
 
-export const dummyGroupSessions = [
-  {
-    id: "1",
-    name: "Belajar HTML dan CSS untuk pemula",
-    date: new Date("2023-01-02").toISOString(),
-    meetingUrl: "https://www.google.com",
-    mentorId: "1",
-    mentorName: "Marchotridyo",
-    maxParticipant: 10,
-    bookedCount: 3,
-  },
-  {
-    id: "2",
-    name: "Belajar JavaScript untuk pemula",
-    date: new Date("2023-01-02").toISOString(),
-    meetingUrl: "https://www.google.com",
-    mentorId: "2",
-    mentorName: "Malik Akbar",
-    maxParticipant: 10,
-    bookedCount: 2,
-  },
-  {
-    id: "3",
-    name: "Belajar React.JS untuk pemula",
-    date: new Date("2023-01-02").toISOString(),
-    meetingUrl: "https://www.google.com",
-    mentorId: "3",
-    mentorName: "Maria Khelli",
-    maxParticipant: 10,
-    bookedCount: 9,
-  },
-];
+// export const dummyGroupSessions = [
+//   {
+//     id: "1",
+//     name: "Belajar HTML dan CSS untuk pemula",
+//     date: new Date("2023-01-02").toISOString(),
+//     meetingUrl: "https://www.google.com",
+//     mentorId: "1",
+//     mentorName: "Marchotridyo",
+//     maxParticipant: 10,
+//     bookedCount: 3,
+//   },
+//   {
+//     id: "2",
+//     name: "Belajar JavaScript untuk pemula",
+//     date: new Date("2023-01-02").toISOString(),
+//     meetingUrl: "https://www.google.com",
+//     mentorId: "2",
+//     mentorName: "Malik Akbar",
+//     maxParticipant: 10,
+//     bookedCount: 2,
+//   },
+//   {
+//     id: "3",
+//     name: "Belajar React.JS untuk pemula",
+//     date: new Date("2023-01-02").toISOString(),
+//     meetingUrl: "https://www.google.com",
+//     mentorId: "3",
+//     mentorName: "Maria Khelli",
+//     maxParticipant: 10,
+//     bookedCount: 9,
+//   },
+// ];
 
 // export const dummyGroupSession = {
 //   id: "1",

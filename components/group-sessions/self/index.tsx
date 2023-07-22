@@ -1,15 +1,19 @@
 import DecorationVector from "@/components/common/decoration-vector";
-import { dummyGroupSessions } from "@/lib/dummies";
 import { IconCalendar, IconBrowser } from "@tabler/icons-react";
 import { formatDateToIndonesianLocale } from "@/lib/utils";
 import Link from "next/link";
+import { useAllGroupSessions } from "@/lib/hooks/use-group-session";
+import { LoadingOverlay } from "@mantine/core";
 
 export default function MyGroupSessions() {
-  const sessions = dummyGroupSessions;
+  const { groupSessions: sessions, isLoading, isError } = useAllGroupSessions();
+  
+  const loadingFlag = isLoading || isError;
 
   return (
     <div className="default-wrapper">
       <DecorationVector />
+      <LoadingOverlay visible={loadingFlag} overlayBlur={2} />
       <h1 className="header-2rem underline">Riwayat Sesi Grup</h1>
       {sessions.length === 0 && (
         <p className="paragraph">Anda belum pernah mengikuti sesi grup</p>

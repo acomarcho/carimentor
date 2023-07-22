@@ -1,5 +1,5 @@
 import DecorationVector from "@/components/common/decoration-vector";
-import { dummyGroupSessions } from "@/lib/dummies";
+// import { dummyGroupSessions } from "@/lib/dummies";
 import { IconBrowser, IconCalendar, IconUsers } from "@tabler/icons-react";
 import { formatDateToIndonesianLocale } from "@/lib/utils";
 import Link from "next/link";
@@ -11,9 +11,11 @@ import "dayjs/locale/id";
 import { Textarea, TextInput, NumberInput } from "@mantine/core";
 import { labelStyle } from "@/lib/constants/styles";
 import { CreateNewGroupSessionRequest } from "@/lib/constants/requests";
+import { useAllGroupSessions } from "@/lib/hooks/use-group-session";
 
 export default function MentorGroupSessions() {
-  const sessions = dummyGroupSessions;
+  // const sessions = dummyGroupSessions;
+  const { groupSessions: sessions, isLoading, isError } = useAllGroupSessions();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [request, setRequest] = useState<CreateNewGroupSessionRequest>({
