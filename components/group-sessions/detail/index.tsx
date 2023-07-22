@@ -9,14 +9,54 @@ import Link from "next/link";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import Image from "next/image";
+import { useGroupSession } from "@/lib/hooks/use-group-session";
+import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
+import axios from "axios";
+import { apiURL } from "@/lib/constants";
+
+const fetchUser = (id: string) => {
+  return axios.get<GetUserResponse>(`${apiURL}/user/${id}`);
+};
 
 export default function GroupSessionDetail({
   sessionId,
 }: {
   sessionId: string;
 }) {
-  const session = dummyGroupSession;
-  const discussions = dummyGroupDiscussions;
+  const { groupSession, discussions, bookGroupSessions } =
+    useGroupSession(sessionId);
+  const session = groupSession?.data;
+  const discussionsData = discussions?.data || [];
+  const bookGroupSessionsData = bookGroupSessions?.data || [];
+
+  const [discussionWithSender, setDiscussionWithSender] = useState<
+    (Discussion & {
+      sender: User;
+    })[]>([]);
+
+  const [mentor, setMentor] = useState<User | null>(null);
+  useEffect(() => {
+    if (groupSession) {
+      fetchUser(groupSession.data.mentorId).then((res) => {
+        setMentor(res.data.data);
+      });
+    }
+  }, [groupSession]);
+
+  useEffect(() => {
+    if (discussions) {
+      const fetchSender = discussions.data.map(async (d) => {
+        const sender = await fetchUser(d.userId);
+        return {
+          ...d,
+          sender: sender.data.data,
+        }
+      });
+      Promise.all(fetchSender).then((res) => {
+        setDiscussionWithSender(res);
+      });
+    }
+  }, [discussions])
 
   const footerRef = useRef<HTMLDivElement>(null);
   const [footerHeight, setFooterHeight] = useState<number>(0);
@@ -39,8 +79,11 @@ export default function GroupSessionDetail({
           {isAuthenticated ? (
             <div className="flex flex-col gap-[0.5rem]">
               <p className="paragraph text-center">
-                Segera bergabung! {session.maxParticipant - session.bookedCount}{" "}
-                slot tersedia
+                Segera bergabung!{" "}
+                {session &&
+                  session.maxParticipant -
+                    bookGroupSessionsData.length +
+                    " slot tersedia"}
               </p>
               <button
                 className="button-600-filled block"
@@ -70,44 +113,42 @@ export default function GroupSessionDetail({
     <div className="default-wrapper">
       <DecorationVector />
       <div className="flex flex-col gap-[0.5rem]">
-        <h2 className="subheader">{session.name}</h2>
+        <h2 className="subheader">{session?.name}</h2>
         <div className="flex gap-[1rem] items-center">
           <IconUserCircle />
-          <p className="paragraph font-bold">{session.mentorName}</p>
+          <p className="paragraph font-bold">{mentor?.name}</p>
         </div>
       </div>
       <div className="bg-white rounded-xl drop-shadow-xl p-[1rem] mt-[2rem]">
         <h2 className="paragraph font-bold">Deskripsi</h2>
-        <Textarea value={session.description} disabled className="mt-[1rem]" />
+        <Textarea value={session?.description} disabled className="mt-[1rem]" />
         <div className="flex gap-[0.5rem] items-center mt-[1rem]">
           <IconCalendar />
           <p className="paragraph text-sm">
-            {formatDateToIndonesianLocale(session.date)}
+            {formatDateToIndonesianLocale(session?.date || "")}
           </p>
         </div>
         <div className="flex gap-[0.5rem] items-center mt-[1rem]">
           <IconUsers />
-          <p className="paragraph text-sm">{session.maxParticipant} slot</p>
+          <p className="paragraph text-sm">
+            {session?.maxParticipant || 0} slot
+          </p>
         </div>
         <h2 className="paragraph font-bold mt-[2rem]">Tentang mentor</h2>
-        <Textarea
-          value={session.mentorDescription}
-          disabled
-          className="mt-[1rem]"
-        />
+        <Textarea value={mentor?.description} disabled className="mt-[1rem]" />
         <h2 className="paragraph font-bold mt-[2rem]">Diskusi</h2>
-        {discussions.length === 0 && (
+        {discussionsData.length === 0 && (
           <p className="paragraph">
             Sesi grup ini belum memiliki diskusi. Jadilah orang pertama yang
             memulainya!
           </p>
         )}
-        {discussions.length > 0 &&
-          discussions.map((d) => {
+        {discussionWithSender.length > 0 &&
+          discussionWithSender.map((d) => {
             return (
               <div key={d.id} className="mt-[1rem]">
                 <div className="flex justify-between">
-                  <p className="paragraph font-bold text-sm">{d.userName}</p>
+                  <p className="paragraph font-bold text-sm">{d.sender.name}</p>
                   <p className="paragraph text-sm">
                     {formatDateToIndonesianLocale(d.createdAt)}
                   </p>
