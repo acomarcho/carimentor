@@ -1,10 +1,5 @@
 import DecorationVector from "../../common/decoration-vector";
 import {
-  dummyMentorWithPicture,
-  dummyMentorWithoutPicture,
-  dummyReviews,
-} from "@/lib/dummies";
-import {
   IconUserCircle,
   IconVocabulary,
   IconMapPin,
@@ -31,9 +26,9 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
   } = useMentor(mentorId);
   const { cities, isLoading: isCityLoading } = useAllCities();
 
-  // const mentor = dummyMentorWithPicture;
-  const reviews = dummyReviews;
-  const ratings = reviews.map((review) => review.rating);
+  const reviews = oneOnOnes ? oneOnOnes.filter((d) => d.rating !== null) : [];
+  const ratings =
+    reviews.length > 0 ? reviews.map((review) => review.rating || 5) : [];
   const isAuthenticated = true;
 
   const footerRef = useRef<HTMLDivElement>(null);
@@ -165,7 +160,7 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
                     <h2 className="header-600">{data.menteeName}</h2>
                     <ReactStars
                       count={5}
-                      value={data.rating}
+                      value={data.rating || 5}
                       size={20}
                       edit={false}
                     />
