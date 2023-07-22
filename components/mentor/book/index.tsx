@@ -14,9 +14,16 @@ import { Textarea } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import "dayjs/locale/id";
 import { labelStyle } from "@/lib/constants/styles";
+import { useState } from "react";
+import { BookMentorRequest } from "@/lib/constants/requests";
 
 export default function BookMentor({ mentorId }: { mentorId: string }) {
   const mentor = dummyMentorWithPicture;
+
+  const [request, setRequest] = useState<BookMentorRequest>({
+    date: null,
+    message: "",
+  });
 
   const renderProfilePicture = () => {
     if (!mentor.imageUrl) {
@@ -72,6 +79,8 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
           locale="id"
           radius="lg"
           styles={{ ...labelStyle }}
+          value={request.date}
+          onChange={(v) => setRequest({ ...request, date: v })}
         />
         <Textarea
           label="Pesan untuk mentormu"
@@ -80,8 +89,15 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
           className="mt-[1rem]"
           radius="lg"
           styles={{ ...labelStyle }}
+          value={request.message}
+          onChange={(e) =>
+            setRequest({ ...request, message: e.currentTarget.value })
+          }
         />
-        <button className="mt-[1rem] button-600-filled w-full">
+        <button
+          className="mt-[1rem] button-600-filled w-full"
+          disabled={!request.date || !request.message}
+        >
           Buat jadwal
         </button>
       </div>

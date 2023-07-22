@@ -19,3 +19,8 @@ export interface MentorFilterRequest {
   premiumOnly: boolean;
   tags: string[];
 }
+
+export interface BookMentorRequest {
+  date: Date | null;
+  message: string;
+}
