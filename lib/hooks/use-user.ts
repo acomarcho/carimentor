@@ -7,7 +7,7 @@ import { userAtom, userTagsAtom } from "../atoms/user";
 
 const fetchUser = () => {
   const token = localStorage.getItem("token");
-  return axios.get<GetUserResponse>(`${apiURL}/user`, {
+  return axios.get<GetUserResponse>(`${apiURL}/user/self`, {
     headers: {
       Authorization: token ? `Bearer ${token}` : "",
     },
