@@ -34,3 +34,11 @@ export interface ProcessOneOnOneRequest {
   approvalStatus: string | undefined;
   meetingUrl: string;
 }
+
+export interface CreateNewGroupSessionRequest {
+  name: string;
+  date: Date | null;
+  meetingUrl: string;
+  description: string;
+  maxParticipant: number | "" | undefined;
+}
