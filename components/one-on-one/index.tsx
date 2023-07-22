@@ -1,5 +1,5 @@
 import DecorationVector from "../common/decoration-vector";
-import { Badge, Textarea } from "@mantine/core";
+import { Badge, Textarea, LoadingOverlay } from "@mantine/core";
 import { IconUserCircle, IconCalendar, IconBrowser } from "@tabler/icons-react";
 import { getBadgeColor, formatDateToIndonesianLocale } from "@/lib/utils";
 import Link from "next/link";
@@ -20,9 +20,12 @@ export default function MyBookings() {
     rating: 0,
   });
 
+  const loadingFlag = isLoading || isError;
+
   return (
     <div className="default-wrapper">
       <DecorationVector />
+      <LoadingOverlay visible={loadingFlag} overlayBlur={2} />
       <h1 className="header-2rem underline">Riwayat One-on-One</h1>
       {bookings.length > 0 ? (
         <div className="flex flex-col gap-[1rem]">
