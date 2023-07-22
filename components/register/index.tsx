@@ -6,13 +6,19 @@ import {
   MultiSelect,
   Select,
   Textarea,
+  LoadingOverlay,
 } from "@mantine/core";
 import Link from "next/link";
-import { dummyTags, dummyProvinces, dummyCities } from "@/lib/dummies";
 import { RegisterRequest } from "@/lib/constants/requests";
 import { useState } from "react";
 import { validateEmail } from "@/lib/utils";
 import { labelStyle } from "@/lib/constants/styles";
+import { useProvince } from "@/lib/hooks/use-province";
+import { useCity } from "@/lib/hooks/use-city";
+import { useTags } from "@/lib/hooks/use-tags";
+import { postRegister } from "@/lib/api/register";
+import { showSuccess, showError } from "@/lib/utils";
+import { useRouter } from "next/router";
 
 export default function Register() {
   const [request, setRequest] = useState<RegisterRequest>({
@@ -26,10 +32,26 @@ export default function Register() {
     description: "",
   });
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const [isRegisterLoading, setIsRegisterLoading] = useState<boolean>(false);
 
-  const tags = dummyTags;
-  const provinces = dummyProvinces;
-  const cities = dummyCities;
+  const { provinces, isLoading, isError } = useProvince();
+  const {
+    cities,
+    isLoading: isLoading2,
+    isError: isError2,
+  } = useCity(request.provinceId || "11");
+  const { tags, isLoading: isLoading3, isError: isError3 } = useTags();
+
+  const router = useRouter();
+
+  const isShowLoadingOverlay =
+    isLoading ||
+    isLoading2 ||
+    isError ||
+    isError2 ||
+    isLoading3 ||
+    isError3 ||
+    isRegisterLoading;
 
   const emailValidity = validateEmail(request.email)
     ? ""
@@ -38,6 +60,7 @@ export default function Register() {
   if (currentPage === 0) {
     return (
       <div className="default-wrapper flex flex-col justify-center items-center">
+        <LoadingOverlay visible={isShowLoadingOverlay} overlayBlur={2} />
         <DecorationVector />
         <h1 className="header-2rem">Buat akun</h1>
         <div className="flex flex-col gap-[1rem] w-full mt-[2rem]">
@@ -86,12 +109,17 @@ export default function Register() {
             placeholder="Pilih semua yang Anda sukai!"
             withAsterisk
             clearable
-            data={tags.map((tag) => {
-              return {
-                value: tag.id,
-                label: tag.name,
-              };
-            })}
+            searchable
+            data={
+              tags
+                ? tags.data.map((tag) => {
+                    return {
+                      value: tag.id,
+                      label: tag.name,
+                    };
+                  })
+                : []
+            }
             value={request.tagIds}
             onChange={(v) => setRequest({ ...request, tagIds: v })}
             styles={{ ...labelStyle }}
@@ -123,6 +151,7 @@ export default function Register() {
   } else {
     return (
       <div className="default-wrapper flex flex-col justify-center items-center">
+        <LoadingOverlay visible={isShowLoadingOverlay} overlayBlur={2} />
         <DecorationVector />
         <h1 className="header-2rem">Lengkapi profilmu</h1>
         <div className="flex flex-col gap-[1rem] w-full mt-[2rem]">
@@ -144,15 +173,20 @@ export default function Register() {
             withAsterisk
             placeholder="Pilih provinsi"
             radius="xl"
-            data={provinces.map((province) => {
-              return {
-                value: province.id,
-                label: province.name,
-              };
-            })}
+            searchable
+            data={
+              provinces
+                ? provinces.data.map((province) => {
+                    return {
+                      value: province.id,
+                      label: province.name,
+                    };
+                  })
+                : []
+            }
             value={request.provinceId}
             onChange={(v) => {
-              setRequest({ ...request, provinceId: v });
+              setRequest({ ...request, provinceId: v, cityId: null });
             }}
             styles={{ ...labelStyle }}
           />
@@ -162,12 +196,17 @@ export default function Register() {
             withAsterisk
             placeholder="Pilih kota"
             radius="xl"
-            data={cities.map((city) => {
-              return {
-                value: city.id,
-                label: city.name,
-              };
-            })}
+            searchable
+            data={
+              cities
+                ? cities.data.map((city) => {
+                    return {
+                      value: city.id,
+                      label: city.name,
+                    };
+                  })
+                : []
+            }
             value={request.cityId}
             onChange={(v) => {
               setRequest({ ...request, cityId: v });
@@ -199,6 +238,24 @@ export default function Register() {
               !request.cityId ||
               !request.description
             }
+            onClick={() => {
+              const onRegister = async () => {
+                try {
+                  setIsRegisterLoading(true);
+                  await postRegister(request);
+                  showSuccess(
+                    "Akun berhasil dibuat! Silakan masuk ke akun Anda."
+                  );
+                  router.push("/login");
+                } catch (error) {
+                  showError("Akun gagal dibuat! Email Anda sudah digunakan.");
+                } finally {
+                  setIsRegisterLoading(false);
+                }
+              };
+
+              onRegister();
+            }}
           >
             Daftar
           </button>

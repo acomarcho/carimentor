@@ -1,5 +1,3 @@
-const env: string = "prod";
-
 export const appName = "CariMentor";
 
 const env: string = "local";

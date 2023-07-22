@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
-
+import { Notifications } from "@mantine/notifications";
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 
 const outfit = Outfit({
@@ -25,6 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <MantineProvider withGlobalStyles withNormalizeCSS>
+        <Notifications position="top-center" />
         <main className={`${outfit.variable} ${plusJakartaSans.variable}`}>
           <Component {...pageProps} />
         </main>
