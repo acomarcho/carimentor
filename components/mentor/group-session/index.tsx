@@ -4,7 +4,11 @@ import { createGroupSession } from "@/lib/api/group-session";
 import { CreateNewGroupSessionRequest } from "@/lib/constants/requests";
 import { labelStyle } from "@/lib/constants/styles";
 import { useAllGroupSessions } from "@/lib/hooks/use-group-session";
-import { formatDateToIndonesianLocale } from "@/lib/utils";
+import {
+  formatDateToIndonesianLocale,
+  showError,
+  showSuccess,
+} from "@/lib/utils";
 import {
   NumberInput,
   TextInput,
@@ -24,7 +28,9 @@ export default function MentorGroupSessions() {
   const { user, isLoading: isUserLoading } = useUser();
   const { groupSessions, isLoading, isError } = useAllGroupSessions();
 
-  const loadingFlag = isUserLoading || isLoading || isError;
+  const [isCreating, setIsCreating] = useState<boolean>(false);
+
+  const loadingFlag = isUserLoading || isLoading || isError || isCreating;
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [request, setRequest] = useState<CreateNewGroupSessionRequest>({
@@ -154,8 +160,25 @@ export default function MentorGroupSessions() {
           <button
             className="button-600-filled"
             onClick={() => {
-              createGroupSession(request, localStorage.getItem("token") || "");
-              setIsModalOpen(false);
+              const handleClick = async () => {
+                try {
+                  setIsCreating(true);
+                  await createGroupSession(
+                    request,
+                    localStorage.getItem("token") || ""
+                  );
+                  setIsModalOpen(false);
+                  showSuccess(
+                    "Sesi grup berhasil dibuat! Mohon refresh laman ini untuk melihat perubahannya."
+                  );
+                } catch (error) {
+                  showError("Gagal membuat sesi grup baru!");
+                } finally {
+                  setIsCreating(false);
+                }
+              };
+
+              handleClick();
             }}
             disabled={
               !request.name ||
