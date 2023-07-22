@@ -137,7 +137,7 @@ const DesktopNavbar = ({
           >
             {appName}
           </Link>
-          <Link className="text-right font-jakarta text-purple-950" href="/">
+          <Link className="text-right font-jakarta text-purple-950" href="/about-us">
             Tentang Kami
           </Link>
         </div>
@@ -204,8 +204,8 @@ const DesktopNavbar = ({
 };
 
 export default function Navbar() {
-  const { user, userTags, setUser } = useUser();
-  
+  const { user, setUser } = useUser();
+
   const router = useRouter();
 
   const handleLogOut = () => {

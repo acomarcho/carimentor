@@ -1,17 +1,16 @@
-import DecorationVector from "../../common/decoration-vector";
-import { Badge, Radio, TextInput } from "@mantine/core";
-import { IconUserCircle, IconCalendar, IconBrowser } from "@tabler/icons-react";
-import { getBadgeColor, formatDateToIndonesianLocale } from "@/lib/utils";
-import Link from "next/link";
-import "react-responsive-modal/styles.css";
-import { Modal } from "react-responsive-modal";
-import { useState } from "react";
-import { labelStyle } from "@/lib/constants/styles";
 import { ProcessOneOnOneRequest } from "@/lib/constants/requests";
+import { labelStyle } from "@/lib/constants/styles";
 import { useOneOnOne } from "@/lib/hooks/use-one-on-one";
+import { formatDateToIndonesianLocale, getBadgeColor } from "@/lib/utils";
+import { Badge, Radio, TextInput } from "@mantine/core";
+import { IconBrowser, IconCalendar, IconUserCircle } from "@tabler/icons-react";
+import Link from "next/link";
+import { useState } from "react";
+import { Modal } from "react-responsive-modal";
+import "react-responsive-modal/styles.css";
+import DecorationVector from "../../common/decoration-vector";
 
 export default function MenteeBookings() {
-  // const bookings = dummyMenteeBookings;
   const { histories: bookings, isLoading, isError } = useOneOnOne();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

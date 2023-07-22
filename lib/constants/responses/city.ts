@@ -6,4 +6,4 @@ export interface City {
 }
 
 export type GetCityData = City[];
-export type GetCityDataResponse = BaseResponse<GetCityData>;
+export type GetCityResponse = BaseResponse<GetCityData>;

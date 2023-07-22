@@ -1,10 +1,19 @@
 import axios from "axios";
 import { apiURL } from "../constants";
-import { GetOneOnOneDataResponse, GetUserResponse, OneOnOne, Tag, User } from "../constants/responses";
-import { GetUserTagResponse } from "../constants/responses";
+import {
+  GetOneOnOneResponse,
+  GetUserResponse,
+  OneOnOne,
+  Tag,
+  User,
+  GetUserTagResponse,
+  GetUsersResponse,
+  MentorSearchResult,
+} from "../constants/responses";
 import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { userAtom, userTagsAtom } from "../atoms/user";
+import { MentorFilterRequest } from "../constants/requests";
 
 const fetchUser = () => {
   const token = localStorage.getItem("token");
@@ -18,6 +27,127 @@ const fetchUser = () => {
 const fetchTag = (userId: string) => {
   return axios.get<GetUserTagResponse>(`${apiURL}/tag?userId=${userId}`);
 };
+
+const fetchMentor = async (
+  onMyCity: boolean,
+  onMyProvince: boolean,
+  premiumOnly: boolean,
+  tags: string[]
+) => {
+  const token = localStorage.getItem("token");
+
+  let query = "?role=MENTOR";
+  query += `&onMyProvince=${onMyProvince}`;
+  query += `&onMyCity=${onMyCity}`;
+  query += `&premiumOnly=${premiumOnly}`;
+  if (tags.length > 0) {
+    query += `&tags=${tags.join(",")}`;
+  }
+
+  const userResponse = await axios.get<GetUsersResponse>(
+    `${apiURL}/user${query}`,
+    {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    }
+  );
+
+  const _mentors: MentorSearchResult[] = [];
+  for (const mentor of userResponse.data.data!) {
+    console.log("Mencari tag dari mentor", mentor);
+    const tagResponse = await fetchTag(mentor.id);
+    const tags = tagResponse.data.data!.map((data) => {
+      return data;
+    });
+    _mentors.push({
+      ...mentor,
+      tags,
+    });
+  }
+
+  return _mentors;
+};
+
+export function useSearchMentors(request: MentorFilterRequest) {
+  const [mentors, setMentors] = useState<MentorSearchResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const searchMentors = async () => {
+      try {
+        setIsLoading(true);
+        const _mentors = await fetchMentor(
+          request.location === "CITY",
+          request.location === "PROVINCE",
+          request.premiumOnly,
+          request.tags
+        );
+        setMentors(_mentors);
+        setIsError(false);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    searchMentors();
+  }, [request]);
+
+  return { mentors, setMentors, isLoading, isError };
+}
+
+export function usePremiumMentors() {
+  const [mentors, setMentors] = useState<MentorSearchResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const searchMentors = async () => {
+      try {
+        setIsLoading(true);
+        const _mentors = await fetchMentor(false, false, true, []);
+        setMentors(_mentors);
+        setIsError(false);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    searchMentors();
+  }, []);
+
+  return { mentors, setMentors, isLoading, isError };
+}
+
+export function useClosestMentors() {
+  const [mentors, setMentors] = useState<MentorSearchResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const searchMentors = async () => {
+      try {
+        setIsLoading(true);
+        const _mentors = await fetchMentor(false, true, false, []);
+        setMentors(_mentors);
+        setIsError(false);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    searchMentors();
+  }, []);
+
+  return { mentors, setMentors, isLoading, isError };
+}
 
 export function useUser() {
   const [user, setUser] = useAtom(userAtom);
@@ -94,7 +224,7 @@ export function useMentor(id: string) {
           })
         );
 
-        const oneOnOnesResponse = await axios.get<GetOneOnOneDataResponse>(
+        const oneOnOnesResponse = await axios.get<GetOneOnOneResponse>(
           `${apiURL}/one-on-one?mentorId=${id}`,
           {
             headers: {

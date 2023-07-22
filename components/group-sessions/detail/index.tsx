@@ -121,7 +121,12 @@ export default function GroupSessionDetail({
       </div>
       <div className="bg-white rounded-xl drop-shadow-xl p-[1rem] mt-[2rem]">
         <h2 className="paragraph font-bold">Deskripsi</h2>
-        <Textarea value={session?.description} disabled className="mt-[1rem]" />
+        <Textarea
+          value={session?.description}
+          disabled
+          className="mt-[1rem]"
+          autosize
+        />
         <div className="flex gap-[0.5rem] items-center mt-[1rem]">
           <IconCalendar />
           <p className="paragraph text-sm">
@@ -135,7 +140,12 @@ export default function GroupSessionDetail({
           </p>
         </div>
         <h2 className="paragraph font-bold mt-[2rem]">Tentang mentor</h2>
-        <Textarea value={mentor?.description} disabled className="mt-[1rem]" />
+        <Textarea
+          value={mentor?.description}
+          disabled
+          className="mt-[1rem]"
+          autosize
+        />
         <h2 className="paragraph font-bold mt-[2rem]">Diskusi</h2>
         {discussionsData.length === 0 && (
           <p className="paragraph">
@@ -153,7 +163,12 @@ export default function GroupSessionDetail({
                     {formatDateToIndonesianLocale(d.createdAt)}
                   </p>
                 </div>
-                <Textarea value={d.content} className="mt-[0.5rem]" disabled />
+                <Textarea
+                  value={d.content}
+                  className="mt-[0.5rem]"
+                  disabled
+                  autosize
+                />
               </div>
             );
           })}
