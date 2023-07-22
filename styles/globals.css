@@ -30,6 +30,10 @@
     @apply font-bold text-purple-950 text-[0.9rem];
     font-family: var(--font-outfit);
   }
+  .subheader {
+    @apply font-bold text-purple-950 text-[1.25rem];
+    font-family: var(--font-outfit);
+  }
   .paragraph {
     @apply font-jakarta text-purple-950;
     font-family: var(--font-plus-jakarta-sans);

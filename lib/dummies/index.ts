@@ -51,3 +51,62 @@ export const dummyUser = {
   tags: ["UI/UX", "Artificial Intelligence", "Software Engineering"],
   description: "Saya adalah seorang mahasiswa tingkat akhir di ITB.",
 };
+
+export const dummyMentors = [
+  {
+    id: "1",
+    name: "Marchotridyo",
+    city: "KOTA BANDUNG",
+    tags: [
+      "Artificial Intelligence",
+      "Software Engineering",
+      "Education",
+      "Sales dan Marketing",
+    ],
+    imageUrl: "",
+    subscriptionStatus: "FREE",
+  },
+  {
+    id: "2",
+    name: "Maria Khelli",
+    city: "KOTA BANDUNG",
+    tags: ["Artificial Intelligence", "Software Engineering"],
+    imageUrl: "/next.svg",
+    subscriptionStatus: "PREMIUM",
+  },
+  {
+    id: "3",
+    name: "Malik Akbar",
+    city: "KOTA BANDUNG",
+    tags: [
+      "Artificial Intelligence",
+      "Software Engineering",
+      "Education",
+      "Sales dan Marketing",
+      "UI/UX",
+    ],
+    imageUrl: "/vercel.svg",
+    subscriptionStatus: "PREMIUM",
+  },
+  {
+    id: "4",
+    name: "Fayza Nadia",
+    city: "KOTA BANDUNG",
+    tags: ["Artificial Intelligence"],
+    imageUrl: "",
+    subscriptionStatus: "FREE",
+  },
+  {
+    id: "5",
+    name: "Oppenheimer",
+    city: "KOTA BANDUNG",
+    tags: [
+      "Artificial Intelligence",
+      "Software Engineering",
+      "Education",
+      "Sales dan Marketing",
+    ],
+    imageUrl: "",
+    subscriptionStatus: "PREMIUM",
+  },
+];
