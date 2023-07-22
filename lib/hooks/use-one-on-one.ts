@@ -1,7 +1,7 @@
 import { apiURL } from "@/lib/constants";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { OneOnOne, GetOneOnOneResponse } from "../constants/responses";
+import { useEffect, useState } from "react";
+import { OneOnOne } from "../constants/responses";
 
 export function useOneOnOne() {
   const [histories, setHistories] = useState<OneOnOne[]>([]);

@@ -6,3 +6,4 @@ export * from "./one-on-one";
 export * from "./province";
 export * from "./tag";
 export * from "./user";
+export * from "./discussion";

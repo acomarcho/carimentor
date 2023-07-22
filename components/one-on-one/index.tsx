@@ -104,6 +104,7 @@ export default function MyBookings() {
             onChange={(e) =>
               setRequest({ ...request, message: e.currentTarget.value })
             }
+            autosize
           />
           <div className="flex flex-col">
             <p className="paragraph font-semibold text-[0.8rem]">
