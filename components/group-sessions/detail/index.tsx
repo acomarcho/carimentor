@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
+import { Textarea } from "@mantine/core";
 
 const fetchUser = (id: string) => {
   return axios.get<GetUserResponse>(`${apiURL}/user/${id}`);
@@ -76,6 +77,9 @@ export default function GroupSessionDetail({
   const { height, width } = useViewportSize();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const [discussion, setDiscussion] = useState<string>("");
+  const [isDiscussionOpen, setIsDiscussionOpen] = useState<boolean>(false);
+
   const isAuthenticated = !!user;
 
   useEffect(() => {
@@ -131,19 +135,9 @@ export default function GroupSessionDetail({
                     </p>
                     <button
                       className="button-600-filled block"
-                      onClick={async () => {
-                        try {
-                          setCreateBookLoading(true);
-                          const resp = await createBookGroupSession({
-                            sessionId,
-                          });
-                          setIsModalOpen(true);
-                        } catch (e) {
-                          console.error(e);
-                          showError("Gagal bergabung ke sesi grup");
-                        } finally {
-                          setCreateBookLoading(false);
-                        }
+                      onClick={() => {
+                        setIsDiscussionOpen(true);
+                        setDiscussion("");
                       }}
                     >
                       Buat diskusi
@@ -246,6 +240,32 @@ export default function GroupSessionDetail({
           <Link href="/group-session/self" className="button-600-filled w-full">
             Lihat laman sesi grup
           </Link>
+        </div>
+      </Modal>
+      <Modal
+        open={isDiscussionOpen}
+        onClose={() => {
+          setIsDiscussionOpen(false);
+        }}
+        center
+        showCloseIcon={false}
+        classNames={{
+          modal: "rounded-xl",
+        }}
+      >
+        <div className="flex flex-col items-center justify-center gap-[1rem] p-[1rem] max-w-[300px]">
+          <h1 className="subheader text-center">Diskusi</h1>
+          <Textarea
+            label="Konten diskusi"
+            placeholder="Saya banyak belajar dari sesi grup ini. Terima kasih!"
+            withAsterisk
+            minRows={5}
+            value={discussion}
+            onChange={(e) => setDiscussion(e.currentTarget.value)}
+          />
+          <button className="button-600-filled w-full" disabled={!discussion}>
+            Kirim diskusi
+          </button>
         </div>
       </Modal>
     </div>
