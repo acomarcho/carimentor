@@ -1,6 +1,7 @@
 import { apiURL, appName } from "@/lib/constants";
 import { GetUserResponse, User } from "@/lib/constants/responses";
 import { useAllGroupSessions } from "@/lib/hooks/use-group-session";
+import { useUser } from "@/lib/hooks/use-user";
 import { formatDateToIndonesianLocale } from "@/lib/utils";
 import { LoadingOverlay } from "@mantine/core";
 import { IconCalendar, IconUserCircle } from "@tabler/icons-react";
@@ -16,6 +17,7 @@ const fetchUser = (id: string) => {
 export default function GroupSessions() {
   const [mentors, setMentors] = useState<User[]>([]);
   const { groupSessions, isLoading, isError } = useAllGroupSessions();
+  const { user, setUser } = useUser();
 
   useEffect(() => {
     Promise.all(
@@ -37,9 +39,15 @@ export default function GroupSessions() {
         Tambah pengetahuanmu dengan mengikuti sesi grup/workshop yang dibuat
         oleh mentor-mentor {appName}!
       </p>
-      <Link href="/" className="paragraph">
-        <span className="text-purple-600">Ingin mencari mentor?</span>
-      </Link>
+      {user?.role == "MENTOR" ? (
+        <Link href="/mentor/group-session">
+          <span className="text-purple-600"> Cek sesi yang kamu buat</span>
+        </Link>
+      ) : (
+        <Link href="/" className="paragraph">
+          <span className="text-purple-600">Ingin mencari mentor?</span>
+        </Link>
+      )}
       {mentors.map((mentor, idx) => {
         const session = groupSessions[idx];
         return (
