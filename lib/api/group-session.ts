@@ -18,6 +18,7 @@ export const createGroupSession = async (
     `${apiURL}/group-session`,
     {
       ...data,
+      date: data.date?.toISOString(),
     },
     {
       headers: {
