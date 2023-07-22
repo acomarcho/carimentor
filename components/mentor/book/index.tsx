@@ -3,7 +3,7 @@ import { City } from "@/lib/constants/responses";
 import { labelStyle } from "@/lib/constants/styles";
 import { useAllCities } from "@/lib/hooks/use-city";
 import { useMentor, useUser } from "@/lib/hooks/use-user";
-import { Textarea } from "@mantine/core";
+import { Textarea, LoadingOverlay } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import {
   IconMapPin,
@@ -14,7 +14,7 @@ import {
 import "dayjs/locale/id";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 import DecorationVector from "../../common/decoration-vector";
@@ -34,6 +34,9 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
     message: "",
   });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const loadingFlag =
+    isMentorLoading || isMentorError || isCityLoading || isLoading || isError;
 
   const renderProfilePicture = () => {
     if (!mentor || !mentor.imageUrl) {
@@ -55,6 +58,7 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
   return (
     <div className="default-wrapper">
       <DecorationVector />
+      <LoadingOverlay visible={loadingFlag} overlayBlur={2} />
       <div className="flex flex-row gap-[1rem] items-center flex-shrink-0">
         {renderProfilePicture()}
         <div className="flex flex-col gap-[0.5rem]">

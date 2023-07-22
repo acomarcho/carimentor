@@ -55,7 +55,6 @@ const fetchMentor = async (
 
   const _mentors: MentorSearchResult[] = [];
   for (const mentor of userResponse.data.data!) {
-    console.log("Mencari tag dari mentor", mentor);
     const tagResponse = await fetchTag(mentor.id);
     const tags = tagResponse.data.data!.map((data) => {
       return data;
@@ -263,6 +262,10 @@ export function useMentor(id: string) {
         setIsLoading(false);
       }
     };
+
+    if (!id) {
+      return;
+    }
 
     getUser();
   }, [id]);
