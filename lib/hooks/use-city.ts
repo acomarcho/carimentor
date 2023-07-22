@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { apiURL } from "@/lib/constants";
-import { GetCityDataResponse } from "../constants/responses";
+import { GetCityResponse } from "../constants/responses";
 
 export function useCity(provinceID: string) {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -11,7 +11,7 @@ export function useCity(provinceID: string) {
   );
 
   return {
-    cities: data as GetCityDataResponse,
+    cities: data as GetCityResponse,
     isLoading,
     isError: error,
   };
@@ -23,7 +23,7 @@ export function useAllCities() {
   const { data, error, isLoading } = useSWR(`${apiURL}/city`, fetcher);
 
   return {
-    cities: data as GetCityDataResponse,
+    cities: data as GetCityResponse,
     isLoading,
     isError: error,
   };

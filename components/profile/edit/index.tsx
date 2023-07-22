@@ -13,9 +13,13 @@ import Image from "next/image";
 import { useState, useEffect, useMemo } from "react";
 import DecorationVector from "../../common/decoration-vector";
 import { showSuccess, showError } from "@/lib/utils";
+import { useTags } from "@/lib/hooks/use-tags";
+import { useRouter } from "next/router";
 
 export default function EditProfile() {
   const { user, userTags, isLoading } = useUser();
+  const { tags: allTags, isLoading: isTagLoading } = useTags();
+
   const tags = useMemo(() => userTags ?? [], [userTags]);
 
   const [request, setRequest] = useState<UpdateUserRequest>({
@@ -26,6 +30,8 @@ export default function EditProfile() {
     cityId: user?.cityId || "",
     tags: tags.map((tag) => tag.id),
   });
+
+  const router = useRouter();
 
   useEffect(() => {
     setRequest({
@@ -40,7 +46,7 @@ export default function EditProfile() {
 
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
-  const isShowLoadingOverlay = isLoading || isUpdating;
+  const isShowLoadingOverlay = isLoading || isUpdating || isTagLoading;
 
   const renderProfilePicture = () => {
     if (!user || !user.imageUrl) {
@@ -93,7 +99,7 @@ export default function EditProfile() {
           <MultiSelect
             clearable
             placeholder="Pilih yang Anda sukai!"
-            data={tags.map((tag) => {
+            data={allTags.data.map((tag) => {
               return {
                 value: tag.id,
                 label: tag.name,
@@ -107,13 +113,16 @@ export default function EditProfile() {
           />
         </div>
         <div className="flex flex-col gap-[0.25rem]">
-          <h2 className="header-600">Deskripsi</h2>
+          <h2 className="header-600">
+            Deskripsi <span className="text-red-500">*</span>
+          </h2>
           <Textarea
             value={request.description}
             onChange={(e) =>
               setRequest({ ...request, description: e.currentTarget.value })
             }
             radius="lg"
+            autosize
           />
         </div>
       </div>
@@ -124,6 +133,7 @@ export default function EditProfile() {
               setIsUpdating(true);
               await putProfile(request, localStorage.getItem("token") || "");
               showSuccess("Berhasil mengubah profil!");
+              router.push("/profile");
             } catch (error) {
               showError("Gagal mengubah profil!");
             } finally {
@@ -133,6 +143,9 @@ export default function EditProfile() {
 
           update();
         }}
+        disabled={
+          !request.name || request.tags.length === 0 || !request.description
+        }
         className="button-600-filled block w-full mt-[1rem]"
       >
         Ubah profil

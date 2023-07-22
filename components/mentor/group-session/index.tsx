@@ -123,6 +123,7 @@ export default function MentorGroupSessions() {
             onChange={(e) =>
               setRequest({ ...request, description: e.currentTarget.value })
             }
+            autosize
           />
           <NumberInput
             label="Maksimal partisipan"

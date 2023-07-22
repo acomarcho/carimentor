@@ -2,18 +2,30 @@ import DecorationVector from "../common/decoration-vector";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import { useState } from "react";
-import { dummyTags } from "@/lib/dummies";
-import { Radio, Checkbox, MultiSelect } from "@mantine/core";
+import { Radio, Checkbox, MultiSelect, LoadingOverlay } from "@mantine/core";
 import { labelStyle } from "@/lib/constants/styles";
 import { MentorFilterRequest } from "@/lib/constants/requests";
-import { dummyMentors } from "@/lib/dummies";
 import { Carousel } from "@mantine/carousel";
 import Link from "next/link";
 import Image from "next/image";
 import { IconUserCircle } from "@tabler/icons-react";
 import { appName } from "@/lib/constants";
+import {
+  useSearchMentors,
+  usePremiumMentors,
+  useClosestMentors,
+} from "@/lib/hooks/use-user";
+import { useAllCities } from "@/lib/hooks/use-city";
+import { MentorSearchResult, GetCityResponse } from "@/lib/constants/responses";
+import { useTags } from "@/lib/hooks/use-tags";
 
-const SingleMentor = ({ mentor }: { mentor: (typeof dummyMentors)[0] }) => {
+const SingleMentor = ({
+  mentor,
+  cities,
+}: {
+  mentor: MentorSearchResult;
+  cities: GetCityResponse;
+}) => {
   return (
     <Carousel.Slide>
       <Link
@@ -36,11 +48,18 @@ const SingleMentor = ({ mentor }: { mentor: (typeof dummyMentors)[0] }) => {
             )}
             <div className="flex flex-col gap-[0.25rem]">
               <h1 className="subheader">{mentor.name}</h1>
-              <p className="paragraph">{mentor.city}</p>
+              <p className="paragraph">
+                {cities &&
+                  cities.data &&
+                  cities.data.find((city) => city.id === mentor.cityId)?.name}
+              </p>
             </div>
           </div>
           <p className="paragraph text-[0.8rem] mt-[1rem]">
-            {mentor.tags.slice(0, 2).join(", ")}
+            {mentor.tags
+              .map((tag) => tag.tag.name)
+              .slice(0, 2)
+              .join(", ")}
             {mentor.tags.length > 2 &&
               ` dan ${mentor.tags.length - 2} ketertarikan lainnya`}
           </p>
@@ -65,18 +84,34 @@ export default function Home() {
     tags: [],
   });
 
-  const tags = dummyTags;
-  const searchMentors = [...dummyMentors];
-  const premiumMentors = dummyMentors.filter(
-    (mentor) => mentor.subscriptionStatus === "PREMIUM"
-  );
-  const closestMentors = dummyMentors.filter(
-    (mentor) => mentor.city === "KOTA JAKARTA BARAT"
-  );
+  const { cities, isLoading: isCityLoading } = useAllCities();
+
+  const { tags: responseTags, isLoading: isTagsLoading, isError: isTagsError } = useTags();
+
+  const tags = responseTags?.data || [];
+  const {
+    mentors: searchMentors,
+    isLoading,
+    isError,
+  } = useSearchMentors(filters);
+  const {
+    mentors: premiumMentors,
+    isLoading: isLoading2,
+    isError: isError2,
+  } = usePremiumMentors();
+  const {
+    mentors: closestMentors,
+    isLoading: isLoading3,
+    isError: isError3,
+  } = useClosestMentors();
+
+  const isShowLoadingOverlay =
+    isCityLoading || isLoading || isLoading2 || isLoading3 || isTagsLoading;
 
   return (
     <div className="default-wrapper flex flex-col gap-[1rem] items-center justify-center">
       <DecorationVector />
+      <LoadingOverlay visible={isShowLoadingOverlay} overlayBlur={2} />
       <h1 className="header-2rem text-center">
         Ingin belajar apa Anda hari ini?
       </h1>
@@ -90,7 +125,9 @@ export default function Home() {
         Atur filter pencarian mentor
       </button>
       <Link href="/group-session" className="paragraph">
-        <span className="text-purple-600">Ingin mencari sesi grup/workshop?</span>
+        <span className="text-purple-600">
+          Ingin mencari sesi grup/workshop?
+        </span>
       </Link>
       <Drawer
         open={isFilterOpen}
@@ -165,7 +202,13 @@ export default function Home() {
           {searchMentors.length > 0 ? (
             <Carousel slideGap="md" dragFree slideSize={300} align="start">
               {searchMentors.map((mentor) => {
-                return <SingleMentor mentor={mentor} key={mentor.id} />;
+                return (
+                  <SingleMentor
+                    mentor={mentor}
+                    cities={cities}
+                    key={mentor.id}
+                  />
+                );
               })}
             </Carousel>
           ) : (
@@ -179,7 +222,13 @@ export default function Home() {
           {premiumMentors.length > 0 ? (
             <Carousel slideGap="md" dragFree slideSize={300} align="start">
               {premiumMentors.map((mentor) => {
-                return <SingleMentor mentor={mentor} key={mentor.id} />;
+                return (
+                  <SingleMentor
+                    mentor={mentor}
+                    cities={cities}
+                    key={mentor.id}
+                  />
+                );
               })}
             </Carousel>
           ) : (
@@ -194,7 +243,13 @@ export default function Home() {
           {closestMentors.length > 0 ? (
             <Carousel slideGap="md" dragFree slideSize={300} align="start">
               {closestMentors.map((mentor) => {
-                return <SingleMentor mentor={mentor} key={mentor.id} />;
+                return (
+                  <SingleMentor
+                    mentor={mentor}
+                    cities={cities}
+                    key={mentor.id}
+                  />
+                );
               })}
             </Carousel>
           ) : (

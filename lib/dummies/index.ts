@@ -1,47 +1,47 @@
-export const dummyTags = [
-  {
-    id: "1",
-    name: "UI/UX",
-  },
-  {
-    id: "2",
-    name: "Software Engineering",
-  },
-  {
-    id: "3",
-    name: "Artificial Intelligence",
-  },
-];
+// export const dummyTags = [
+//   {
+//     id: "1",
+//     name: "UI/UX",
+//   },
+//   {
+//     id: "2",
+//     name: "Software Engineering",
+//   },
+//   {
+//     id: "3",
+//     name: "Artificial Intelligence",
+//   },
+// ];
 
-export const dummyProvinces = [
-  {
-    id: "1",
-    name: "JAWA BARAT",
-  },
-  {
-    id: "2",
-    name: "JAWA TENGAH",
-  },
-  {
-    id: "3",
-    name: "JAWA TIMUR",
-  },
-];
+// export const dummyProvinces = [
+//   {
+//     id: "1",
+//     name: "JAWA BARAT",
+//   },
+//   {
+//     id: "2",
+//     name: "JAWA TENGAH",
+//   },
+//   {
+//     id: "3",
+//     name: "JAWA TIMUR",
+//   },
+// ];
 
-export const dummyCities = [
-  {
-    id: "1",
-    name: "KOTA BANDUNG",
-  },
-  {
-    id: "2",
-    name: "KABUPATEN BANDUNG",
-  },
-  {
-    id: "3",
-    name: "KOTA CIMAHI",
-  },
-];
+// export const dummyCities = [
+//   {
+//     id: "1",
+//     name: "KOTA BANDUNG",
+//   },
+//   {
+//     id: "2",
+//     name: "KABUPATEN BANDUNG",
+//   },
+//   {
+//     id: "3",
+//     name: "KOTA CIMAHI",
+//   },
+// ];
 
 export const dummyUser = {
   name: "Marchotridyo",
@@ -52,86 +52,86 @@ export const dummyUser = {
   description: "Saya adalah seorang mahasiswa tingkat akhir di ITB.",
 };
 
-export const dummyMentors = [
-  {
-    id: "1",
-    name: "Marchotridyo",
-    city: "KOTA BANDUNG",
-    tags: [
-      "Artificial Intelligence",
-      "Software Engineering",
-      "Education",
-      "Sales dan Marketing",
-    ],
-    imageUrl: "",
-    subscriptionStatus: "FREE",
-  },
-  {
-    id: "2",
-    name: "Maria Khelli",
-    city: "KOTA BANDUNG",
-    tags: ["Artificial Intelligence", "Software Engineering"],
-    imageUrl: "/next.svg",
-    subscriptionStatus: "PREMIUM",
-  },
-  {
-    id: "3",
-    name: "Malik Akbar",
-    city: "KOTA BANDUNG",
-    tags: [
-      "Artificial Intelligence",
-      "Software Engineering",
-      "Education",
-      "Sales dan Marketing",
-      "UI/UX",
-    ],
-    imageUrl: "/vercel.svg",
-    subscriptionStatus: "PREMIUM",
-  },
-  {
-    id: "4",
-    name: "Fayza Nadia",
-    city: "KOTA BANDUNG",
-    tags: ["Artificial Intelligence"],
-    imageUrl: "",
-    subscriptionStatus: "FREE",
-  },
-  {
-    id: "5",
-    name: "Oppenheimer",
-    city: "KOTA BANDUNG",
-    tags: [
-      "Artificial Intelligence",
-      "Software Engineering",
-      "Education",
-      "Sales dan Marketing",
-    ],
-    imageUrl: "",
-    subscriptionStatus: "PREMIUM",
-  },
-];
+// export const dummyMentors = [
+//   {
+//     id: "1",
+//     name: "Marchotridyo",
+//     city: "KOTA BANDUNG",
+//     tags: [
+//       "Artificial Intelligence",
+//       "Software Engineering",
+//       "Education",
+//       "Sales dan Marketing",
+//     ],
+//     imageUrl: "",
+//     subscriptionStatus: "FREE",
+//   },
+//   {
+//     id: "2",
+//     name: "Maria Khelli",
+//     city: "KOTA BANDUNG",
+//     tags: ["Artificial Intelligence", "Software Engineering"],
+//     imageUrl: "/next.svg",
+//     subscriptionStatus: "PREMIUM",
+//   },
+//   {
+//     id: "3",
+//     name: "Malik Akbar",
+//     city: "KOTA BANDUNG",
+//     tags: [
+//       "Artificial Intelligence",
+//       "Software Engineering",
+//       "Education",
+//       "Sales dan Marketing",
+//       "UI/UX",
+//     ],
+//     imageUrl: "/vercel.svg",
+//     subscriptionStatus: "PREMIUM",
+//   },
+//   {
+//     id: "4",
+//     name: "Fayza Nadia",
+//     city: "KOTA BANDUNG",
+//     tags: ["Artificial Intelligence"],
+//     imageUrl: "",
+//     subscriptionStatus: "FREE",
+//   },
+//   {
+//     id: "5",
+//     name: "Oppenheimer",
+//     city: "KOTA BANDUNG",
+//     tags: [
+//       "Artificial Intelligence",
+//       "Software Engineering",
+//       "Education",
+//       "Sales dan Marketing",
+//     ],
+//     imageUrl: "",
+//     subscriptionStatus: "PREMIUM",
+//   },
+// ];
 
-export const dummyMentorWithPicture = {
-  name: "Marchotridyo",
-  imageUrl: "/next.svg",
-  tags: [
-    "Artificial Intelligence",
-    "Software Engineering",
-    "Sales dan Marketing",
-  ],
-  city: "KOTA BANDUNG",
-  subscriptionStatus: "FREE",
-  description: "Marcho adalah seorang mahasiswa tingkat akhir di IF ITB.",
-};
+// export const dummyMentorWithPicture = {
+//   name: "Marchotridyo",
+//   imageUrl: "/next.svg",
+//   tags: [
+//     "Artificial Intelligence",
+//     "Software Engineering",
+//     "Sales dan Marketing",
+//   ],
+//   city: "KOTA BANDUNG",
+//   subscriptionStatus: "FREE",
+//   description: "Marcho adalah seorang mahasiswa tingkat akhir di IF ITB.",
+// };
 
-export const dummyMentorWithoutPicture = {
-  name: "Malik Akbar",
-  imageUrl: "",
-  tags: ["Artificial Intelligence", "Software Engineering"],
-  city: "KOTA BANDUNG",
-  subscriptionStatus: "PREMIUM",
-  description: "Malik Akbar adalah seorang mahasiswa tingkat akhir di IF ITB.",
-};
+// export const dummyMentorWithoutPicture = {
+//   name: "Malik Akbar",
+//   imageUrl: "",
+//   tags: ["Artificial Intelligence", "Software Engineering"],
+//   city: "KOTA BANDUNG",
+//   subscriptionStatus: "PREMIUM",
+//   description: "Malik Akbar adalah seorang mahasiswa tingkat akhir di IF ITB.",
+// };
 
 // export const dummyReviews = [
 //   {
@@ -250,34 +250,34 @@ export const dummyGroupSessions = [
   },
 ];
 
-export const dummyGroupSession = {
-  id: "1",
-  name: "Belajar HTML dan CSS untuk pemula",
-  mentorId: "1",
-  mentorName: "Marchotridyo",
-  mentorDescription: "Halo! Saya adalah mahasiswa akhir Informatika ITB.",
-  description:
-    "Dalam sesi grup ini, kita akan mempelajari dasar dari HTML dan CSS untuk membangun sebuah aplikasi berbasis web.",
-  date: new Date("2023-01-02").toISOString(),
-  maxParticipant: 10,
-  bookedCount: 4,
-};
+// export const dummyGroupSession = {
+//   id: "1",
+//   name: "Belajar HTML dan CSS untuk pemula",
+//   mentorId: "1",
+//   mentorName: "Marchotridyo",
+//   mentorDescription: "Halo! Saya adalah mahasiswa akhir Informatika ITB.",
+//   description:
+//     "Dalam sesi grup ini, kita akan mempelajari dasar dari HTML dan CSS untuk membangun sebuah aplikasi berbasis web.",
+//   date: new Date("2023-01-02").toISOString(),
+//   maxParticipant: 10,
+//   bookedCount: 4,
+// };
 
-export const dummyGroupDiscussions = [
-  {
-    id: "1",
-    userId: "1",
-    userName: "Marchotridyo",
-    content:
-      "Di sini, saya mempelajari bahwa HTML dan CSS adalah fondasi yang penting untuk dimiliki untuk seorang web engineer.",
-    createdAt: new Date("2023-01-02").toISOString(),
-  },
-  {
-    id: "2",
-    userId: "2",
-    userName: "Malik Akbar",
-    content:
-      "HTML dan CSS sangat menarik untuk dipelajari, namun kita harus pelan-pelan dalam mempelajarinya agar tidak overwhelmed.",
-    createdAt: new Date("2023-01-02").toISOString(),
-  },
-];
+// export const dummyGroupDiscussions = [
+//   {
+//     id: "1",
+//     userId: "1",
+//     userName: "Marchotridyo",
+//     content:
+//       "Di sini, saya mempelajari bahwa HTML dan CSS adalah fondasi yang penting untuk dimiliki untuk seorang web engineer.",
+//     createdAt: new Date("2023-01-02").toISOString(),
+//   },
+//   {
+//     id: "2",
+//     userId: "2",
+//     userName: "Malik Akbar",
+//     content:
+//       "HTML dan CSS sangat menarik untuk dipelajari, namun kita harus pelan-pelan dalam mempelajarinya agar tidak overwhelmed.",
+//     createdAt: new Date("2023-01-02").toISOString(),
+//   },
+// ];
