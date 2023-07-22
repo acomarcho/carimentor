@@ -8,6 +8,7 @@ import { Menu } from "@mantine/core";
 import { useUser } from "@/lib/hooks/use-user";
 import { Role } from "@/lib/constants/responses";
 import { showSuccess } from "@/lib/utils";
+import { useRouter } from "next/router";
 
 const renderAuthButtons = (
   isAuthenticated: boolean,
@@ -205,13 +206,12 @@ const DesktopNavbar = ({
 export default function Navbar() {
   const { user, setUser } = useUser();
 
-  useEffect(() => {
-    console.log(`User: ${user}`);
-  }, [user]);
+  const router = useRouter();
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
     setUser(undefined);
+    router.push("/login");
   };
 
   const isAuthenticated = !!user;
