@@ -1,13 +1,30 @@
 import DecorationVector from "../common/decoration-vector";
 import { IconUserCircle } from "@tabler/icons-react";
 import Image from "next/image";
-import { dummyUser } from "@/lib/dummies";
 import { Textarea } from "@mantine/core";
 import Link from "next/link";
+import { useUser } from "@/lib/hooks/use-user";
+import { useEffect, useState } from "react";
+import { City, GetCityDetailResponse, GetCityResponse, GetUserResponse } from "@/lib/constants/responses";
+import axios from "axios";
+import { apiURL } from "@/lib/constants";
+
+const fetchCity = (cityId: string) => {
+  return axios.get<GetCityDetailResponse>(`${apiURL}/city/${cityId}`);
+};
 
 export default function MyProfile() {
-  const isAuthenticated = false;
-  const user = dummyUser;
+  const { user, userTags, isLoading, isError } = useUser();
+  const isAuthenticated = !!user;
+
+  const [city, setCity] = useState<City | null>(null);
+  useEffect(() => {
+    if (user) {
+      fetchCity(user.cityId).then(d => {
+        setCity(d.data.data)
+      })
+    }
+  }, [user])
 
   const renderProfilePicture = () => {
     if (isAuthenticated) {
@@ -31,27 +48,27 @@ export default function MyProfile() {
       <div className="border-2 border-purple-600 bg-white rounded-xl p-[1rem] flex flex-col gap-[1rem]">
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Nama</h2>
-          <p className="paragraph">{user.name}</p>
+          <p className="paragraph">{user?.name}</p>
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Email</h2>
-          <p className="paragraph">{user.email}</p>
+          <p className="paragraph">{user?.email}</p>
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Domisili</h2>
-          <p className="paragraph">{user.city}</p>
+          <p className="paragraph">{city?.name}</p>
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Role</h2>
-          <p className="paragraph">{user.role}</p>
+          <p className="paragraph">{user?.role}</p>
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Ketertarikan</h2>
-          <p className="paragraph">{user.tags.join(", ")}</p>
+          <p className="paragraph">{userTags.map(e => e.name).join(", ")}</p>
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Deskripsi</h2>
-          <Textarea value={user.description} disabled radius="lg" autosize />
+          <Textarea value={user?.description} disabled radius="lg" autosize />
         </div>
       </div>
       <Link href="/profile/edit" className="button-600-filled block mt-[1rem]">
