@@ -91,7 +91,7 @@ const MobileNavbar = ({
               <div className="h-[1px] bg-purple-950" />
             </>
           )}
-          <Link className="drawer-link" href="/">
+          <Link className="drawer-link" href="/about-us">
             Tentang Kami
           </Link>
           <div className="h-[1px] bg-purple-950" />
