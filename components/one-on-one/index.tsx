@@ -9,11 +9,16 @@ import { Modal } from "react-responsive-modal";
 import { useState } from "react";
 import { labelStyle } from "@/lib/constants/styles";
 import ReactStars from "react-stars";
+import { ReviewOneOnOneRequest } from "@/lib/constants/requests";
 
 export default function MyBookings() {
   const bookings = dummyMyBookings;
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [request, setRequest] = useState<ReviewOneOnOneRequest>({
+    message: "",
+    rating: 0,
+  });
 
   return (
     <div className="default-wrapper">
@@ -51,7 +56,10 @@ export default function MyBookings() {
                     {!booking.review ? (
                       <button
                         className="button-600-filled"
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => {
+                          setIsModalOpen(true);
+                          setRequest({ message: "", rating: 0 });
+                        }}
                       >
                         Berikan review
                       </button>
@@ -89,14 +97,31 @@ export default function MyBookings() {
             withAsterisk
             styles={{ ...labelStyle }}
             radius="lg"
+            value={request.message}
+            onChange={(e) =>
+              setRequest({ ...request, message: e.currentTarget.value })
+            }
           />
           <div className="flex flex-col">
             <p className="paragraph font-semibold text-[0.8rem]">
               Penilaian <span className="text-red-500">*</span>
             </p>
-            <ReactStars count={5} size={32} />
+            <ReactStars
+              count={5}
+              size={32}
+              value={request.rating}
+              onChange={(v) => setRequest({ ...request, rating: v })}
+            />
           </div>
-          <button className="button-600-filled">Proses penilaian</button>
+          <button
+            className="button-600-filled"
+            disabled={!request.message || !request.rating}
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
+          >
+            Proses penilaian
+          </button>
         </div>
       </Modal>
     </div>
