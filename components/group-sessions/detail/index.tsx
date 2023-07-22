@@ -121,32 +121,35 @@ export default function GroupSessionDetail({
                   </button>
                 </div>
               )}
-              {user?.role === "MENTEE" && !selfData?.meta.canJoin && (
-                <div className="flex flex-col gap-[0.5rem]">
-                  <p className="paragraph text-center">
-                    Diskusikan apa yang Anda sudah pelajari pada forum diskusi!
-                  </p>
-                  <button
-                    className="button-600-filled block"
-                    onClick={async () => {
-                      try {
-                        setCreateBookLoading(true);
-                        const resp = await createBookGroupSession({
-                          sessionId,
-                        });
-                        setIsModalOpen(true);
-                      } catch (e) {
-                        console.error(e);
-                        showError("Gagal bergabung ke sesi grup");
-                      } finally {
-                        setCreateBookLoading(false);
-                      }
-                    }}
-                  >
-                    Buat diskusi
-                  </button>
-                </div>
-              )}
+              {user?.role === "MENTEE" &&
+                selfData?.meta.isJoined &&
+                !selfData?.meta.canJoin && (
+                  <div className="flex flex-col gap-[0.5rem]">
+                    <p className="paragraph text-center">
+                      Diskusikan apa yang Anda sudah pelajari pada forum
+                      diskusi!
+                    </p>
+                    <button
+                      className="button-600-filled block"
+                      onClick={async () => {
+                        try {
+                          setCreateBookLoading(true);
+                          const resp = await createBookGroupSession({
+                            sessionId,
+                          });
+                          setIsModalOpen(true);
+                        } catch (e) {
+                          console.error(e);
+                          showError("Gagal bergabung ke sesi grup");
+                        } finally {
+                          setCreateBookLoading(false);
+                        }
+                      }}
+                    >
+                      Buat diskusi
+                    </button>
+                  </div>
+                )}
             </div>
           ) : (
             <div className="flex flex-col gap-[0.5rem]">
