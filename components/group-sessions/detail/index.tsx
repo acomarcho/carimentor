@@ -5,7 +5,7 @@ import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
 import { useGroupSession } from "@/lib/hooks/use-group-session";
 import { useUser } from "@/lib/hooks/use-user";
 import { formatDateToIndonesianLocale, showError } from "@/lib/utils";
-import { Textarea } from "@mantine/core";
+import { LoadingOverlay, Textarea } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { IconCalendar, IconUserCircle, IconUsers } from "@tabler/icons-react";
 import axios from "axios";
@@ -24,12 +24,16 @@ export default function GroupSessionDetail({
 }: {
   sessionId: string;
 }) {
-  const { user, isLoading } = useUser();
+  const { user, isLoading, isError } = useUser();
   const { groupSession, discussions, bookGroupSessions } =
     useGroupSession(sessionId);
   const session = groupSession?.data;
   const discussionsData = discussions?.data || [];
   const bookGroupSessionsData = bookGroupSessions?.data || [];
+
+  const [createBookLoading, setCreateBookLoading] = useState(false);
+
+  const loadingFlag = isLoading || isError || createBookLoading;
 
   const [discussionWithSender, setDiscussionWithSender] = useState<
     (Discussion & {
@@ -82,31 +86,34 @@ export default function GroupSessionDetail({
           {isAuthenticated ? (
             <div>
               {user?.role === "MENTEE" ? (
-              <div className="flex flex-col gap-[0.5rem]">
-                <p className="paragraph text-center">
-                  Segera bergabung!{" "}
-                  {session &&
-                    session.maxParticipant -
-                      bookGroupSessionsData.length +
-                      " slot tersedia"}
-                </p>
-                <button
-                  className="button-600-filled block"
-                  onClick={async () => {
-                    try {
-                      const resp = await createBookGroupSession({
-                        sessionId,
-                      });
-                      setIsModalOpen(true);
-                    } catch (e) {
-                      console.error(e);
-                      showError("Gagal bergabung ke sesi grup")
-                    }
-                  }}
-                >
-                  Gabung sesi
-                </button>
-              </div>
+                <div className="flex flex-col gap-[0.5rem]">
+                  <p className="paragraph text-center">
+                    Segera bergabung!{" "}
+                    {session &&
+                      session.maxParticipant -
+                        bookGroupSessionsData.length +
+                        " slot tersedia"}
+                  </p>
+                  <button
+                    className="button-600-filled block"
+                    onClick={async () => {
+                      try {
+                        setCreateBookLoading(true);
+                        const resp = await createBookGroupSession({
+                          sessionId,
+                        });
+                        setIsModalOpen(true);
+                      } catch (e) {
+                        console.error(e);
+                        showError("Gagal bergabung ke sesi grup");
+                      } finally {
+                        setCreateBookLoading(false);
+                      }
+                    }}
+                  >
+                    Gabung sesi
+                  </button>
+                </div>
               ) : null}
             </div>
           ) : (
@@ -127,6 +134,7 @@ export default function GroupSessionDetail({
   return (
     <div className="default-wrapper">
       <DecorationVector />
+      <LoadingOverlay visible={loadingFlag} overlayBlur={2} />
       <div className="flex flex-col gap-[0.5rem]">
         <h2 className="subheader">{session?.name}</h2>
         <div className="flex gap-[1rem] items-center">
@@ -140,7 +148,9 @@ export default function GroupSessionDetail({
         <div className="flex gap-[0.5rem] items-center mt-[1rem]">
           <IconCalendar />
           <p className="paragraph text-sm">
-            {formatDateToIndonesianLocale(session?.date || new Date().toISOString())}
+            {formatDateToIndonesianLocale(
+              session?.date || new Date().toISOString()
+            )}
           </p>
         </div>
         <div className="flex gap-[0.5rem] items-center mt-[1rem]">
