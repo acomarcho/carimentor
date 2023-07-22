@@ -62,9 +62,14 @@ const MobileNavbar = ({
                   </Link>
                 </>
               ) : (
-                <Link className="drawer-link" href="/mentor/one-on-one">
-                  Permintaan One-on-One
-                </Link>
+                <>
+                  <Link className="drawer-link" href="/mentor/one-on-one">
+                    Permintaan One-on-One
+                  </Link>
+                  <Link className="drawer-link" href="/mentor/group-session">
+                    Sesi Grupku
+                  </Link>
+                </>
               )}
               <div className="h-[1px] bg-purple-950" />
             </>
@@ -151,11 +156,24 @@ const DesktopNavbar = ({
                     </Menu.Item>
                   </>
                 ) : (
-                  <Menu.Item>
-                    <Link href="/mentor/one-on-one" className="paragraph block">
-                      Permintaan One-on-One
-                    </Link>
-                  </Menu.Item>
+                  <>
+                    <Menu.Item>
+                      <Link
+                        href="/mentor/one-on-one"
+                        className="paragraph block"
+                      >
+                        Permintaan One-on-One
+                      </Link>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <Link
+                        href="/mentor/group-session"
+                        className="paragraph block"
+                      >
+                        Sesi Grupku
+                      </Link>
+                    </Menu.Item>
+                  </>
                 )}
               </Menu.Dropdown>
             </Menu>

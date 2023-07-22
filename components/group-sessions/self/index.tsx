@@ -34,6 +34,12 @@ export default function MyGroupSessions() {
                   {session.meetingUrl}
                 </Link>
               </div>
+              <Link
+                href={`/group-session/${session.id}`}
+                className="inline-block button-600-filled mt-[0.5rem]"
+              >
+                Lihat sesi
+              </Link>
             </div>
           );
         })}
