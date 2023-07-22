@@ -31,7 +31,7 @@ export default function MyProfile() {
     } else {
       return (
         <div className="w-[8rem] h-[8rem] relative rounded-full overflow-hidden">
-          <Image alt="" src="/next.svg" fill className="object-cover" />
+          <Image alt="" src={user.imageUrl} fill className="object-cover" />
         </div>
       );
     }

@@ -15,6 +15,7 @@ import DecorationVector from "../../common/decoration-vector";
 import { showSuccess, showError } from "@/lib/utils";
 import { useTags } from "@/lib/hooks/use-tags";
 import { useRouter } from "next/router";
+import { postImgBB } from "@/lib/api/imgbb";
 
 export default function EditProfile() {
   const { user, userTags, isLoading, isError } = useUser();
@@ -46,16 +47,19 @@ export default function EditProfile() {
 
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
+  const [file, setFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+
   const isShowLoadingOverlay =
-    isLoading || isUpdating || isTagLoading || isError;
+    isLoading || isUpdating || isTagLoading || isError || isUploading;
 
   const renderProfilePicture = () => {
-    if (!user || !user.imageUrl) {
+    if (!user || !request.imageUrl) {
       return <IconUserCircle size={128} />;
     } else {
       return (
         <div className="w-[8rem] h-[8rem] relative rounded-full overflow-hidden">
-          <Image alt="" src="/next.svg" fill className="object-cover" />
+          <Image alt="" src={request.imageUrl} fill className="object-cover" />
         </div>
       );
     }
@@ -90,6 +94,32 @@ export default function EditProfile() {
             placeholder="Pilih gambar untuk diupload"
             accept="image/png,image/jpeg"
             icon={<IconUpload size={16} />}
+            value={file}
+            onChange={(v) => {
+              const handleUpload = async () => {
+                if (!v) {
+                  return;
+                }
+
+                const formData = new FormData();
+                formData.append("image", v);
+
+                try {
+                  setIsUploading(true);
+                  const response = await postImgBB(formData);
+                  setFile(v);
+                  showSuccess("Berhasil mengupload foto!");
+                  setRequest({ ...request, imageUrl: response.data.data.url });
+                } catch (error) {
+                  showError("Gagal mengupload foto!");
+                  setFile(null);
+                } finally {
+                  setIsUploading(false);
+                }
+              };
+
+              handleUpload();
+            }}
           />
           <TextInput disabled value={request.imageUrl} radius="lg" />
         </div>
