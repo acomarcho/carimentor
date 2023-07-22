@@ -1,7 +1,12 @@
 import DecorationVector from "../common/decoration-vector";
-import { Badge, Textarea } from "@mantine/core";
+import { Badge, Textarea, LoadingOverlay } from "@mantine/core";
 import { IconUserCircle, IconCalendar, IconBrowser } from "@tabler/icons-react";
-import { getBadgeColor, formatDateToIndonesianLocale } from "@/lib/utils";
+import {
+  getBadgeColor,
+  formatDateToIndonesianLocale,
+  showError,
+  showSuccess,
+} from "@/lib/utils";
 import Link from "next/link";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
@@ -10,19 +15,31 @@ import { labelStyle } from "@/lib/constants/styles";
 import ReactStars from "react-stars";
 import { ReviewOneOnOneRequest } from "@/lib/constants/requests";
 import { useOneOnOne } from "@/lib/hooks/use-one-on-one";
+import { OneOnOne } from "@/lib/constants/responses";
+import { postReview } from "@/lib/api/one-on-one";
 
 export default function MyBookings() {
-  const { histories: bookings, isLoading, isError } = useOneOnOne();
+  const {
+    histories: bookings,
+    setHistories: setBookings,
+    isLoading,
+    isError,
+  } = useOneOnOne();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [request, setRequest] = useState<ReviewOneOnOneRequest>({
     message: "",
     rating: 0,
   });
+  const [selectedOneOnOne, setSelectedOneOnOne] = useState<OneOnOne>();
+  const [isReviewing, setIsReviewing] = useState<boolean>(false);
+
+  const loadingFlag = isLoading || isError || isReviewing;
 
   return (
     <div className="default-wrapper">
       <DecorationVector />
+      <LoadingOverlay visible={loadingFlag} overlayBlur={2} />
       <h1 className="header-2rem underline">Riwayat One-on-One</h1>
       {bookings.length > 0 ? (
         <div className="flex flex-col gap-[1rem]">
@@ -62,6 +79,7 @@ export default function MyBookings() {
                         onClick={() => {
                           setIsModalOpen(true);
                           setRequest({ message: "", rating: 0 });
+                          setSelectedOneOnOne(booking);
                         }}
                       >
                         Berikan review
@@ -121,7 +139,38 @@ export default function MyBookings() {
             className="button-600-filled"
             disabled={!request.message || !request.rating}
             onClick={() => {
-              setIsModalOpen(false);
+              const handleClick = async () => {
+                try {
+                  setIsReviewing(true);
+                  await postReview(
+                    selectedOneOnOne!,
+                    request.message,
+                    request.rating,
+                    localStorage.getItem("token")! || ""
+                  );
+                  setBookings(
+                    bookings.map((booking) => {
+                      if (booking.id !== selectedOneOnOne!.id) {
+                        return booking;
+                      } else {
+                        return {
+                          ...booking,
+                          review: request.message,
+                          rating: request.rating,
+                        };
+                      }
+                    })
+                  );
+                  showSuccess("Berhasil memproses permintaan!");
+                  setIsModalOpen(false);
+                } catch (error) {
+                  showError("Gagal memproses permintaan!");
+                } finally {
+                  setIsReviewing(false);
+                }
+              };
+
+              handleClick();
             }}
           >
             Proses penilaian

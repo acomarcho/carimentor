@@ -263,6 +263,10 @@ export function useMentor(id: string) {
       }
     };
 
+    if (!id) {
+      return;
+    }
+
     getUser();
   }, [id]);
 

@@ -7,7 +7,7 @@ import {
 } from "@tabler/icons-react";
 import Image from "next/image";
 import ReactStars from "react-stars";
-import { Textarea } from "@mantine/core";
+import { Textarea, LoadingOverlay } from "@mantine/core";
 import { formatDateToIndonesianLocale } from "@/lib/utils";
 import { useViewportSize } from "@mantine/hooks";
 import { useState, useEffect, useRef } from "react";
@@ -34,6 +34,9 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
   const footerRef = useRef<HTMLDivElement>(null);
   const [footerHeight, setFooterHeight] = useState<number>(0);
   const { height, width } = useViewportSize();
+
+  const loadingFlag =
+    isLoading || isMentorLoading || isMentorError || isCityLoading;
 
   useEffect(() => {
     setFooterHeight(footerRef.current?.getBoundingClientRect().height || 0);
@@ -93,6 +96,7 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
   return (
     <div className="default-wrapper">
       <DecorationVector />
+      <LoadingOverlay visible={loadingFlag} overlayBlur={2} />
       <div className="flex flex-row justify-between">
         <div className="flex flex-row gap-[1rem] items-center flex-shrink-0">
           {renderProfilePicture()}
