@@ -1,8 +1,15 @@
+import { approveOneOnOne, rejectOneOnOne } from "@/lib/api/one-on-one";
 import { ProcessOneOnOneRequest } from "@/lib/constants/requests";
+import { OneOnOne } from "@/lib/constants/responses";
 import { labelStyle } from "@/lib/constants/styles";
 import { useOneOnOne } from "@/lib/hooks/use-one-on-one";
-import { formatDateToIndonesianLocale, getBadgeColor } from "@/lib/utils";
-import { Badge, Radio, TextInput } from "@mantine/core";
+import {
+  formatDateToIndonesianLocale,
+  getBadgeColor,
+  showError,
+  showSuccess,
+} from "@/lib/utils";
+import { Badge, Radio, TextInput, LoadingOverlay } from "@mantine/core";
 import { IconBrowser, IconCalendar, IconUserCircle } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -13,15 +20,21 @@ import DecorationVector from "../../common/decoration-vector";
 export default function MenteeBookings() {
   const { histories: bookings, isLoading, isError } = useOneOnOne();
 
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [selectedOneOnOne, setSelectedOneOnOne] = useState<OneOnOne>();
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [request, setRequest] = useState<ProcessOneOnOneRequest>({
     approvalStatus: undefined,
     meetingUrl: "",
   });
 
+  const loadingFlag = isLoading || isError || isProcessing;
+
   return (
     <div className="default-wrapper">
       <DecorationVector />
+      <LoadingOverlay visible={loadingFlag} overlayBlur={2} />
       <h1 className="header-2rem underline">Permintaan One-on-One</h1>
       {bookings.length > 0 ? (
         <div className="flex flex-col gap-[1rem]">
@@ -58,6 +71,7 @@ export default function MenteeBookings() {
                     onClick={() => {
                       setIsModalOpen(true);
                       setRequest({ approvalStatus: undefined, meetingUrl: "" });
+                      setSelectedOneOnOne(booking);
                     }}
                   >
                     Proses permintaan
@@ -114,7 +128,32 @@ export default function MenteeBookings() {
               (request.approvalStatus === "APPROVE" && !request.meetingUrl)
             }
             onClick={() => {
-              setIsModalOpen(false);
+              const handleProcess = async () => {
+                let success = false;
+                try {
+                  setIsProcessing(true);
+                  if (request.approvalStatus === "APPROVE") {
+                    await approveOneOnOne(
+                      selectedOneOnOne!,
+                      request.meetingUrl,
+                      localStorage.getItem("token") || ""
+                    );
+                  } else {
+                    await rejectOneOnOne(
+                      selectedOneOnOne!,
+                      localStorage.getItem("token") || ""
+                    );
+                  }
+                  showSuccess("Berhasil memproses permintaan!");
+                  setIsModalOpen(false);
+                } catch (error) {
+                  showError("Gagal memproses permintaan!");
+                } finally {
+                  setIsProcessing(false);
+                }
+              };
+
+              handleProcess();
             }}
           >
             Proses permintaan
