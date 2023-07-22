@@ -17,9 +17,21 @@ import { formatDateToIndonesianLocale } from "@/lib/utils";
 import { useViewportSize } from "@mantine/hooks";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useMentor, useUser } from "@/lib/hooks/use-user";
+import { useAllCities } from "@/lib/hooks/use-city";
 
 export default function MentorDetail({ mentorId }: { mentorId: string }) {
-  const mentor = dummyMentorWithPicture;
+  const { user, isLoading } = useUser();
+  const {
+    user: mentor,
+    userTags: mentorTags,
+    oneOnOnes,
+    isLoading: isMentorLoading,
+    isError: isMentorError,
+  } = useMentor(mentorId);
+  const { cities, isLoading: isCityLoading } = useAllCities();
+
+  // const mentor = dummyMentorWithPicture;
   const reviews = dummyReviews;
   const ratings = reviews.map((review) => review.rating);
   const isAuthenticated = true;
@@ -33,7 +45,7 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
   }, [height, width]);
 
   const renderProfilePicture = () => {
-    if (!mentor.imageUrl) {
+    if (!mentor || !mentor.imageUrl) {
       return <IconUserCircle size={64} />;
     } else {
       return (
@@ -93,21 +105,25 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
             <div className="flex items-center gap-[1rem]">
               <IconSignature />
               <div className="subheader max-w-[100px] md:max-w-[400px]">
-                {mentor.name}
+                {mentor?.name}
               </div>
             </div>
             <div className="flex items-center gap-[1rem]">
               <IconVocabulary />
               <p className="paragraph max-w-[100px] md:max-w-[400px]">
-                {mentor.tags.slice(0, 2).join(", ")}
-                {mentor.tags.length > 2 &&
-                  ` dan ${mentor.tags.length - 2} ketertarikan lainnya`}
+                {mentorTags && mentorTags.slice(0, 2).join(", ")}
+                {mentorTags &&
+                  mentorTags.length > 2 &&
+                  ` dan ${mentorTags.length - 2} ketertarikan lainnya`}
               </p>
             </div>
             <div className="flex items-center gap-[1rem]">
               <IconMapPin />
               <p className="paragraph max-w-[100px] md:max-w-[400px]">
-                {mentor.city}
+                {cities &&
+                  cities.data &&
+                  mentor &&
+                  cities.data.find((city) => city.id === mentor.cityId)!.name}
               </p>
             </div>
           </div>
@@ -129,7 +145,7 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
                   ).toFixed(1)
             }/5.0`}
           </p>
-          {mentor.subscriptionStatus === "FREE" ? (
+          {mentor?.subscriptionStatus === "FREE" ? (
             <p className="paragraph text-end">Mentor reguler</p>
           ) : (
             <p className="paragraph font-bold text-end">Mentor premium</p>
@@ -138,7 +154,7 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
       </div>
       <div className="rounded-xl p-[1rem] bg-white drop-shadow-lg mt-[2rem]">
         <h2 className="subheader">Tentang mentor</h2>
-        <Textarea disabled value={mentor.description} />
+        <Textarea disabled value={mentor?.description} />
         <h2 className="subheader mt-[1rem]">Ulasan</h2>
         {reviews.length > 0 ? (
           reviews.map((data) => {
