@@ -34,6 +34,7 @@
     "react-modern-drawer": "^1.2.0",
     "react-responsive-modal": "^6.4.2",
     "react-stars": "^2.2.5",
+    "swr": "^2.2.0",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6"
   },

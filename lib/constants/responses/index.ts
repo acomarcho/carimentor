@@ -1,4 +1,3 @@
-
 export const Role = {
   MENTOR: "MENTOR",
   MENTEE: "MENTEE",
@@ -17,8 +16,8 @@ export type User = {
   description: string;
   email: string;
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   name: string;
   role: Role;
   cityId: string;
@@ -28,17 +27,47 @@ export type User = {
 
 export type Tag = {
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   name: string;
 };
 
 export type UserTag = {
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   userId: string;
   tagId: string;
+};
+
+export type City = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  provinceId: string;
+};
+
+export type Province = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+};
+
+export type OneOnOne = {
+  id: string;
+  updatedAt: string;
+  menteeId: string;
+  menteeName: string;
+  mentorId: string;
+  mentorName: string;
+  meetingUrl: string | null;
+  review: string | null;
+  rating: number | null;
+  message: string | null;
+  approvalStatus: string;
+  date: string;
 };
 
 export type UserTagDetail = UserTag & {
@@ -47,7 +76,7 @@ export type UserTagDetail = UserTag & {
 
 export type BaseResponse<T> = {
   success: boolean;
-  data?: T;
+  data: T;
   message: string;
   error?: string;
 };
@@ -58,13 +87,23 @@ export type GetUserResponse = BaseResponse<GetUserData>;
 export type GetTagData = UserTagDetail[];
 export type GetTagResponse = BaseResponse<GetTagData>;
 
+export type GetTagListData = Tag[];
+export type GetTagListResponse = BaseResponse<GetTagListData>;
+
+export type GetCityData = City[];
+export type GetCityResponse = BaseResponse<GetCityData>;
+
+export type GetProvinceData = Province[];
+export type GetProvinceResponse = BaseResponse<GetProvinceData>;
+
+export type GetOneOnOneData = OneOnOne[];
+export type GetOneOnOneResponse = BaseResponse<GetOneOnOneData>;
+
 export interface Login {
-    token: string;
-    user: User;
+  token: string;
+  user: User;
 }
 
 export interface LoginResponse {
-    data: Login;
+  data: Login;
 }
-
-
