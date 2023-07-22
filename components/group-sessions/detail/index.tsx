@@ -3,6 +3,9 @@ import { dummyGroupSession, dummyGroupDiscussions } from "@/lib/dummies";
 import { IconUserCircle, IconCalendar, IconUsers } from "@tabler/icons-react";
 import { Textarea } from "@mantine/core";
 import { formatDateToIndonesianLocale } from "@/lib/utils";
+import { useState, useEffect, useRef } from "react";
+import { useViewportSize } from "@mantine/hooks";
+import Link from "next/link";
 
 export default function GroupSessionDetail({
   sessionId,
@@ -11,6 +14,46 @@ export default function GroupSessionDetail({
 }) {
   const session = dummyGroupSession;
   const discussions = dummyGroupDiscussions;
+
+  const footerRef = useRef<HTMLDivElement>(null);
+  const [footerHeight, setFooterHeight] = useState<number>(0);
+  const { height, width } = useViewportSize();
+
+  const isAuthenticated = true;
+
+  useEffect(() => {
+    setFooterHeight(footerRef.current?.getBoundingClientRect().height || 0);
+  }, [height, width]);
+
+  const renderFooter = () => {
+    return (
+      <div
+        className="bg-white drop-shadow-xl fixed bottom-0 left-0 w-full"
+        ref={footerRef}
+      >
+        <div className="max-w-[1160px] mx-auto p-[1.25rem]">
+          {isAuthenticated ? (
+            <div className="flex flex-col gap-[0.5rem]">
+              <p className="paragraph text-center">
+                Segera bergabung! {session.maxParticipant - session.bookedCount}{" "}
+                slot tersedia
+              </p>
+              <button className="button-600-filled block">Gabung sesi</button>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-[0.5rem]">
+              <p className="paragraph text-center">
+                Masuk ke dalam akunmu untuk mengikuti sesi gurp!
+              </p>
+              <Link href="/login" className="button-600-filled block">
+                Masuk
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="default-wrapper">
@@ -63,6 +106,8 @@ export default function GroupSessionDetail({
             );
           })}
       </div>
+      <div style={{ marginTop: footerHeight }} />
+      {renderFooter()}
     </div>
   );
 }
