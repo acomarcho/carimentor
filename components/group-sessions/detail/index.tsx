@@ -1,5 +1,5 @@
 import DecorationVector from "@/components/common/decoration-vector";
-import { createBookGroupSession } from "@/lib/api";
+import { createBookGroupSession, createDiscussion } from "@/lib/api";
 import { apiURL } from "@/lib/constants";
 import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
 import {
@@ -7,7 +7,11 @@ import {
   useGroupSessionSelf,
 } from "@/lib/hooks/use-group-session";
 import { useUser } from "@/lib/hooks/use-user";
-import { formatDateToIndonesianLocale, showError } from "@/lib/utils";
+import {
+  formatDateToIndonesianLocale,
+  showError,
+  showSuccess,
+} from "@/lib/utils";
 import { LoadingOverlay } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { IconCalendar, IconUserCircle, IconUsers } from "@tabler/icons-react";
@@ -263,7 +267,31 @@ export default function GroupSessionDetail({
             value={discussion}
             onChange={(e) => setDiscussion(e.currentTarget.value)}
           />
-          <button className="button-600-filled w-full" disabled={!discussion}>
+          <button
+            className="button-600-filled w-full"
+            disabled={!discussion}
+            onClick={() => {
+              const handleClick = async () => {
+                try {
+                  setCreateBookLoading(true);
+                  await createDiscussion(
+                    { sessionId, content: discussion },
+                    localStorage.getItem("token") || ""
+                  );
+                  setIsDiscussionOpen(false);
+                  showSuccess(
+                    "Diskusi telah berhasil ditambahkan! Mohon refresh laman ini untuk melihat perubahan."
+                  );
+                } catch (error) {
+                  showError("Gagal menambahkan diskusi!");
+                } finally {
+                  setCreateBookLoading(false);
+                }
+              };
+
+              handleClick();
+            }}
+          >
             Kirim diskusi
           </button>
         </div>
