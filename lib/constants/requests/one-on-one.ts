@@ -1,3 +1,9 @@
+export interface CreateOneOnOneRequest {
+  mentorId: string;
+  message: string;
+  date: string;
+}
+
 export interface ReviewOneOnOneRequest {
   message: string;
   rating: number;

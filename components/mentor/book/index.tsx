@@ -14,10 +14,11 @@ import {
 import "dayjs/locale/id";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 import DecorationVector from "../../common/decoration-vector";
+import { createOneOnOne } from "@/lib/api/one-on-one";
 
 export default function BookMentor({ mentorId }: { mentorId: string }) {
   const { isLoading, isError } = useUser();
@@ -35,8 +36,15 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
   });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const [isRequesting, setIsRequesting] = useState<boolean>(false);
+
   const loadingFlag =
-    isMentorLoading || isMentorError || isCityLoading || isLoading || isError;
+    isMentorLoading ||
+    isMentorError ||
+    isCityLoading ||
+    isLoading ||
+    isError ||
+    isRequesting;
 
   const renderProfilePicture = () => {
     if (!mentor || !mentor.imageUrl) {
@@ -121,7 +129,27 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
         <button
           className="mt-[1rem] button-600-filled w-full"
           disabled={!request.date || !request.message}
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => {
+            const handleClick = async () => {
+              try {
+                setIsRequesting(true);
+                await createOneOnOne(
+                  {
+                    mentorId,
+                    date: request.date!.toISOString(),
+                    message: request.message,
+                  },
+                  localStorage.getItem("token") || ""
+                );
+                setIsModalOpen(true);
+              } catch (error) {
+              } finally {
+                setIsRequesting(false);
+              }
+            };
+
+            handleClick();
+          }}
         >
           Buat jadwal
         </button>
