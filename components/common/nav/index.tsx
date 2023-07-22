@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { appName } from "@/lib/constants";
 import { IconMenu2, IconX, IconUserCircle } from "@tabler/icons-react";
 import Drawer from "react-modern-drawer";
@@ -7,8 +7,13 @@ import Link from "next/link";
 import { Menu } from "@mantine/core";
 import { useUser } from "@/lib/hooks/use-user";
 import { Role } from "@/lib/constants/responses";
+import { showSuccess } from "@/lib/utils";
+import { useRouter } from "next/router";
 
-const renderAuthButtons = (isAuthenticated: boolean) => {
+const renderAuthButtons = (
+  isAuthenticated: boolean,
+  handleLogOut: () => void
+) => {
   if (!isAuthenticated) {
     return (
       <>
@@ -21,16 +26,28 @@ const renderAuthButtons = (isAuthenticated: boolean) => {
       </>
     );
   } else {
-    return <button className="button-950-outline">Keluar</button>;
+    return (
+      <button
+        className="button-950-outline"
+        onClick={() => {
+          handleLogOut();
+          showSuccess("Sampai jumpa kembali di lain waktu!");
+        }}
+      >
+        Keluar
+      </button>
+    );
   }
 };
 
 const MobileNavbar = ({
   isAuthenticated,
   isMentee,
+  handleLogOut,
 }: {
   isAuthenticated: boolean;
   isMentee: boolean;
+  handleLogOut: () => void;
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
@@ -78,7 +95,7 @@ const MobileNavbar = ({
             Tentang Kami
           </Link>
           <div className="h-[1px] bg-purple-950" />
-          {renderAuthButtons(isAuthenticated)}
+          {renderAuthButtons(isAuthenticated, handleLogOut)}
         </div>
       </Drawer>
     );
@@ -104,9 +121,11 @@ const MobileNavbar = ({
 const DesktopNavbar = ({
   isAuthenticated,
   isMentee,
+  handleLogOut,
 }: {
   isAuthenticated: boolean;
   isMentee: boolean;
+  handleLogOut: () => void;
 }) => {
   return (
     <div className="hidden lg:block">
@@ -123,7 +142,7 @@ const DesktopNavbar = ({
           </Link>
         </div>
         <div className="flex gap-[1rem]">
-          {renderAuthButtons(isAuthenticated)}
+          {renderAuthButtons(isAuthenticated, handleLogOut)}
           {isAuthenticated && (
             <Menu shadow="md" width={200}>
               <Menu.Target>
@@ -185,15 +204,31 @@ const DesktopNavbar = ({
 };
 
 export default function Navbar() {
-  const { user } = useUser();
+  const { user, userTags, setUser } = useUser();
+  
+  const router = useRouter();
+
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    setUser(undefined);
+    router.push("/login");
+  };
 
   const isAuthenticated = !!user;
   const isMentee = isAuthenticated && user?.role === Role.MENTEE;
 
   return (
     <nav className="fixed top-0 left-0 w-full z-[100] border-2 border-purple-50 bg-white">
-      <MobileNavbar isAuthenticated={isAuthenticated} isMentee={isMentee} />
-      <DesktopNavbar isAuthenticated={isAuthenticated} isMentee={isMentee} />
+      <MobileNavbar
+        isAuthenticated={isAuthenticated}
+        isMentee={isMentee}
+        handleLogOut={handleLogOut}
+      />
+      <DesktopNavbar
+        isAuthenticated={isAuthenticated}
+        isMentee={isMentee}
+        handleLogOut={handleLogOut}
+      />
     </nav>
   );
 }

@@ -1,13 +1,14 @@
 import axios from "axios";
 import { apiURL } from "../constants";
-import { GetOneOnOneResponse, GetTagResponse, GetUserResponse, OneOnOne, Tag, User } from "../constants/responses";
+import { GetOneOnOneDataResponse, GetUserResponse, OneOnOne, Tag, User } from "../constants/responses";
+import { GetUserTagResponse } from "../constants/responses";
 import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { userAtom, userTagsAtom } from "../atoms/user";
 
 const fetchUser = () => {
   const token = localStorage.getItem("token");
-  return axios.get<GetUserResponse>(`${apiURL}/user`, {
+  return axios.get<GetUserResponse>(`${apiURL}/user/self`, {
     headers: {
       Authorization: token ? `Bearer ${token}` : "",
     },
@@ -15,7 +16,7 @@ const fetchUser = () => {
 };
 
 const fetchTag = (userId: string) => {
-  return axios.get<GetTagResponse>(`${apiURL}/tag?userId=${userId}`);
+  return axios.get<GetUserTagResponse>(`${apiURL}/tag?userId=${userId}`);
 };
 
 export function useUser() {
@@ -84,14 +85,16 @@ export function useMentor(id: string) {
         });
         setUser(response.data.data);
 
-        const tagsResponse = await axios.get<GetTagResponse>(`${apiURL}/tag?userId=${id}`);
+        const tagsResponse = await axios.get<GetUserTagResponse>(
+          `${apiURL}/tag?userId=${id}`
+        );
         setUserTags(
           tagsResponse.data.data.map((d) => {
             return d.tag;
           })
         );
 
-        const oneOnOnesResponse = await axios.get<GetOneOnOneResponse>(
+        const oneOnOnesResponse = await axios.get<GetOneOnOneDataResponse>(
           `${apiURL}/one-on-one?mentorId=${id}`,
           {
             headers: {
