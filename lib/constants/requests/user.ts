@@ -8,3 +8,11 @@ export interface BookMentorRequest {
   date: Date | null;
   message: string;
 }
+export interface UpdateUserRequest {
+  name: string;
+  description: string;
+  subscriptionStatus: string;
+  imageUrl: string;
+  cityId: string;
+  tags: string[];
+}
