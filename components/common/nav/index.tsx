@@ -151,7 +151,7 @@ const DesktopNavbar = ({
 
 export default function Navbar() {
   const isAuthenticated = true;
-  const isMentee = false;
+  const isMentee = true;
 
   return (
     <nav className="fixed top-0 left-0 w-full z-[100] border-2 border-purple-50 bg-white">
