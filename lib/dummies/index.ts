@@ -121,6 +121,7 @@ export const dummyMentorWithPicture = {
   ],
   city: "KOTA BANDUNG",
   subscriptionStatus: "FREE",
+  description: "Marcho adalah seorang mahasiswa tingkat akhir di IF ITB.",
 };
 
 export const dummyMentorWithoutPicture = {
@@ -129,6 +130,7 @@ export const dummyMentorWithoutPicture = {
   tags: ["Artificial Intelligence", "Software Engineering"],
   city: "KOTA BANDUNG",
   subscriptionStatus: "PREMIUM",
+  description: "Malik Akbar adalah seorang mahasiswa tingkat akhir di IF ITB.",
 };
 
 export const dummyReviews = [
@@ -143,7 +145,7 @@ export const dummyReviews = [
     id: "2",
     menteeName: "Fayza Nadia",
     updatedAt: new Date().toISOString(),
-    review: "Sesi mentoringnya menyenangkan!",
+    review: "Sesi mentoringnya menyenangkan! Saya ingin mengikutinya kembali! Penjelasannya sangat jelas!",
     rating: 3,
   },
   {

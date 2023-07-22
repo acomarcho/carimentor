@@ -11,6 +11,7 @@ import {
 } from "@tabler/icons-react";
 import Image from "next/image";
 import ReactStars from "react-stars";
+import { Textarea } from "@mantine/core";
 
 export default function MentorDetail({ mentorId }: { mentorId: string }) {
   const mentor = dummyMentorWithPicture;
@@ -81,6 +82,36 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
             <p className="paragraph font-bold">Mentor premium</p>
           )}
         </div>
+      </div>
+      <div className="rounded-xl p-[1rem] bg-white drop-shadow-lg mt-[2rem]">
+        <h2 className="subheader">Tentang mentor</h2>
+        <Textarea disabled value={mentor.description} />
+        <h2 className="subheader mt-[1rem]">Ulasan</h2>
+        {reviews.length > 0 ? (
+          reviews.map((data) => {
+            return (
+              <div className="flex flex-col gap-[1rem] mt-[1rem]" key={data.id}>
+                <div className="flex justify-between">
+                  <div className="flex flex-col gap-[0.25rem] max-w-[60%]">
+                    <h2 className="header-600">{data.menteeName}</h2>
+                    <ReactStars
+                      count={5}
+                      value={data.rating}
+                      size={20}
+                      edit={false}
+                    />
+                    <p className="paragraph">{data.review}</p>
+                  </div>
+                  <p className="paragraph text-[0.75rem]">
+                    {data.updatedAt}
+                  </p>
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <p className="paragraph">Mentor ini belum memiliki ulasan.</p>
+        )}
       </div>
     </div>
   );
