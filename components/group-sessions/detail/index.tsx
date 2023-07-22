@@ -1,9 +1,10 @@
 import DecorationVector from "@/components/common/decoration-vector";
+import { createBookGroupSession } from "@/lib/api";
 import { apiURL } from "@/lib/constants";
 import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
 import { useGroupSession } from "@/lib/hooks/use-group-session";
 import { useUser } from "@/lib/hooks/use-user";
-import { formatDateToIndonesianLocale } from "@/lib/utils";
+import { formatDateToIndonesianLocale, showError } from "@/lib/utils";
 import { Textarea } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { IconCalendar, IconUserCircle, IconUsers } from "@tabler/icons-react";
@@ -91,8 +92,16 @@ export default function GroupSessionDetail({
                 </p>
                 <button
                   className="button-600-filled block"
-                  onClick={() => {
-                    setIsModalOpen(true);
+                  onClick={async () => {
+                    try {
+                      const resp = await createBookGroupSession({
+                        sessionId,
+                      });
+                      setIsModalOpen(true);
+                    } catch (e) {
+                      console.error(e);
+                      showError("Gagal bergabung ke sesi grup")
+                    }
                   }}
                 >
                   Gabung sesi
