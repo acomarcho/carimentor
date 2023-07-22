@@ -16,4 +16,4 @@ export interface OneOnOne {
 }
 
 export type GetOneOnOneData = OneOnOne[];
-export type GetOneOnOneDataResponse = BaseResponse<GetOneOnOneData>;
+export type GetOneOnOneResponse = BaseResponse<GetOneOnOneData>;

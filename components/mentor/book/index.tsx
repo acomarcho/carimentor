@@ -1,27 +1,33 @@
-import DecorationVector from "../../common/decoration-vector";
-import {
-  dummyMentorWithPicture,
-  dummyMentorWithoutPicture,
-} from "@/lib/dummies";
-import {
-  IconUserCircle,
-  IconMapPin,
-  IconVocabulary,
-  IconSignature,
-} from "@tabler/icons-react";
-import Image from "next/image";
+import { BookMentorRequest } from "@/lib/constants/requests";
+import { City } from "@/lib/constants/responses";
+import { labelStyle } from "@/lib/constants/styles";
+import { useAllCities } from "@/lib/hooks/use-city";
+import { useMentor, useUser } from "@/lib/hooks/use-user";
 import { Textarea } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
+import {
+  IconMapPin,
+  IconSignature,
+  IconUserCircle,
+  IconVocabulary,
+} from "@tabler/icons-react";
 import "dayjs/locale/id";
-import { labelStyle } from "@/lib/constants/styles";
-import { useState } from "react";
-import { BookMentorRequest } from "@/lib/constants/requests";
-import "react-responsive-modal/styles.css";
-import { Modal } from "react-responsive-modal";
+import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { Modal } from "react-responsive-modal";
+import "react-responsive-modal/styles.css";
+import DecorationVector from "../../common/decoration-vector";
 
 export default function BookMentor({ mentorId }: { mentorId: string }) {
-  const mentor = dummyMentorWithPicture;
+  const { isLoading, isError } = useUser();
+  const {
+    user: mentor,
+    userTags: mentorTags,
+    isLoading: isMentorLoading,
+    isError: isMentorError,
+  } = useMentor(mentorId);
+  const { cities, isLoading: isCityLoading } = useAllCities();
 
   const [request, setRequest] = useState<BookMentorRequest>({
     date: null,
@@ -30,7 +36,7 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const renderProfilePicture = () => {
-    if (!mentor.imageUrl) {
+    if (!mentor || !mentor.imageUrl) {
       return <IconUserCircle size={64} />;
     } else {
       return (
@@ -55,21 +61,30 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
           <div className="flex items-center gap-[1rem]">
             <IconSignature />
             <div className="subheader max-w-[100px] md:max-w-[400px]">
-              {mentor.name}
+              {mentor?.name}
             </div>
           </div>
           <div className="flex items-center gap-[1rem]">
             <IconVocabulary />
             <p className="paragraph max-w-[100px] md:max-w-[400px]">
-              {mentor.tags.slice(0, 2).join(", ")}
-              {mentor.tags.length > 2 &&
-                ` dan ${mentor.tags.length - 2} ketertarikan lainnya`}
+              {mentorTags &&
+                mentorTags
+                  .slice(0, 3)
+                  .map((tag) => tag.name)
+                  .join(", ")}
+              {mentorTags &&
+                mentorTags.length > 3 &&
+                ` dan ${mentorTags.length - 3} ketertarikan lainnya`}
             </p>
           </div>
           <div className="flex items-center gap-[1rem]">
             <IconMapPin />
             <p className="paragraph max-w-[100px] md:max-w-[400px]">
-              {mentor.city}
+              {cities &&
+                cities.data &&
+                mentor &&
+                cities.data.find((city: City) => city.id === mentor.cityId)!
+                  .name}
             </p>
           </div>
         </div>

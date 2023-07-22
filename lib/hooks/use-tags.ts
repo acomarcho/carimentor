@@ -1,5 +1,5 @@
-import useSWR from "swr";
 import { apiURL } from "@/lib/constants";
+import useSWR from "swr";
 import { GetTagDataResponse } from "../constants/responses";
 
 export function useTags() {

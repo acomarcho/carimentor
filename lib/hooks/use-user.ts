@@ -12,6 +12,7 @@ import {
 } from "../constants/responses";
 import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
 import { userAtom, userTagsAtom } from "../atoms/user";
 import { MentorFilterRequest } from "../constants/requests";
 
@@ -224,7 +225,7 @@ export function useMentor(id: string) {
           })
         );
 
-        const oneOnOnesResponse = await axios.get<GetOneOnOneDataResponse>(
+        const oneOnOnesResponse = await axios.get<GetOneOnOneResponse>(
           `${apiURL}/one-on-one?mentorId=${id}`,
           {
             headers: {
