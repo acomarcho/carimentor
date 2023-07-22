@@ -6,6 +6,7 @@ import {
   MultiSelect,
   Select,
   Textarea,
+  LoadingOverlay,
 } from "@mantine/core";
 import Link from "next/link";
 import { RegisterRequest } from "@/lib/constants/requests";
@@ -37,6 +38,9 @@ export default function Register() {
   } = useCity(request.provinceId || "11");
   const { tags, isLoading: isLoading3, isError: isError3 } = useTags();
 
+  const isShowLoadingOverlay =
+    isLoading || isLoading2 || isError || isError2 || isLoading3 || isError3;
+
   const emailValidity = validateEmail(request.email)
     ? ""
     : "Format email tidak benar!";
@@ -44,6 +48,7 @@ export default function Register() {
   if (currentPage === 0) {
     return (
       <div className="default-wrapper flex flex-col justify-center items-center">
+        <LoadingOverlay visible={isShowLoadingOverlay} overlayBlur={2} />
         <DecorationVector />
         <h1 className="header-2rem">Buat akun</h1>
         <div className="flex flex-col gap-[1rem] w-full mt-[2rem]">
@@ -134,6 +139,7 @@ export default function Register() {
   } else {
     return (
       <div className="default-wrapper flex flex-col justify-center items-center">
+        <LoadingOverlay visible={isShowLoadingOverlay} overlayBlur={2} />
         <DecorationVector />
         <h1 className="header-2rem">Lengkapi profilmu</h1>
         <div className="flex flex-col gap-[1rem] w-full mt-[2rem]">
