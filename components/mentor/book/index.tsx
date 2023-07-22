@@ -16,6 +16,9 @@ import "dayjs/locale/id";
 import { labelStyle } from "@/lib/constants/styles";
 import { useState } from "react";
 import { BookMentorRequest } from "@/lib/constants/requests";
+import "react-responsive-modal/styles.css";
+import { Modal } from "react-responsive-modal";
+import Link from "next/link";
 
 export default function BookMentor({ mentorId }: { mentorId: string }) {
   const mentor = dummyMentorWithPicture;
@@ -24,6 +27,7 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
     date: null,
     message: "",
   });
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const renderProfilePicture = () => {
     if (!mentor.imageUrl) {
@@ -97,10 +101,41 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
         <button
           className="mt-[1rem] button-600-filled w-full"
           disabled={!request.date || !request.message}
+          onClick={() => setIsModalOpen(true)}
         >
           Buat jadwal
         </button>
       </div>
+      <Modal
+        open={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
+        center
+        showCloseIcon={false}
+        classNames={{
+          modal: "rounded-xl",
+        }}
+      >
+        <div className="flex flex-col items-center justify-center gap-[1rem] p-[1rem] max-w-[293px]">
+          <h1 className="subheader text-center">
+            Request Jadwal Berhasil Dikirimkan
+          </h1>
+          <Image
+            src="/images/modal-success.png"
+            alt="Success checkmark"
+            width={180}
+            height={132.33}
+          />
+          <p className="paragraph text-center">
+            Mentor akan menerima request kamu. Periksa status request secara
+            berkala pada laman profil!
+          </p>
+          <Link href="/one-on-one" className="button-600-filled w-full">
+            Lihat status request
+          </Link>
+        </div>
+      </Modal>
     </div>
   );
 }
