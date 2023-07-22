@@ -165,6 +165,7 @@ export const dummyMyBookings = [
     mentorName: "Marchotridyo",
     date: new Date("2023-01-02").toISOString(),
     review: "",
+    meetingUrl: "",
   },
   {
     id: "2",
@@ -172,6 +173,7 @@ export const dummyMyBookings = [
     mentorName: "Marchotridyo",
     date: new Date("2023-01-02").toISOString(),
     review: "",
+    meetingUrl: "https://www.google.com",
   },
   {
     id: "3",
@@ -179,6 +181,7 @@ export const dummyMyBookings = [
     mentorName: "Marchotridyo",
     date: new Date("2023-01-02").toISOString(),
     review: "",
+    meetingUrl: "",
   },
   {
     id: "4",
@@ -186,5 +189,6 @@ export const dummyMyBookings = [
     mentorName: "Marchotridyo",
     date: new Date("2023-01-02").toISOString(),
     review: "Bagus materinya!",
+    meetingUrl: "https://www.google.com",
   },
 ];

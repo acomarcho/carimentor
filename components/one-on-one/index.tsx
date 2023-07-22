@@ -3,6 +3,7 @@ import { dummyMyBookings } from "@/lib/dummies";
 import { Badge } from "@mantine/core";
 import { IconUserCircle, IconCalendar, IconBrowser } from "@tabler/icons-react";
 import { getBadgeColor, formatDateToIndonesianLocale } from "@/lib/utils";
+import Link from "next/link";
 
 export default function MyBookings() {
   const bookings = dummyMyBookings;
@@ -32,6 +33,25 @@ export default function MyBookings() {
                     {formatDateToIndonesianLocale(booking.date)}
                   </p>
                 </div>
+                {booking.approvalStatus === "APPROVED" && (
+                  <>
+                    <div className="flex flex-row items-center gap-[0.5rem]">
+                      <IconBrowser />
+                      <Link href={booking.meetingUrl} className="paragraph">
+                        {booking.meetingUrl}
+                      </Link>
+                    </div>
+                    {!booking.review ? (
+                      <button className="button-600-filled">
+                        Berikan review
+                      </button>
+                    ) : (
+                      <p className="paragraph">
+                        Anda sudah memberikan review untuk sesi ini.
+                      </p>
+                    )}
+                  </>
+                )}
               </div>
             );
           })}
