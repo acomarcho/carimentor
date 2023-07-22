@@ -25,6 +25,7 @@ export function useAllGroupSessions() {
 
   const fetch = async () => {
     try {
+      setIsLoading(true);
       const { data } = await axios.get<GetGroupSessionResponse>(
         `${apiURL}/group-session`
       );
