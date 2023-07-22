@@ -1,16 +1,22 @@
 import { putProfile } from "@/lib/api/update-profile";
 import { UpdateUserRequest } from "@/lib/constants/requests";
 import { useUser } from "@/lib/hooks/use-user";
-import { FileInput, MultiSelect, TextInput, Textarea } from "@mantine/core";
+import {
+  FileInput,
+  MultiSelect,
+  TextInput,
+  Textarea,
+  LoadingOverlay,
+} from "@mantine/core";
 import { IconUpload, IconUserCircle } from "@tabler/icons-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import DecorationVector from "../../common/decoration-vector";
+import { showSuccess, showError } from "@/lib/utils";
 
 export default function EditProfile() {
-  const isAuthenticated = false;
   const { user, userTags, isLoading } = useUser();
-  const tags = userTags ?? [];
+  const tags = useMemo(() => userTags ?? [], [userTags]);
 
   const [request, setRequest] = useState<UpdateUserRequest>({
     name: user?.name || "",
@@ -21,21 +27,37 @@ export default function EditProfile() {
     tags: tags.map((tag) => tag.id),
   });
 
+  useEffect(() => {
+    setRequest({
+      name: user?.name || "",
+      description: user?.description || "",
+      subscriptionStatus: user?.subscriptionStatus || "FREE",
+      imageUrl: user?.imageUrl || "",
+      cityId: user?.cityId || "",
+      tags: tags.map((tag) => tag.id),
+    });
+  }, [user, tags]);
+
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
+
+  const isShowLoadingOverlay = isLoading || isUpdating;
+
   const renderProfilePicture = () => {
-    if (isAuthenticated) {
+    if (!user || !user.imageUrl) {
+      return <IconUserCircle size={128} />;
+    } else {
       return (
         <div className="w-[8rem] h-[8rem] relative rounded-full overflow-hidden">
           <Image alt="" src="/next.svg" fill className="object-cover" />
         </div>
       );
-    } else {
-      return <IconUserCircle size={128} />;
     }
   };
 
   return (
     <div className="default-wrapper">
       <DecorationVector />
+      <LoadingOverlay visible={isShowLoadingOverlay} overlayBlur={2} />
       <h1 className="header-2rem underline mb-[1rem]">Ubah Profilmu</h1>
       <div className="border-2 border-purple-600 bg-white rounded-xl p-[1rem] flex flex-col gap-[1rem]">
         <div className="flex flex-col gap-[0.25rem]">
@@ -86,12 +108,30 @@ export default function EditProfile() {
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Deskripsi</h2>
-          <Textarea value={user?.description} radius="lg" />
+          <Textarea
+            value={request.description}
+            onChange={(e) =>
+              setRequest({ ...request, description: e.currentTarget.value })
+            }
+            radius="lg"
+          />
         </div>
       </div>
       <button
         onClick={() => {
-          putProfile(request, localStorage.getItem("token") || "");
+          const update = async () => {
+            try {
+              setIsUpdating(true);
+              await putProfile(request, localStorage.getItem("token") || "");
+              showSuccess("Berhasil mengubah profil!");
+            } catch (error) {
+              showError("Gagal mengubah profil!");
+            } finally {
+              setIsUpdating(false);
+            }
+          };
+
+          update();
         }}
         className="button-600-filled block w-full mt-[1rem]"
       >
