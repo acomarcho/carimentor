@@ -5,6 +5,8 @@ import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Link from "next/link";
 import { Menu } from "@mantine/core";
+import { useUser } from "@/lib/hooks/use-user";
+import { Role } from "@/lib/constants/responses";
 
 const renderAuthButtons = (isAuthenticated: boolean) => {
   if (!isAuthenticated) {
@@ -60,9 +62,14 @@ const MobileNavbar = ({
                   </Link>
                 </>
               ) : (
-                <Link className="drawer-link" href="/mentor/one-on-one">
-                  Permintaan One-on-One
-                </Link>
+                <>
+                  <Link className="drawer-link" href="/mentor/one-on-one">
+                    Permintaan One-on-One
+                  </Link>
+                  <Link className="drawer-link" href="/mentor/group-session">
+                    Sesi Grupku
+                  </Link>
+                </>
               )}
               <div className="h-[1px] bg-purple-950" />
             </>
@@ -149,11 +156,24 @@ const DesktopNavbar = ({
                     </Menu.Item>
                   </>
                 ) : (
-                  <Menu.Item>
-                    <Link href="/mentor/one-on-one" className="paragraph block">
-                      Permintaan One-on-One
-                    </Link>
-                  </Menu.Item>
+                  <>
+                    <Menu.Item>
+                      <Link
+                        href="/mentor/one-on-one"
+                        className="paragraph block"
+                      >
+                        Permintaan One-on-One
+                      </Link>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <Link
+                        href="/mentor/group-session"
+                        className="paragraph block"
+                      >
+                        Sesi Grupku
+                      </Link>
+                    </Menu.Item>
+                  </>
                 )}
               </Menu.Dropdown>
             </Menu>
@@ -165,8 +185,10 @@ const DesktopNavbar = ({
 };
 
 export default function Navbar() {
-  const isAuthenticated = true;
-  const isMentee = true;
+  const { user } = useUser();
+
+  const isAuthenticated = !!user;
+  const isMentee = isAuthenticated && user?.role === Role.MENTEE;
 
   return (
     <nav className="fixed top-0 left-0 w-full z-[100] border-2 border-purple-50 bg-white">
