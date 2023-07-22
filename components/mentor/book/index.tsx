@@ -10,6 +10,10 @@ import {
   IconSignature,
 } from "@tabler/icons-react";
 import Image from "next/image";
+import { Textarea } from "@mantine/core";
+import { DateTimePicker } from "@mantine/dates";
+import "dayjs/locale/id";
+import { labelStyle } from "@/lib/constants/styles";
 
 export default function BookMentor({ mentorId }: { mentorId: string }) {
   const mentor = dummyMentorWithPicture;
@@ -58,6 +62,28 @@ export default function BookMentor({ mentorId }: { mentorId: string }) {
             </p>
           </div>
         </div>
+      </div>
+      <div className="rounded-xl p-[1rem] bg-white drop-shadow-lg mt-[2rem]">
+        <DateTimePicker
+          label="Tanggal dan jam mulai"
+          placeholder="Pilih tanggal dan jam mulai"
+          withAsterisk
+          minDate={new Date()}
+          locale="id"
+          radius="lg"
+          styles={{ ...labelStyle }}
+        />
+        <Textarea
+          label="Pesan untuk mentormu"
+          placeholder="Saya ingin belajar HTML dan CSS"
+          withAsterisk
+          className="mt-[1rem]"
+          radius="lg"
+          styles={{ ...labelStyle }}
+        />
+        <button className="mt-[1rem] button-600-filled w-full">
+          Buat jadwal
+        </button>
       </div>
     </div>
   );
