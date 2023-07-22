@@ -29,7 +29,7 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
   const reviews = oneOnOnes ? oneOnOnes.filter((d) => d.rating !== null) : [];
   const ratings =
     reviews.length > 0 ? reviews.map((review) => review.rating || 5) : [];
-  const isAuthenticated = true;
+  const isAuthenticated = !!user;
 
   const footerRef = useRef<HTMLDivElement>(null);
   const [footerHeight, setFooterHeight] = useState<number>(0);
@@ -64,16 +64,20 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
       >
         <div className="max-w-[1160px] mx-auto p-[1.25rem]">
           {isAuthenticated ? (
-            <div className="flex flex-col gap-[0.5rem]">
-              <p className="paragraph text-center">
-                Ajukan sesi bersama mentor dan diskusi sebebasmu!
-              </p>
-              <Link
-                href={`/mentor/${mentorId}/book`}
-                className="button-600-filled block"
-              >
-                Jadwalkan 1-on-1
-              </Link>
+            <div>
+              {user?.role === "MENTEE" ? (
+                <div className="flex flex-col gap-[0.5rem]">
+                  <p className="paragraph text-center">
+                    Ajukan sesi bersama mentor dan diskusi sebebasmu!
+                  </p>
+                  <Link
+                    href={`/mentor/${mentorId}/book`}
+                    className="button-600-filled block"
+                  >
+                    Jadwalkan 1-on-1
+                  </Link>
+                </div>
+              ) : null }
             </div>
           ) : (
             <div className="flex flex-col gap-[0.5rem]">
