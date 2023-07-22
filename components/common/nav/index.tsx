@@ -51,9 +51,14 @@ const MobileNavbar = ({
                 Profilku
               </Link>
               {isMentee ? (
-                <Link className="drawer-link" href="/one-on-one">
-                  Riwayat One-on-One
-                </Link>
+                <>
+                  <Link className="drawer-link" href="/one-on-one">
+                    Riwayat One-on-One
+                  </Link>
+                  <Link className="drawer-link" href="/group-session/self">
+                    Riwayat Sesi Grup
+                  </Link>
+                </>
               ) : (
                 <Link className="drawer-link" href="/mentor/one-on-one">
                   Permintaan One-on-One
@@ -128,11 +133,21 @@ const DesktopNavbar = ({
                   </Link>
                 </Menu.Item>
                 {isMentee ? (
-                  <Menu.Item>
-                    <Link href="/one-on-one" className="paragraph block">
-                      Riwayat One-on-One
-                    </Link>
-                  </Menu.Item>
+                  <>
+                    <Menu.Item>
+                      <Link href="/one-on-one" className="paragraph block">
+                        Riwayat One-on-One
+                      </Link>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <Link
+                        href="/group-session/self"
+                        className="paragraph block"
+                      >
+                        Riwayat Sesi Grup
+                      </Link>
+                    </Menu.Item>
+                  </>
                 ) : (
                   <Menu.Item>
                     <Link href="/mentor/one-on-one" className="paragraph block">
