@@ -17,7 +17,7 @@ const SingleMentor = ({ mentor }: { mentor: (typeof dummyMentors)[0] }) => {
   return (
     <Carousel.Slide>
       <Link
-        href={`/mentor/${mentor.id}}`}
+        href={`/mentor/${mentor.id}`}
         className="bg-white p-[1rem] flex flex-col justify-between items-start gap-[0.25rem] drop-shadow-lg rounded-[2rem] h-[18rem] my-[0.5rem]"
       >
         <div className="flex flex-col gap-[0.25rem] items-start">
