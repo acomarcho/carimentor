@@ -12,6 +12,7 @@ import {
 import Image from "next/image";
 import ReactStars from "react-stars";
 import { Textarea } from "@mantine/core";
+import { formatDateToIndonesianLocale } from "@/lib/utils";
 
 export default function MentorDetail({ mentorId }: { mentorId: string }) {
   const mentor = dummyMentorWithPicture;
@@ -102,7 +103,9 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
                     />
                     <p className="paragraph">{data.review}</p>
                   </div>
-                  <p className="paragraph text-[0.75rem]">{data.updatedAt}</p>
+                  <p className="paragraph text-[0.75rem]">
+                    {formatDateToIndonesianLocale(data.updatedAt)}
+                  </p>
                 </div>
               </div>
             );
