@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Discussion,
-  GetDetailGroupSessionDataResponse,
+  GetDetailGroupSessionResponse,
   GetDiscussionResponse,
   GroupSession,
 } from "../constants/responses";
@@ -15,7 +15,7 @@ export function useGroupSession(sessionId: string) {
     data: groupSession,
     error: groupSessionError,
     isLoading: groupSessionIsLoading,
-  } = useSWR<GetDetailGroupSessionDataResponse>(
+  } = useSWR<GetDetailGroupSessionResponse>(
     `${apiURL}/group-session/${sessionId}`,
     fetcher
   );
@@ -48,6 +48,6 @@ export function useGroupSession(sessionId: string) {
     bookGroupSessions,
     bookGroupSessionsError,
     bookGroupSessionsIsLoading,
-    
+
   };
 }
