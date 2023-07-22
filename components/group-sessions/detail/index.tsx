@@ -6,6 +6,9 @@ import { formatDateToIndonesianLocale } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
 import { useViewportSize } from "@mantine/hooks";
 import Link from "next/link";
+import "react-responsive-modal/styles.css";
+import { Modal } from "react-responsive-modal";
+import Image from "next/image";
 
 export default function GroupSessionDetail({
   sessionId,
@@ -18,6 +21,7 @@ export default function GroupSessionDetail({
   const footerRef = useRef<HTMLDivElement>(null);
   const [footerHeight, setFooterHeight] = useState<number>(0);
   const { height, width } = useViewportSize();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const isAuthenticated = true;
 
@@ -38,7 +42,14 @@ export default function GroupSessionDetail({
                 Segera bergabung! {session.maxParticipant - session.bookedCount}{" "}
                 slot tersedia
               </p>
-              <button className="button-600-filled block">Gabung sesi</button>
+              <button
+                className="button-600-filled block"
+                onClick={() => {
+                  setIsModalOpen(true);
+                }}
+              >
+                Gabung sesi
+              </button>
             </div>
           ) : (
             <div className="flex flex-col gap-[0.5rem]">
@@ -108,6 +119,34 @@ export default function GroupSessionDetail({
       </div>
       <div style={{ marginTop: footerHeight }} />
       {renderFooter()}
+      <Modal
+        open={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
+        center
+        showCloseIcon={false}
+        classNames={{
+          modal: "rounded-xl",
+        }}
+      >
+        <div className="flex flex-col items-center justify-center gap-[1rem] p-[1rem] max-w-[293px]">
+          <h1 className="subheader text-center">Kamu Berhasil Bergabung</h1>
+          <Image
+            src="/images/modal-success.png"
+            alt="Success checkmark"
+            width={180}
+            height={132.33}
+          />
+          <p className="paragraph text-center">
+            Periksa laman sesi grup untuk tautan sesi dan akses diskusi. Jangan
+            lupa hadir tepat waktu!
+          </p>
+          <Link href="/group-session/self" className="button-600-filled w-full">
+            Lihat laman sesi grup
+          </Link>
+        </div>
+      </Modal>
     </div>
   );
 }
