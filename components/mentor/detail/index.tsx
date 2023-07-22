@@ -75,6 +75,11 @@ export default function MentorDetail({ mentorId }: { mentorId: string }) {
                   ).toFixed(1)
             }/5.0`}
           </p>
+          {mentor.subscriptionStatus === "FREE" ? (
+            <p className="paragraph">Mentor reguler</p>
+          ) : (
+            <p className="paragraph font-bold">Mentor premium</p>
+          )}
         </div>
       </div>
     </div>
