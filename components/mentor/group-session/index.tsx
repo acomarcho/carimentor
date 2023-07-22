@@ -1,20 +1,20 @@
 import DecorationVector from "@/components/common/decoration-vector";
+import { createGroupSession } from "@/lib/api/group-session";
 // import { dummyGroupSessions } from "@/lib/dummies";
-import { IconBrowser, IconCalendar, IconUsers } from "@tabler/icons-react";
-import { formatDateToIndonesianLocale } from "@/lib/utils";
-import Link from "next/link";
-import "react-responsive-modal/styles.css";
-import { Modal } from "react-responsive-modal";
-import { useState } from "react";
-import { DateTimePicker } from "@mantine/dates";
-import "dayjs/locale/id";
-import { Textarea, TextInput, NumberInput } from "@mantine/core";
-import { labelStyle } from "@/lib/constants/styles";
 import { CreateNewGroupSessionRequest } from "@/lib/constants/requests";
+import { labelStyle } from "@/lib/constants/styles";
 import { useAllGroupSessions } from "@/lib/hooks/use-group-session";
+import { formatDateToIndonesianLocale } from "@/lib/utils";
+import { NumberInput, TextInput, Textarea } from "@mantine/core";
+import { DateTimePicker } from "@mantine/dates";
+import { IconBrowser, IconCalendar, IconUsers } from "@tabler/icons-react";
+import "dayjs/locale/id";
+import Link from "next/link";
+import { useState } from "react";
+import { Modal } from "react-responsive-modal";
+import "react-responsive-modal/styles.css";
 
 export default function MentorGroupSessions() {
-  // const sessions = dummyGroupSessions;
   const { groupSessions: sessions, isLoading, isError } = useAllGroupSessions();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -138,7 +138,10 @@ export default function MentorGroupSessions() {
           />
           <button
             className="button-600-filled"
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => {
+              createGroupSession(request, localStorage.getItem("token") || "");
+              setIsModalOpen(false);
+            }}
             disabled={
               !request.name ||
               !request.date ||

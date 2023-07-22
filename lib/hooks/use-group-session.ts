@@ -1,4 +1,7 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { apiURL } from "../constants";
 import {
   BookGroupSession,
   Discussion,
@@ -8,9 +11,6 @@ import {
   GetGroupSessionResponse,
   GroupSession,
 } from "../constants/responses";
-import useSWR from "swr";
-import { apiURL } from "../constants";
-import axios from "axios";
 
 export function useAllGroupSessions() {
   type JoinedGroupSession = GroupSession & {
@@ -32,7 +32,12 @@ export function useAllGroupSessions() {
       const _discussions = Promise.all(
         data.data.map(async (groupSession) => {
           const { data: discussions } = await axios.get<GetDiscussionResponse>(
-            `${apiURL}/discussion?sessionId=${groupSession.id}`
+            `${apiURL}/discussion?sessionId=${groupSession.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+              },
+            }
           );
 
           return discussions;
@@ -43,7 +48,14 @@ export function useAllGroupSessions() {
         data.data.map(async (groupSession) => {
           const { data: bookGroupSessions } =
             await axios.get<GetBookGroupSessionResponse>(
-              `${apiURL}/book-group-session?sessionId=${groupSession.id}`
+              `${apiURL}/book-group-session?sessionId=${groupSession.id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${
+                    localStorage.getItem("token") || ""
+                  }`,
+                },
+              }
             );
           return bookGroupSessions;
         })

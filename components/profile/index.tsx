@@ -1,13 +1,13 @@
-import DecorationVector from "../common/decoration-vector";
-import { IconUserCircle } from "@tabler/icons-react";
-import Image from "next/image";
-import { Textarea, LoadingOverlay } from "@mantine/core";
-import Link from "next/link";
-import { useUser } from "@/lib/hooks/use-user";
-import { useEffect, useState } from "react";
-import { City, GetCityDetailResponse } from "@/lib/constants/responses";
-import axios from "axios";
 import { apiURL } from "@/lib/constants";
+import { City, GetCityDetailResponse } from "@/lib/constants/responses";
+import { useUser } from "@/lib/hooks/use-user";
+import { LoadingOverlay, Textarea } from "@mantine/core";
+import { IconUserCircle } from "@tabler/icons-react";
+import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import DecorationVector from "../common/decoration-vector";
 
 const fetchCity = (cityId: string) => {
   return axios.get<GetCityDetailResponse>(`${apiURL}/city/${cityId}`);
@@ -70,7 +70,7 @@ export default function MyProfile() {
         </div>
         <div className="flex flex-col gap-[0.25rem]">
           <h2 className="header-600">Deskripsi</h2>
-          <Textarea value={user?.description} disabled radius="lg" autosize />
+          <p className="paragraph">{user?.description}</p>
         </div>
       </div>
       <Link href="/profile/edit" className="button-600-filled block mt-[1rem]">

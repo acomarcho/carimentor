@@ -1,17 +1,17 @@
 import DecorationVector from "@/components/common/decoration-vector";
-import { IconUserCircle, IconCalendar, IconUsers } from "@tabler/icons-react";
-import { Textarea } from "@mantine/core";
-import { formatDateToIndonesianLocale } from "@/lib/utils";
-import { useState, useEffect, useRef } from "react";
-import { useViewportSize } from "@mantine/hooks";
-import Link from "next/link";
-import "react-responsive-modal/styles.css";
-import { Modal } from "react-responsive-modal";
-import Image from "next/image";
-import { useGroupSession } from "@/lib/hooks/use-group-session";
-import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
-import axios from "axios";
 import { apiURL } from "@/lib/constants";
+import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
+import { useGroupSession } from "@/lib/hooks/use-group-session";
+import { formatDateToIndonesianLocale } from "@/lib/utils";
+import { Textarea } from "@mantine/core";
+import { useViewportSize } from "@mantine/hooks";
+import { IconCalendar, IconUserCircle, IconUsers } from "@tabler/icons-react";
+import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { Modal } from "react-responsive-modal";
+import "react-responsive-modal/styles.css";
 
 const fetchUser = (id: string) => {
   return axios.get<GetUserResponse>(`${apiURL}/user/${id}`);
@@ -31,11 +31,12 @@ export default function GroupSessionDetail({
   const [discussionWithSender, setDiscussionWithSender] = useState<
     (Discussion & {
       sender: User;
-    })[]>([]);
+    })[]
+  >([]);
 
   const [mentor, setMentor] = useState<User | null>(null);
   useEffect(() => {
-    if (groupSession) {
+    if (groupSession && groupSession.data) {
       fetchUser(groupSession.data.mentorId).then((res) => {
         setMentor(res.data.data);
       });
@@ -49,13 +50,13 @@ export default function GroupSessionDetail({
         return {
           ...d,
           sender: sender.data.data,
-        }
+        };
       });
       Promise.all(fetchSender).then((res) => {
         setDiscussionWithSender(res);
       });
     }
-  }, [discussions])
+  }, [discussions]);
 
   const footerRef = useRef<HTMLDivElement>(null);
   const [footerHeight, setFooterHeight] = useState<number>(0);
@@ -120,12 +121,7 @@ export default function GroupSessionDetail({
       </div>
       <div className="bg-white rounded-xl drop-shadow-xl p-[1rem] mt-[2rem]">
         <h2 className="paragraph font-bold">Deskripsi</h2>
-        <Textarea
-          value={session?.description}
-          disabled
-          className="mt-[1rem]"
-          autosize
-        />
+        <p className="paragraph">{session?.description}</p>
         <div className="flex gap-[0.5rem] items-center mt-[1rem]">
           <IconCalendar />
           <p className="paragraph text-sm">
@@ -139,12 +135,7 @@ export default function GroupSessionDetail({
           </p>
         </div>
         <h2 className="paragraph font-bold mt-[2rem]">Tentang mentor</h2>
-        <Textarea
-          value={mentor?.description}
-          disabled
-          className="mt-[1rem]"
-          autosize
-        />
+        <p className="paragraph">{mentor?.description}</p>
         <h2 className="paragraph font-bold mt-[2rem]">Diskusi</h2>
         {discussionsData.length === 0 && (
           <p className="paragraph">
@@ -162,12 +153,7 @@ export default function GroupSessionDetail({
                     {formatDateToIndonesianLocale(d.createdAt)}
                   </p>
                 </div>
-                <Textarea
-                  value={d.content}
-                  className="mt-[0.5rem]"
-                  disabled
-                  autosize
-                />
+                <p className="paragraph">{d.content}</p>
               </div>
             );
           })}
