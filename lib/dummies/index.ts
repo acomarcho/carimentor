@@ -249,3 +249,35 @@ export const dummyGroupSessions = [
     bookedCount: 9,
   },
 ];
+
+export const dummyGroupSession = {
+  id: "1",
+  name: "Belajar HTML dan CSS untuk pemula",
+  mentorId: "1",
+  mentorName: "Marchotridyo",
+  mentorDescription: "Halo! Saya adalah mahasiswa akhir Informatika ITB.",
+  description:
+    "Dalam sesi grup ini, kita akan mempelajari dasar dari HTML dan CSS untuk membangun sebuah aplikasi berbasis web.",
+  date: new Date("2023-01-02").toISOString(),
+  maxParticipant: 10,
+  bookedCount: 4,
+};
+
+export const dummyGroupDiscussions = [
+  {
+    id: "1",
+    userId: "1",
+    userName: "Marchotridyo",
+    content:
+      "Di sini, saya mempelajari bahwa HTML dan CSS adalah fondasi yang penting untuk dimiliki untuk seorang web engineer.",
+    createdAt: new Date("2023-01-02").toISOString(),
+  },
+  {
+    id: "2",
+    userId: "2",
+    userName: "Malik Akbar",
+    content:
+      "HTML dan CSS sangat menarik untuk dipelajari, namun kita harus pelan-pelan dalam mempelajarinya agar tidak overwhelmed.",
+    createdAt: new Date("2023-01-02").toISOString(),
+  },
+];
