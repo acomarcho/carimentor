@@ -17,7 +17,7 @@ const SingleMentor = ({ mentor }: { mentor: (typeof dummyMentors)[0] }) => {
   return (
     <Carousel.Slide>
       <Link
-        href={`/mentor/${mentor.id}}`}
+        href={`/mentor/${mentor.id}`}
         className="bg-white p-[1rem] flex flex-col justify-between items-start gap-[0.25rem] drop-shadow-lg rounded-[2rem] h-[18rem] my-[0.5rem]"
       >
         <div className="flex flex-col gap-[0.25rem] items-start">
@@ -41,8 +41,8 @@ const SingleMentor = ({ mentor }: { mentor: (typeof dummyMentors)[0] }) => {
           </div>
           <p className="paragraph text-[0.8rem] mt-[1rem]">
             {mentor.tags.slice(0, 2).join(", ")}
-            {mentor.tags.length > 3 &&
-              ` dan ${mentor.tags.length - 3} ketertarikan lainnya`}
+            {mentor.tags.length > 2 &&
+              ` dan ${mentor.tags.length - 2} ketertarikan lainnya`}
           </p>
         </div>
         <div>
