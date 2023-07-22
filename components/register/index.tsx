@@ -16,6 +16,7 @@ import { labelStyle } from "@/lib/constants/styles";
 import { useProvince } from "@/lib/hooks/use-province";
 import { useCity } from "@/lib/hooks/use-city";
 import { useTags } from "@/lib/hooks/use-tags";
+import { postRegister } from "@/lib/api/register";
 
 export default function Register() {
   const [request, setRequest] = useState<RegisterRequest>({
@@ -29,6 +30,7 @@ export default function Register() {
     description: "",
   });
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const [isRegisterLoading, setIsRegisterLoading] = useState<boolean>(false);
 
   const { provinces, isLoading, isError } = useProvince();
   const {
@@ -226,6 +228,21 @@ export default function Register() {
               !request.cityId ||
               !request.description
             }
+            onClick={() => {
+              const onRegister = async () => {
+                try {
+                  setIsRegisterLoading(true);
+                  await postRegister(request);
+                  console.log("Berhasil!");
+                } catch (error) {
+                  console.log("Gagal!");
+                } finally {
+                  setIsRegisterLoading(false);
+                }
+              };
+
+              onRegister();
+            }}
           >
             Daftar
           </button>
