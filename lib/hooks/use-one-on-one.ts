@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { OneOnOne, GetOneOnOneResponse } from "../constants/responses";
 
-export function useOneOnOne() {
+export function useOneOnOne(isMentor = false) {
   const [histories, setHistories] = useState<OneOnOne[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -23,9 +23,27 @@ export function useOneOnOne() {
         });
         const userData = userResponse.data;
 
-        const response = await axios.get(
-          `${apiURL}/one-on-one?menteeId=${userData.data.id}`,
-          {
+        const url = isMentor
+          ? `${apiURL}/one-on-one?mentorId=${userData.data.id}`
+          : `${apiURL}/one-on-one?menteeId=${userData.data.id}`;
+
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `${
+              localStorage.getItem("token")
+                ? `Bearer ${localStorage.getItem("token")}`
+                : ""
+            }`,
+          },
+        });
+        const _histories: OneOnOne[] = [];
+        const data = response.data as GetOneOnOneResponse;
+        for (const o of data.data) {
+          const url2 = isMentor
+            ? `${apiURL}/user/${o.menteeId}`
+            : `${apiURL}/user/${o.mentorId}`;
+
+          const mentorResponse = await axios.get(url2, {
             headers: {
               Authorization: `${
                 localStorage.getItem("token")
@@ -33,28 +51,20 @@ export function useOneOnOne() {
                   : ""
               }`,
             },
-          }
-        );
-        const _histories: OneOnOne[] = [];
-        const data = response.data as GetOneOnOneResponse;
-        for (const o of data.data) {
-          const mentorResponse = await axios.get(
-            `${apiURL}/user/${o.mentorId}`,
-            {
-              headers: {
-                Authorization: `${
-                  localStorage.getItem("token")
-                    ? `Bearer ${localStorage.getItem("token")}`
-                    : ""
-                }`,
-              },
-            }
-          );
-          const mentorData = mentorResponse.data;
-          _histories.push({
-            ...o,
-            mentorName: mentorData.data.name,
           });
+          const mentorData = mentorResponse.data;
+
+          if (!isMentor) {
+            _histories.push({
+              ...o,
+              mentorName: mentorData.data.name,
+            });
+          } else {
+            _histories.push({
+              ...o,
+              menteeName: mentorData.data.name,
+            });
+          }
         }
         setHistories(_histories);
         setIsError(false);

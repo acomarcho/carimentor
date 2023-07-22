@@ -23,7 +23,7 @@ export default function MenteeBookings() {
     setHistories: setBookings,
     isLoading,
     isError,
-  } = useOneOnOne();
+  } = useOneOnOne(true);
 
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [selectedOneOnOne, setSelectedOneOnOne] = useState<OneOnOne>();
