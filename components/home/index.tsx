@@ -14,6 +14,7 @@ import {
   useSearchMentors,
   usePremiumMentors,
   useClosestMentors,
+  useUser,
 } from "@/lib/hooks/use-user";
 import { useAllCities } from "@/lib/hooks/use-city";
 import { MentorSearchResult, GetCityResponse } from "@/lib/constants/responses";
@@ -108,6 +109,8 @@ export default function Home() {
   const isShowLoadingOverlay =
     isCityLoading || isLoading || isLoading2 || isLoading3 || isTagsLoading;
 
+  const { user, isLoading: isUserLoading } = useUser();
+
   return (
     <div className="default-wrapper flex flex-col gap-[1rem] items-center justify-center">
       <DecorationVector />
@@ -154,11 +157,13 @@ export default function Home() {
                 value="PROVINCE"
                 label="Provinsi yang sama"
                 styles={{ ...labelStyle }}
+                disabled={!user}
               />
               <Radio
                 value="CITY"
                 label="Kota yang sama"
                 styles={{ ...labelStyle }}
+                disabled={!user}
               />
             </Radio.Group>
           </div>
@@ -238,27 +243,31 @@ export default function Home() {
             </p>
           )}
         </div>
-        <h2 className="subheader mt-[2rem]">Mentor terdekatmu</h2>
-        <div className="mt-[1rem] w-[100%]">
-          {closestMentors.length > 0 ? (
-            <Carousel slideGap="md" dragFree slideSize={300} align="start">
-              {closestMentors.map((mentor) => {
-                return (
-                  <SingleMentor
-                    mentor={mentor}
-                    cities={cities}
-                    key={mentor.id}
-                  />
-                );
-              })}
-            </Carousel>
-          ) : (
-            <p className="paragraph">
-              Maaf, belum ada mentor di daerah sekitarmu yang sudah terdaftar
-              dalam {`${appName}`}.
-            </p>
-          )}
-        </div>
+        {user ? (
+          <div>
+            <h2 className="subheader mt-[2rem]">Mentor terdekatmu</h2>
+            <div className="mt-[1rem] w-[100%]">
+              {closestMentors.length > 0 ? (
+                <Carousel slideGap="md" dragFree slideSize={300} align="start">
+                  {closestMentors.map((mentor) => {
+                    return (
+                      <SingleMentor
+                        mentor={mentor}
+                        cities={cities}
+                        key={mentor.id}
+                      />
+                    );
+                  })}
+                </Carousel>
+              ) : (
+                <p className="paragraph">
+                  Maaf, belum ada mentor di daerah sekitarmu yang sudah terdaftar
+                  dalam {`${appName}`}.
+                </p>
+              )}
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );
