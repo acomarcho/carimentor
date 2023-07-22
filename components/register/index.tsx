@@ -17,6 +17,7 @@ import { useProvince } from "@/lib/hooks/use-province";
 import { useCity } from "@/lib/hooks/use-city";
 import { useTags } from "@/lib/hooks/use-tags";
 import { postRegister } from "@/lib/api/register";
+import { showSuccess, showError } from "@/lib/utils";
 
 export default function Register() {
   const [request, setRequest] = useState<RegisterRequest>({
@@ -233,9 +234,11 @@ export default function Register() {
                 try {
                   setIsRegisterLoading(true);
                   await postRegister(request);
-                  console.log("Berhasil!");
+                  showSuccess(
+                    "Akun berhasil dibuat! Silakan masuk ke akun Anda."
+                  );
                 } catch (error) {
-                  console.log("Gagal!");
+                  showError("Akun gagal dibuat! Email Anda sudah digunakan.");
                 } finally {
                   setIsRegisterLoading(false);
                 }
