@@ -11,7 +11,7 @@ import { Carousel } from "@mantine/carousel";
 import Link from "next/link";
 import Image from "next/image";
 import { IconUserCircle } from "@tabler/icons-react";
-import { Type } from "typescript";
+import { appName } from "@/lib/constants";
 
 const SingleMentor = ({ mentor }: { mentor: (typeof dummyMentors)[0] }) => {
   return (
@@ -155,17 +155,47 @@ export default function Home() {
       <div className="max-w-[1160px] mx-auto p-[1.25rem] w-[100%] mt-[2rem]">
         <h2 className="subheader">Mentor hasil pencarianmu</h2>
         <div className="mt-[1rem] w-[100%]">
-          <Carousel
-            slideGap="md"
-            dragFree
-            slideSize={300}
-            align="start"
-            withControls={false}
-          >
-            {searchMentors.map((mentor) => {
-              return <SingleMentor mentor={mentor} key={mentor.id} />;
-            })}
-          </Carousel>
+          {searchMentors.length > 0 ? (
+            <Carousel slideGap="md" dragFree slideSize={300} align="start">
+              {searchMentors.map((mentor) => {
+                return <SingleMentor mentor={mentor} key={mentor.id} />;
+              })}
+            </Carousel>
+          ) : (
+            <p className="paragraph">
+              Maaf, belum ada mentor yang cocok dengan pencarianmu.
+            </p>
+          )}
+        </div>
+        <h2 className="subheader mt-[2rem]">Mentor premium {appName}</h2>
+        <div className="mt-[1rem] w-[100%]">
+          {premiumMentors.length > 0 ? (
+            <Carousel slideGap="md" dragFree slideSize={300} align="start">
+              {premiumMentors.map((mentor) => {
+                return <SingleMentor mentor={mentor} key={mentor.id} />;
+              })}
+            </Carousel>
+          ) : (
+            <p className="paragraph">
+              Maaf, belum ada mentor premium yang terdaftar dalam {`${appName}`}
+              .
+            </p>
+          )}
+        </div>
+        <h2 className="subheader mt-[2rem]">Mentor terdekatmu</h2>
+        <div className="mt-[1rem] w-[100%]">
+          {closestMentors.length > 0 ? (
+            <Carousel slideGap="md" dragFree slideSize={300} align="start">
+              {closestMentors.map((mentor) => {
+                return <SingleMentor mentor={mentor} key={mentor.id} />;
+              })}
+            </Carousel>
+          ) : (
+            <p className="paragraph">
+              Maaf, belum ada mentor di daerah sekitarmu yang sudah terdaftar
+              dalam {`${appName}`}.
+            </p>
+          )}
         </div>
       </div>
     </div>
