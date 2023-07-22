@@ -204,8 +204,8 @@ const DesktopNavbar = ({
 };
 
 export default function Navbar() {
-  const { user, setUser } = useUser();
-
+  const { user, userTags, setUser } = useUser();
+  
   const router = useRouter();
 
   const handleLogOut = () => {

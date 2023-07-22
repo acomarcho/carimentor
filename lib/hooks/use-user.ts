@@ -1,6 +1,6 @@
 import axios from "axios";
 import { apiURL } from "../constants";
-import { GetTagResponse, GetUserResponse } from "../constants/responses";
+import { GetUserTagResponse, GetUserResponse } from "../constants/responses";
 import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { userAtom, userTagsAtom } from "../atoms/user";
@@ -15,7 +15,7 @@ const fetchUser = () => {
 };
 
 const fetchTag = (userId: string) => {
-  return axios.get<GetTagResponse>(`${apiURL}/tag?userId=${userId}`);
+  return axios.get<GetUserTagResponse>(`${apiURL}/tag?userId=${userId}`);
 };
 
 export function useUser() {
@@ -39,7 +39,7 @@ export function useUser() {
         if (!tagResponse.data.data) {
           throw new Error(tagResponse.data.message);
         }
-        setUserTags(tagResponse.data.data.map((tag) => tag.tag));
+        setUserTags(tagResponse.data.data.map((tag) => tag));
         setIsError(false);
       } catch (err) {
         setUser(undefined);
