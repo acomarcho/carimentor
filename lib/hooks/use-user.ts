@@ -1,7 +1,7 @@
 import axios from "axios";
 import { apiURL } from "../constants";
 import {
-  GetOneOnOneDataResponse,
+  GetOneOnOneResponse,
   GetUserResponse,
   OneOnOne,
   Tag,
@@ -12,7 +12,6 @@ import {
 } from "../constants/responses";
 import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
 import { userAtom, userTagsAtom } from "../atoms/user";
 import { MentorFilterRequest } from "../constants/requests";
 
