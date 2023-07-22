@@ -20,7 +20,7 @@ export type UserTagDetail = UserTag & {
 };
 
 export type GetUserTagData = UserTagDetail[];
-export type GetUserTagResponse = BaseResponse<GetTagData>;
+export type GetUserTagResponse = BaseResponse<GetUserTagData>;
 
 export type GetTagData = Tag[];
 export type GetTagDataResponse = BaseResponse<GetTagData>;

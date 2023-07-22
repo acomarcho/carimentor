@@ -1,14 +1,19 @@
 import axios from "axios";
 import { apiURL } from "../constants";
 import {
-  GetUserTagResponse,
+  GetOneOnOneDataResponse,
   GetUserResponse,
+  OneOnOne,
+  Tag,
+  User,
+  GetUserTagResponse,
   GetUsersResponse,
   MentorSearchResult,
 } from "../constants/responses";
 import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { userAtom, userTagsAtom } from "../atoms/user";
+import { MentorFilterRequest } from "../constants/requests";
 
 const fetchUser = () => {
   const token = localStorage.getItem("token");
@@ -50,6 +55,7 @@ const fetchMentor = async (
 
   const _mentors: MentorSearchResult[] = [];
   for (const mentor of userResponse.data.data!) {
+    console.log("Mencari tag dari mentor", mentor);
     const tagResponse = await fetchTag(mentor.id);
     const tags = tagResponse.data.data!.map((data) => {
       return data;
@@ -62,6 +68,86 @@ const fetchMentor = async (
 
   return _mentors;
 };
+
+export function useSearchMentors(request: MentorFilterRequest) {
+  const [mentors, setMentors] = useState<MentorSearchResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const searchMentors = async () => {
+      try {
+        setIsLoading(true);
+        const _mentors = await fetchMentor(
+          request.location === "CITY",
+          request.location === "PROVINCE",
+          request.premiumOnly,
+          request.tags
+        );
+        setMentors(_mentors);
+        setIsError(false);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    searchMentors();
+  }, [request]);
+
+  return { mentors, setMentors, isLoading, isError };
+}
+
+export function usePremiumMentors() {
+  const [mentors, setMentors] = useState<MentorSearchResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const searchMentors = async () => {
+      try {
+        setIsLoading(true);
+        const _mentors = await fetchMentor(false, false, true, []);
+        setMentors(_mentors);
+        setIsError(false);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    searchMentors();
+  }, []);
+
+  return { mentors, setMentors, isLoading, isError };
+}
+
+export function useClosestMentors() {
+  const [mentors, setMentors] = useState<MentorSearchResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const searchMentors = async () => {
+      try {
+        setIsLoading(true);
+        const _mentors = await fetchMentor(false, true, false, []);
+        setMentors(_mentors);
+        setIsError(false);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    searchMentors();
+  }, []);
+
+  return { mentors, setMentors, isLoading, isError };
+}
 
 export function useUser() {
   const [user, setUser] = useAtom(userAtom);
@@ -84,7 +170,7 @@ export function useUser() {
         if (!tagResponse.data.data) {
           throw new Error(tagResponse.data.message);
         }
-        setUserTags(tagResponse.data.data.map((tag) => tag));
+        setUserTags(tagResponse.data.data.map((tag) => tag.tag));
         setIsError(false);
       } catch (err) {
         setUser(undefined);
@@ -105,5 +191,90 @@ export function useUser() {
     isError,
     setUser,
     setUserTags,
+  };
+}
+
+export function useMentor(id: string) {
+  const [user, setUser] = useState<User | undefined>(undefined);
+  const [userTags, setUserTags] = useState<Tag[] | undefined>(undefined);
+  const [oneOnOnes, setOneOnOnes] = useState<OneOnOne[] | undefined>(undefined);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(`${apiURL}/user/${id}`, {
+          headers: {
+            Authorization: localStorage.getItem("token")
+              ? `Bearer ${localStorage.getItem("token")}`
+              : "",
+          },
+        });
+        setUser(response.data.data);
+
+        const tagsResponse = await axios.get<GetUserTagResponse>(
+          `${apiURL}/tag?userId=${id}`
+        );
+        setUserTags(
+          tagsResponse.data.data.map((d) => {
+            return d.tag;
+          })
+        );
+
+        const oneOnOnesResponse = await axios.get<GetOneOnOneDataResponse>(
+          `${apiURL}/one-on-one?mentorId=${id}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token")
+                ? `Bearer ${localStorage.getItem("token")}`
+                : "",
+            },
+          }
+        );
+        const _bookings: OneOnOne[] = [];
+        const data = oneOnOnesResponse.data;
+        for (const o of data.data) {
+          const menteeId = await axios.get(`${apiURL}/user/${o.menteeId}`, {
+            headers: {
+              Authorization: `${
+                localStorage.getItem("token")
+                  ? `Bearer ${localStorage.getItem("token")}`
+                  : ""
+              }`,
+            },
+          });
+          const menteeData = menteeId.data;
+          _bookings.push({
+            ...o,
+            menteeName: menteeData.data.name,
+          });
+        }
+        setOneOnOnes(_bookings);
+
+        setIsError(false);
+      } catch (error) {
+        setUser(undefined);
+        setIsError(true);
+        setUserTags([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getUser();
+  }, [id]);
+
+  return {
+    user,
+    setUser,
+    userTags,
+    setUserTags,
+    oneOnOnes,
+    setOneOnOnes,
+    isLoading,
+    isError,
   };
 }

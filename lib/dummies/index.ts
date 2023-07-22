@@ -133,89 +133,89 @@ export const dummyMentorWithoutPicture = {
   description: "Malik Akbar adalah seorang mahasiswa tingkat akhir di IF ITB.",
 };
 
-export const dummyReviews = [
-  {
-    id: "1",
-    menteeName: "Maria Khelli",
-    updatedAt: new Date("2023-01-02").toISOString(),
-    review: "Sesi mentoringnya menyenangkan!",
-    rating: 2,
-  },
-  {
-    id: "2",
-    menteeName: "Fayza Nadia",
-    updatedAt: new Date("2023-01-02").toISOString(),
-    review:
-      "Sesi mentoringnya menyenangkan! Saya ingin mengikutinya kembali! Penjelasannya sangat jelas!",
-    rating: 3,
-  },
-  {
-    id: "1",
-    menteeName: "Oppenheimer",
-    updatedAt: new Date("2023-01-02").toISOString(),
-    review: "Sesi mentoringnya menyenangkan!",
-    rating: 3,
-  },
-];
+// export const dummyReviews = [
+//   {
+//     id: "1",
+//     menteeName: "Maria Khelli",
+//     updatedAt: new Date("2023-01-02").toISOString(),
+//     review: "Sesi mentoringnya menyenangkan!",
+//     rating: 2,
+//   },
+//   {
+//     id: "2",
+//     menteeName: "Fayza Nadia",
+//     updatedAt: new Date("2023-01-02").toISOString(),
+//     review:
+//       "Sesi mentoringnya menyenangkan! Saya ingin mengikutinya kembali! Penjelasannya sangat jelas!",
+//     rating: 3,
+//   },
+//   {
+//     id: "1",
+//     menteeName: "Oppenheimer",
+//     updatedAt: new Date("2023-01-02").toISOString(),
+//     review: "Sesi mentoringnya menyenangkan!",
+//     rating: 3,
+//   },
+// ];
 
-export const dummyMyBookings = [
-  {
-    id: "1",
-    approvalStatus: "PENDING",
-    mentorName: "Marchotridyo",
-    date: new Date("2023-01-02").toISOString(),
-    review: "",
-    meetingUrl: "",
-  },
-  {
-    id: "2",
-    approvalStatus: "APPROVED",
-    mentorName: "Marchotridyo",
-    date: new Date("2023-01-02").toISOString(),
-    review: "",
-    meetingUrl: "https://www.google.com",
-  },
-  {
-    id: "3",
-    approvalStatus: "REJECTED",
-    mentorName: "Marchotridyo",
-    date: new Date("2023-01-02").toISOString(),
-    review: "",
-    meetingUrl: "",
-  },
-  {
-    id: "4",
-    approvalStatus: "APPROVED",
-    mentorName: "Marchotridyo",
-    date: new Date("2023-01-02").toISOString(),
-    review: "Bagus materinya!",
-    meetingUrl: "https://www.google.com",
-  },
-];
+// export const dummyMyBookings = [
+//   {
+//     id: "1",
+//     approvalStatus: "PENDING",
+//     mentorName: "Marchotridyo",
+//     date: new Date("2023-01-02").toISOString(),
+//     review: "",
+//     meetingUrl: "",
+//   },
+//   {
+//     id: "2",
+//     approvalStatus: "APPROVED",
+//     mentorName: "Marchotridyo",
+//     date: new Date("2023-01-02").toISOString(),
+//     review: "",
+//     meetingUrl: "https://www.google.com",
+//   },
+//   {
+//     id: "3",
+//     approvalStatus: "REJECTED",
+//     mentorName: "Marchotridyo",
+//     date: new Date("2023-01-02").toISOString(),
+//     review: "",
+//     meetingUrl: "",
+//   },
+//   {
+//     id: "4",
+//     approvalStatus: "APPROVED",
+//     mentorName: "Marchotridyo",
+//     date: new Date("2023-01-02").toISOString(),
+//     review: "Bagus materinya!",
+//     meetingUrl: "https://www.google.com",
+//   },
+// ];
 
-export const dummyMenteeBookings = [
-  {
-    id: "1",
-    approvalStatus: "PENDING",
-    menteeName: "Marchotridyo",
-    date: new Date("2023-01-02").toISOString(),
-    meetingUrl: "",
-  },
-  {
-    id: "2",
-    approvalStatus: "APPROVED",
-    menteeName: "Marchotridyo",
-    date: new Date("2023-01-02").toISOString(),
-    meetingUrl: "https://www.google.com",
-  },
-  {
-    id: "3",
-    approvalStatus: "REJECTED",
-    menteeName: "Marchotridyo",
-    date: new Date("2023-01-02").toISOString(),
-    meetingUrl: "",
-  },
-];
+// export const dummyMenteeBookings = [
+//   {
+//     id: "1",
+//     approvalStatus: "PENDING",
+//     menteeName: "Marchotridyo",
+//     date: new Date("2023-01-02").toISOString(),
+//     meetingUrl: "",
+//   },
+//   {
+//     id: "2",
+//     approvalStatus: "APPROVED",
+//     menteeName: "Marchotridyo",
+//     date: new Date("2023-01-02").toISOString(),
+//     meetingUrl: "https://www.google.com",
+//   },
+//   {
+//     id: "3",
+//     approvalStatus: "REJECTED",
+//     menteeName: "Marchotridyo",
+//     date: new Date("2023-01-02").toISOString(),
+//     meetingUrl: "",
+//   },
+// ];
 
 export const dummyGroupSessions = [
   {

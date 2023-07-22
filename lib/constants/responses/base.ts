@@ -1,6 +1,6 @@
 export type BaseResponse<T> = {
   success: boolean;
-  data?: T;
+  data: T;
   message: string;
   error?: string;
 };
