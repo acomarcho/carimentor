@@ -11,6 +11,51 @@ import { Carousel } from "@mantine/carousel";
 import Link from "next/link";
 import Image from "next/image";
 import { IconUserCircle } from "@tabler/icons-react";
+import { Type } from "typescript";
+
+const SingleMentor = ({ mentor }: { mentor: (typeof dummyMentors)[0] }) => {
+  return (
+    <Carousel.Slide>
+      <Link
+        href={`/mentor/${mentor.id}}`}
+        className="bg-white p-[1rem] flex flex-col justify-between items-start gap-[0.25rem] drop-shadow-lg rounded-[2rem] h-[18rem] my-[0.5rem]"
+      >
+        <div className="flex flex-col gap-[0.25rem] items-start">
+          <div className="flex flex-row gap-[1rem] items-center">
+            {mentor.imageUrl ? (
+              <div className="w-[4rem] h-[4rem] relative rounded-full overflow-hidden flex-shrink-0">
+                <Image
+                  alt={mentor.name}
+                  src={mentor.imageUrl}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            ) : (
+              <IconUserCircle className="w-[4rem] h-[4rem]" />
+            )}
+            <div className="flex flex-col gap-[0.25rem]">
+              <h1 className="subheader">{mentor.name}</h1>
+              <p className="paragraph">{mentor.city}</p>
+            </div>
+          </div>
+          <p className="paragraph text-[0.8rem] mt-[1rem]">
+            {mentor.tags.slice(0, 2).join(", ")}
+            {mentor.tags.length > 3 &&
+              ` dan ${mentor.tags.length - 3} ketertarikan lainnya`}
+          </p>
+        </div>
+        <div>
+          {mentor.subscriptionStatus === "FREE" ? (
+            <p className="paragraph">Mentor reguler</p>
+          ) : (
+            <p className="paragraph font-bold">Mentor premium</p>
+          )}
+        </div>
+      </Link>
+    </Carousel.Slide>
+  );
+};
 
 export default function Home() {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
@@ -118,47 +163,7 @@ export default function Home() {
             withControls={false}
           >
             {searchMentors.map((mentor) => {
-              return (
-                <Carousel.Slide key={mentor.id}>
-                  <Link
-                    href={`/mentor/${mentor.id}}`}
-                    className="bg-white p-[1rem] flex flex-col justify-between items-start gap-[0.25rem] drop-shadow-lg rounded-[2rem] h-[18rem] my-[0.5rem]"
-                  >
-                    <div className="flex flex-col gap-[0.25rem] items-start">
-                      <div className="flex flex-row gap-[1rem] items-center">
-                        {mentor.imageUrl ? (
-                          <div className="w-[4rem] h-[4rem] relative rounded-full overflow-hidden flex-shrink-0">
-                            <Image
-                              alt={mentor.name}
-                              src={mentor.imageUrl}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                        ) : (
-                          <IconUserCircle className="w-[4rem] h-[4rem]" />
-                        )}
-                        <div className="flex flex-col gap-[0.25rem]">
-                          <h1 className="subheader">{mentor.name}</h1>
-                          <p className="paragraph">{mentor.city}</p>
-                        </div>
-                      </div>
-                      <p className="paragraph text-[0.8rem] mt-[1rem]">
-                        {mentor.tags.slice(0, 2).join(", ")}
-                        {mentor.tags.length > 3 &&
-                          ` dan ${mentor.tags.length - 3} ketertarikan lainnya`}
-                      </p>
-                    </div>
-                    <div>
-                      {mentor.subscriptionStatus === "FREE" ? (
-                        <p className="paragraph">Mentor reguler</p>
-                      ) : (
-                        <p className="paragraph font-bold">Mentor premium</p>
-                      )}
-                    </div>
-                  </Link>
-                </Carousel.Slide>
-              );
+              return <SingleMentor mentor={mentor} key={mentor.id} />;
             })}
           </Carousel>
         </div>
