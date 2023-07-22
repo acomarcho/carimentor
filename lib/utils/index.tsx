@@ -1,5 +1,7 @@
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
 
 export const validateEmail = (email: string) => {
   return String(email)
@@ -22,4 +24,20 @@ export const getBadgeColor = (status: string) => {
     default:
       return "red";
   }
+};
+
+export const showError = (message: string) => {
+  notifications.show({
+    message,
+    color: "red",
+    icon: <IconX size="1rem" />,
+  });
+};
+
+export const showSuccess = (message: string) => {
+  notifications.show({
+    message,
+    color: "teal",
+    icon: <IconCheck size="1rem" />,
+  });
 };
