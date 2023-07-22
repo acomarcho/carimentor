@@ -20,7 +20,7 @@ export interface MentorFilterRequest {
   tags: string[];
 }
 
-export interface BookMentorRequest {
-  date: Date | null;
+export interface ReviewOneOnOneRequest {
   message: string;
+  rating: number;
 }

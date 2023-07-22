@@ -12,3 +12,14 @@ export const validateEmail = (email: string) => {
 export const formatDateToIndonesianLocale = (isoDateString: string) => {
   return format(new Date(isoDateString), "dd MMMM yyyy HH:mm", { locale: id });
 };
+
+export const getBadgeColor = (status: string) => {
+  switch (status) {
+    case "PENDING":
+      return "orange";
+    case "APPROVED":
+      return "green";
+    default:
+      return "red";
+  }
+};

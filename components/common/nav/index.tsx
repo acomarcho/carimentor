@@ -44,6 +44,9 @@ const MobileNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
               <Link className="drawer-link" href="/profile">
                 Profilku
               </Link>
+              <Link className="drawer-link" href="/one-on-one">
+                Riwayat One-on-One
+              </Link>
               <div className="h-[1px] bg-purple-950" />
             </>
           )}
@@ -104,6 +107,11 @@ const DesktopNavbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
                 <Menu.Item>
                   <Link href="/profile" className="paragraph block">
                     Profilku
+                  </Link>
+                </Menu.Item>
+                <Menu.Item>
+                  <Link href="/one-on-one" className="paragraph block">
+                    Riwayat One-on-One
                   </Link>
                 </Menu.Item>
               </Menu.Dropdown>
