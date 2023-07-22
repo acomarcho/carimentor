@@ -2,13 +2,36 @@ import DecorationVector from "@/components/common/decoration-vector";
 import { IconCalendar, IconBrowser } from "@tabler/icons-react";
 import { formatDateToIndonesianLocale } from "@/lib/utils";
 import Link from "next/link";
-import { useAllGroupSessions } from "@/lib/hooks/use-group-session";
+import {
+  useAllGroupSessions,
+  useMenteeBookings,
+} from "@/lib/hooks/use-group-session";
 import { LoadingOverlay } from "@mantine/core";
+import { useUser } from "@/lib/hooks/use-user";
 
 export default function MyGroupSessions() {
-  const { groupSessions: sessions, isLoading, isError } = useAllGroupSessions();
-  
-  const loadingFlag = isLoading || isError;
+  const { user, isLoading: isUserLoading } = useUser();
+  const { groupSessions, isLoading, isError } = useAllGroupSessions();
+  const {
+    bookGroupSessions,
+    bookGroupSessionsIsLoading,
+    bookGroupSessionsError,
+  } = useMenteeBookings(user?.id || "");
+
+  const loadingFlag =
+    isLoading ||
+    isError ||
+    bookGroupSessionsIsLoading ||
+    isUserLoading ||
+    bookGroupSessionsError;
+
+  const bookedSessionIDs =
+    bookGroupSessions?.data?.map((bookGroupSession) => {
+      return bookGroupSession.sessionId;
+    }) || [];
+  const sessions = groupSessions.filter((session) =>
+    bookedSessionIDs.includes(session.id)
+  );
 
   return (
     <div className="default-wrapper">

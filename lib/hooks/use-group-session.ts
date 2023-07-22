@@ -97,6 +97,25 @@ export function useAllGroupSessions() {
   };
 }
 
+export function useMenteeBookings(menteeId: string) {
+  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+  const {
+    data: bookGroupSessions,
+    error: bookGroupSessionsError,
+    isLoading: bookGroupSessionsIsLoading,
+  } = useSWR<GetBookGroupSessionResponse>(
+    `${apiURL}/book-group-session?menteeId=${menteeId}`,
+    fetcher
+  );
+
+  return {
+    bookGroupSessions,
+    bookGroupSessionsError,
+    bookGroupSessionsIsLoading,
+  };
+}
+
 export function useGroupSession(sessionId: string) {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
