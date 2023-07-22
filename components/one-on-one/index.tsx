@@ -4,9 +4,14 @@ import { Badge } from "@mantine/core";
 import { IconUserCircle, IconCalendar, IconBrowser } from "@tabler/icons-react";
 import { getBadgeColor, formatDateToIndonesianLocale } from "@/lib/utils";
 import Link from "next/link";
+import "react-responsive-modal/styles.css";
+import { Modal } from "react-responsive-modal";
+import { useState } from "react";
 
 export default function MyBookings() {
   const bookings = dummyMyBookings;
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
     <div className="default-wrapper">
@@ -42,7 +47,10 @@ export default function MyBookings() {
                       </Link>
                     </div>
                     {!booking.review ? (
-                      <button className="button-600-filled">
+                      <button
+                        className="button-600-filled"
+                        onClick={() => setIsModalOpen(true)}
+                      >
                         Berikan review
                       </button>
                     ) : (
@@ -61,6 +69,20 @@ export default function MyBookings() {
           Anda belum pernah mengirimkan permintaan one-on-one.
         </p>
       )}
+      <Modal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        center
+        showCloseIcon={false}
+        classNames={{ modal: "rounded-xl" }}
+      >
+        <div className="flex flex-col justify-center gap-[1rem] p-[1rem] max-w-[293px]">
+          <h1 className="subheader">Beri penilaian</h1>
+          <p className="paragraph">
+            Isi formulir di bawah ini untuk memberikan penilaian!
+          </p>
+        </div>
+      </Modal>
     </div>
   );
 }
