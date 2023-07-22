@@ -110,3 +110,47 @@ export const dummyMentors = [
     subscriptionStatus: "PREMIUM",
   },
 ];
+
+export const dummyMentorWithPicture = {
+  name: "Marchotridyo",
+  imageUrl: "/next.svg",
+  tags: [
+    "Artificial Intelligence",
+    "Software Engineering",
+    "Sales dan Marketing",
+  ],
+  city: "KOTA BANDUNG",
+  subscriptionStatus: "FREE",
+};
+
+export const dummyMentorWithoutPicture = {
+  name: "Malik Akbar",
+  imageUrl: "",
+  tags: ["Artificial Intelligence", "Software Engineering"],
+  city: "KOTA BANDUNG",
+  subscriptionStatus: "PREMIUM",
+};
+
+export const dummyReviews = [
+  {
+    id: "1",
+    menteeName: "Maria Khelli",
+    updatedAt: new Date().toISOString(),
+    review: "Sesi mentoringnya menyenangkan!",
+    rating: 4.5,
+  },
+  {
+    id: "2",
+    menteeName: "Fayza Nadia",
+    updatedAt: new Date().toISOString(),
+    review: "Sesi mentoringnya menyenangkan!",
+    rating: 3,
+  },
+  {
+    id: "1",
+    menteeName: "Oppenheimer",
+    updatedAt: new Date().toISOString(),
+    review: "Sesi mentoringnya menyenangkan!",
+    rating: 2,
+  },
+];
