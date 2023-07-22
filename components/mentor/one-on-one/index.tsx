@@ -1,5 +1,4 @@
 import DecorationVector from "../../common/decoration-vector";
-import { dummyMenteeBookings } from "@/lib/dummies";
 import { Badge, Radio, TextInput } from "@mantine/core";
 import { IconUserCircle, IconCalendar, IconBrowser } from "@tabler/icons-react";
 import { getBadgeColor, formatDateToIndonesianLocale } from "@/lib/utils";
@@ -9,9 +8,11 @@ import { Modal } from "react-responsive-modal";
 import { useState } from "react";
 import { labelStyle } from "@/lib/constants/styles";
 import { ProcessOneOnOneRequest } from "@/lib/constants/requests";
+import { useOneOnOne } from "@/lib/hooks/use-one-on-one";
 
 export default function MenteeBookings() {
-  const bookings = dummyMenteeBookings;
+  // const bookings = dummyMenteeBookings;
+  const { histories: bookings, isLoading, isError } = useOneOnOne();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [request, setRequest] = useState<ProcessOneOnOneRequest>({
@@ -47,7 +48,7 @@ export default function MenteeBookings() {
                 {booking.approvalStatus === "APPROVED" && (
                   <div className="flex flex-row items-center gap-[0.5rem]">
                     <IconBrowser />
-                    <Link href={booking.meetingUrl} className="paragraph">
+                    <Link href={booking.meetingUrl || ""} className="paragraph">
                       {booking.meetingUrl}
                     </Link>
                   </div>
