@@ -21,3 +21,17 @@ export type CreateGroupSessionResponse = BaseResponse<CreateGroupSessionData>;
 export type GetDetailGroupSessionData = GroupSession;
 export type GetDetailGroupSessionResponse =
   BaseResponse<GetDetailGroupSessionData>;
+
+export interface GroupSessionMeta {
+  isJoined: boolean;
+  canJoin: boolean;
+  isOwner: boolean;
+}
+
+export interface GroupSessionSelf {
+  groupSession: GroupSession;
+  meta: GroupSessionMeta;
+}
+
+export type GetGroupSessionSelfData = GroupSessionSelf;
+export type GetGroupSessionSelfResponse = BaseResponse<GetGroupSessionSelfData>;

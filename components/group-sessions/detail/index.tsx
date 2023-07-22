@@ -2,7 +2,10 @@ import DecorationVector from "@/components/common/decoration-vector";
 import { createBookGroupSession } from "@/lib/api";
 import { apiURL } from "@/lib/constants";
 import { Discussion, GetUserResponse, User } from "@/lib/constants/responses";
-import { useGroupSession } from "@/lib/hooks/use-group-session";
+import {
+  useGroupSession,
+  useGroupSessionSelf,
+} from "@/lib/hooks/use-group-session";
 import { useUser } from "@/lib/hooks/use-user";
 import { formatDateToIndonesianLocale, showError } from "@/lib/utils";
 import { LoadingOverlay } from "@mantine/core";
@@ -24,16 +27,19 @@ export default function GroupSessionDetail({
 }: {
   sessionId: string;
 }) {
-  const { user, isLoading, isError } = useUser();
+  const { user, isLoading } = useUser();
   const { groupSession, discussions, bookGroupSessions } =
     useGroupSession(sessionId);
   const session = groupSession?.data;
   const discussionsData = discussions?.data || [];
   const bookGroupSessionsData = bookGroupSessions?.data || [];
 
+  const { selfData, isLoading: isSelfDataLoading } =
+    useGroupSessionSelf(sessionId);
+
   const [createBookLoading, setCreateBookLoading] = useState(false);
 
-  const loadingFlag = isLoading || isError || createBookLoading;
+  const loadingFlag = isLoading || createBookLoading || isSelfDataLoading;
 
   const [discussionWithSender, setDiscussionWithSender] = useState<
     (Discussion & {
