@@ -17,17 +17,14 @@ import {
   useClosestMentors,
 } from "@/lib/hooks/use-user";
 import { useAllCities } from "@/lib/hooks/use-city";
-import {
-  MentorSearchResult,
-  GetCityDataResponse,
-} from "@/lib/constants/responses";
+import { MentorSearchResult, GetCityResponse } from "@/lib/constants/responses";
 
 const SingleMentor = ({
   mentor,
   cities,
 }: {
   mentor: MentorSearchResult;
-  cities: GetCityDataResponse;
+  cities: GetCityResponse;
 }) => {
   return (
     <Carousel.Slide>
