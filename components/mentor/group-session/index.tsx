@@ -6,6 +6,8 @@ import Link from "next/link";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import { useState } from "react";
+import { DateTimePicker } from "@mantine/dates";
+import "dayjs/locale/id";
 import { Textarea, TextInput, NumberInput } from "@mantine/core";
 import { labelStyle } from "@/lib/constants/styles";
 
@@ -80,6 +82,14 @@ export default function MentorGroupSessions() {
             withAsterisk
             styles={{ ...labelStyle }}
           />
+          <DateTimePicker
+            label="Tanggal dan jam mulai"
+            placeholder="Pilih tanggal dan jam mulai"
+            withAsterisk
+            minDate={new Date()}
+            locale="id"
+            styles={{ ...labelStyle }}
+          />
           <TextInput
             label="Tautan meeting"
             placeholder="https://www.google.com"
@@ -90,13 +100,21 @@ export default function MentorGroupSessions() {
             label="Deskripsi"
             placeholder="Dalam sesi ini, kita akan mempelajari HTML dan CSS dari awal sampai akhir."
             styles={{ ...labelStyle }}
+            withAsterisk
           />
           <NumberInput
             label="Maksimal partisipan"
             placeholder="50"
             styles={{ ...labelStyle }}
             min={1}
+            withAsterisk
           />
+          <button
+            className="button-600-filled"
+            onClick={() => setIsModalOpen(false)}
+          >
+            Buat sesi
+          </button>
         </div>
       </Modal>
     </div>
