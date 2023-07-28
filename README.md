@@ -1,38 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Promotional banner
 
-## Getting Started
+<img width="1842" alt="carimentor-banner" src="https://github.com/acomarcho/carimentor/assets/29671825/0a84545b-6896-4ac1-867c-46a0587607af">
 
-First, run the development server:
+Garudahacks 4.0 runner up of the youth track. Visit our devpost at [here!](https://devpost.com/software/carimentor)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+You can visit our application via [this link](https://carimentor.marchotridyo.com)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# CariMentor
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+This project is based on a challenge a lot of us face in this very rapid, developing world: how to cope with the sheer pressure of having to keep up with things. As an example, if you’re a web developer, it’s becoming quite a meme where every day, a new JavaScript framework is born. If you position yourself as a new web developer, being faced with this will obviously put you off in learning as you’ll be overwhelmed before you even start.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Continuing the web developer example, in this case, there are many resources available on the internet that can guide you to learn web development so you don’t get too overwhelmed. But this lacks real-time human interaction: you don’t get to ask questions and get feedback instantaneously, and it’s easy for you to get sidetracked when you learn all by yourself.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+This project aims to help people who are in need of mentors (mentees) in the goals that they are pursuing. By providing them with a community where they can connect with mentors, we hope that even in this fast-paced world, people can still find peace and ease to learn and pursue everything they’ve dreamt of before.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Alongside all of that, we too want to provide a community where professionals can fulfill their needs of self-actualization by sharing what they have learned over the years in the hope to be able to help the younger generation become a better version of themselves. We believe that our solution is a good solution to fulfill both needs: a need for guidance from mentees, and a need for self-actualization from mentors.
 
-## Learn More
+# How it's made
 
-To learn more about Next.js, take a look at the following resources:
+We built this application with a separate backend and frontend. The backend itself is written in Express with a PostgreSQL database. For speed development purposes, we chose to use Prisma as our ORM to simplify things like migration and seedings as in hackathons we find that we might change our requirements/technical designs very frequently. We also use Swagger as an API documentation tool so there won’t be too many communications between the frontend team and the backend team.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The frontend of this application is made using Next due to several reasons, particularly due to the built-in routing and built-in optimizations such as for images and loading fonts from Google Fonts. When building the styles, we use both Tailwind for creating our custom components and Mantine for premade components. Having Mantine as a part of our design system also helps our designer when using Figma as there already exists a UI kit based on Mantine. We also tried to use better ways of fetching data such as using useSWR (stale-while-revalidate) where you can cache requests instead of fetching everything inside useEffect.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+We don’t have an object storage service to use, so for storing images (user profiles), we chose to use a third-party image hosting site, that is ImgBB.
 
-## Deploy on Vercel
+For stricter development rules and better efficiency in teamwork, as both the backend and frontend are made in JavaScript, we decided to use TypeScript as the main language for both of them. We also use strict and separated folder directories convention to reduce the possibility of a merge conflict.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**This is the frontend repository. I did not participate in creating the backend**
